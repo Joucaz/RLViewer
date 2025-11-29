@@ -25,7 +25,7 @@ export default class Car {
         this.model = carModel.scene
         
         // Position de base de la voiture
-        this.model.position.set(0, 0, 0)
+        // this.model.position.set(0, 0, 0)
         
         // Applique les matériaux si nécessaire
         this.model.traverse(child => {
@@ -92,8 +92,8 @@ export default class Car {
             })
         }
         
-        // if(this.debug.active && this.debugFolder) {
-        //     this.debug.ui.removeFolder(this.debugFolder)
-        // }
+        if(this.debug.active && this.debugFolder) {
+            this.debugFolder.destroy()
+        }
     }
 }

@@ -35,7 +35,7 @@ export default class WheelSet {
             // Applique position, rotation, scale
             wheel.position.set(...cfg.position)
             wheel.rotation.set(...cfg.rotation)
-            wheel.scale.setScalar(cfg.scale)
+            wheel.scale.set(...cfg.scale)
             
             // Matériaux et ombres
             wheel.traverse(child => {
@@ -58,7 +58,7 @@ export default class WheelSet {
         if(!this.debug.active || this.wheels.length === 0) return
         
         // Debug de la première roue (front left)
-        const wheel = this.wheels[0].mesh
+        const wheel = this.wheels[2].mesh
         
         this.debugFolder
             .add(wheel.position, 'x')
@@ -72,7 +72,7 @@ export default class WheelSet {
         this.debugFolder
             .add(wheel.position, 'y')
             .name('Wheel Y')
-            .min(-1).max(1).step(0.01)
+            .min(-0.5).max(0.5).step(0.01)
             .onChange(val => {
                 this.wheels.forEach(w => w.mesh.position.y = val)
             })
@@ -97,10 +97,27 @@ export default class WheelSet {
         
         this.debugFolder
             .add(wheel.scale, 'x')
-            .name('Wheel Scale')
-            .min(0.5).max(2).step(0.01)
+            .name('Wheel Scale X')
+            .min(0.1).max(3).step(0.01)
             .onChange(val => {
-                this.wheels.forEach(w => w.mesh.scale.setScalar(val))
+                this.wheels[0].mesh.scale.x = val
+                this.wheels[1].mesh.scale.x = val
+            })
+
+        this.debugFolder
+            .add(wheel.scale, 'y')
+            .name('Wheel Scale Y')
+            .min(0.1).max(3).step(0.01)
+            .onChange(val => {
+                this.wheels.forEach(w => w.mesh.scale.y = val)
+            })
+
+        this.debugFolder
+            .add(wheel.scale, 'z')
+            .name('Wheel Scale Z')
+            .min(0.1).max(3).step(0.01)
+            .onChange(val => {
+                this.wheels.forEach(w => w.mesh.scale.z = val)
             })
         
         this.debugFolder
@@ -138,8 +155,8 @@ export default class WheelSet {
         
         this.wheels = []
         
-        // if(this.debug.active && this.debugFolder) {
-        //     this.debug.ui.removeFolder(this.debugFolder)
-        // }
+        if(this.debug.active && this.debugFolder) {
+            this.debugFolder.destroy()
+        }
     }
 }

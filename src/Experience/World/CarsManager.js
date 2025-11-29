@@ -15,7 +15,7 @@ export default class CarsManager {
         this.currentWheels = null
         
         // Sélections par défaut
-        this.selectedCarType = 'fennec'
+        this.selectedCarType = 'dominus'
         this.selectedWheelType = 'alpha'
         
         // Debug
@@ -159,7 +159,7 @@ export default class CarsManager {
             .onChange(value => this.switchCar(value))
         
         this.debugFolder
-            .add(debugParams, 'wheels', ['wheel_type1', 'wheel_type2', 'wheel_type3'])
+            .add(debugParams, 'wheels', ['alpha', 'cristiano', 'dieci'])
             .name('Wheel Type')
             .onChange(value => this.switchWheels(value))
     }
@@ -178,7 +178,7 @@ export default class CarsManager {
         if(this.currentWheels) this.currentWheels.destroy()
         
         if(this.debug.active && this.debugFolder) {
-            this.debug.ui.removeFolder(this.debugFolder)
+            this.debugFolder.destroy()
         }
     }
 }
