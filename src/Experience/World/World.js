@@ -27,7 +27,7 @@ export default class World
 
             console.log("ready");
             
-            // this.unlimitedTexture = new UnlimitedTexture()
+            this.unlimitedTexture = new UnlimitedTexture()
 
             // this.model3D = new Model3D()
 

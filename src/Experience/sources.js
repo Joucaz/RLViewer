@@ -14,12 +14,25 @@ export default [
         type: 'gltfModel',
         path: 'models/cars/dominus.glb'
     },
-    
-    // Wheels (une seule roue par type)
     {
         name: 'alpha',
         type: 'gltfModel',
         path: 'models/wheels/alphaWheel.glb'
+    },
+    {
+        name: 'alphaBake',
+        type: 'texture',
+        path: 'textures/wheels/alpha/AlphaWheelsBake.jpg'
+    },
+    {
+        name: 'alphaNormal',
+        type: 'texture',
+        path: 'textures/wheels/alpha/AlphaWheelsNormal.jpg'
+    },
+    {
+        name: 'alphaRoughness',
+        type: 'texture',
+        path: 'textures/wheels/alpha/AlphaWheelsRoughness.jpg'
     },
     {
         name: 'cristiano',

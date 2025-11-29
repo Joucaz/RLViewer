@@ -15,7 +15,7 @@ export default class CarsManager {
         this.currentWheels = null
         
         // Sélections par défaut
-        this.selectedCarType = 'dominus'
+        this.selectedCarType = 'fennec'
         this.selectedWheelType = 'alpha'
         
         // Debug
