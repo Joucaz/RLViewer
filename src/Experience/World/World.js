@@ -3,6 +3,7 @@ import Experience from '../Experience.js'
 import Environment from './Environment.js'
 import UnlimitedTexture from './UnlimitedTexture.js'
 import Model3D from './Model3D.js'
+import CarsManager from './CarsManager.js'
 
 export default class World
 {
@@ -18,10 +19,7 @@ export default class World
         if(this.debug.active)
         {
             this.debugFolder = this.debug.ui.addFolder('World')
-        }
-
-        console.log("wrold");
-        
+        }        
 
         // Wait for resources
         this.resources.on('ready', () =>
@@ -29,21 +27,26 @@ export default class World
 
             console.log("ready");
             
-            this.unlimitedTexture = new UnlimitedTexture()
+            // this.unlimitedTexture = new UnlimitedTexture()
 
-            this.model3D = new Model3D()
+            // this.model3D = new Model3D()
 
             // Setup Environment
             this.environment = new Environment()
+            this.carsManager = new CarsManager()
         })
-
     }
 
-    update()
-    {        
-        if(this.model3D)
-            this.model3D.update()
+    update() {
+        if(this.carsManager)
+            this.carsManager.update()
+            
         if(this.environment)
             this.environment.update()
+    }
+    
+    destroy() {
+        if(this.carsManager)
+            this.carsManager.destroy()
     }
 }
