@@ -25,15 +25,20 @@ export default class Renderer
     {
         this.instance = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: false,
-            powerPreference: 'high-performance'
+            antialias: true,
+            powerPreference: 'high-performance',
+            alpha: true
         })
+        const maxAnisotropy = this.instance.capabilities.getMaxAnisotropy()
+        console.log('Max Anisotropy:', maxAnisotropy)
+        
         this.instance.toneMapping = THREE.NoToneMapping
         // this.instance.toneMapping = THREE.CineonToneMapping
         // this.instance.toneMappingExposure = 1.75
         // this.instance.shadowMap.enabled = true
         // this.instance.shadowMap.type = THREE.PCFSoftShadowMap
-        this.instance.setClearColor('#211d20')
+        // this.instance.setClearColor('#000000', 0)
+        this.instance.setClearColor('#e63939ff')
         this.instance.setSize(this.sizes.width, this.sizes.height)
         this.instance.setPixelRatio(this.sizes.pixelRatio)
         this.instance.autoUpdate = false
