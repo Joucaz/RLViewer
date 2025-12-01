@@ -44,6 +44,26 @@ export default [
         type: 'gltfModel',
         path: 'models/wheels/dieciWheel.glb'
     },
+    {
+        name: 'fennecChassisColor',
+        type: 'texture',
+        path: 'textures/cars/fennec/ChassisColor.jpg'
+    },
+    {
+        name: 'fennecChassisNormal',
+        type: 'texture',
+        path: 'textures/cars/fennec/ChassisNormal.jpg'
+    },
+    {
+        name: 'fennecChassisEmissive',
+        type: 'texture',
+        path: 'textures/cars/fennec/ChassisEmissive.jpg'
+    },
+    {
+        name: 'fennecDefaultBody',
+        type: 'texture',
+        path: 'textures/cars/fennec/DefaultBody.jpg'
+    }
     // {
     //     name: 'model3D',
     //     type: 'gltfModel',

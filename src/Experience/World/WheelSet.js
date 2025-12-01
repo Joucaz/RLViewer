@@ -44,7 +44,7 @@ export default class WheelSet {
                     child.receiveShadow = true
 
                     if(this.wheelType === 'alpha' && this.experience.world.unlimitedTexture) {
-                        child.material = this.experience.world.unlimitedTexture.alphaMaterial
+                        // child.material = this.experience.world.unlimitedTexture.alphaMaterial
                     }
                     // Pour les autres types de roues, garde le matériau par défaut
                     // ou ajoute d'autres conditions ici plus tard

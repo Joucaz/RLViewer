@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import CarCustomizer from './CarCustomizer.js'
 
 export default class Car {
-
     constructor(carType, carModel) {
         this.experience = new Experience()
         this.scene = this.experience.scene
@@ -10,10 +10,13 @@ export default class Car {
         
         this.carType = carType
         this.model = null
+        this.customizer = null
         
         this.setModel(carModel)
         
-        // Debug
+        // ✅ Crée le customizer qui va appliquer les matériaux
+        this.customizer = new CarCustomizer(carType, this.model)
+        
         if(this.debug.active) {
             this.debugFolder = this.debug.ui.addFolder(`Car - ${carType}`)
             this.setupDebug()
@@ -21,26 +24,32 @@ export default class Car {
     }
     
     setModel(carModel) {
-        // Clone le modèle pour pouvoir en créer plusieurs instances
         this.model = carModel.scene
-        
-        // Position de base de la voiture
-        // this.model.position.set(0, 0, 0)
-        
-        // Applique les matériaux si nécessaire
-        this.model.traverse(child => {
-            if(child instanceof THREE.Mesh) {
-                child.castShadow = true
-                child.receiveShadow = true
-                
-                // Si tu as un matériau custom
-                // if (child.material) {
-                //     child.material = this.experience.world.customMaterial
-                // }
-            }
-        })
-        
         this.scene.add(this.model)
+    }
+    
+    setFinish(finishType) {
+        if(this.customizer) {
+            this.customizer.setFinish(finishType)
+        }
+    }
+    
+    setAccentColor(color) {
+        if(this.customizer) {
+            this.customizer.setAccentColor(color)
+        }
+    }
+    
+    setExtraColor(color) {
+        if(this.customizer) {
+            this.customizer.setExtraColor(color)
+        }
+    }
+    
+    loadUserTexture(file) {
+        if(this.customizer) {
+            this.customizer.loadUserTexture(file)
+        }
     }
     
     setupDebug() {
@@ -68,15 +77,17 @@ export default class Car {
     }
     
     update() {
-        // Animations de la voiture si nécessaire
-        // Par exemple : légère rotation pour preview
+        // Animations
     }
     
     destroy() {
+        if(this.customizer) {
+            this.customizer.destroy()
+        }
+        
         if(this.model) {
             this.scene.remove(this.model)
             
-            // Dispose geometry et materials
             this.model.traverse(child => {
                 if(child instanceof THREE.Mesh) {
                     child.geometry.dispose()
