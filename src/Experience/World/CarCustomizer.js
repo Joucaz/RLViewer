@@ -18,11 +18,13 @@ export default class CarCustomizer {
             console.error(`No material config found for car type: ${carType}`)
             return
         }
+        console.log(this.config);
+        
         
         // État actuel
-        this.currentFinish = 'glossy'
-        this.currentAccentColor = '#FF0000'
-        this.currentExtraColor = '#0000FF'
+        this.currentFinish = 'anodized'
+        this.currentPaintColor = '#171617'
+        this.currentExtraColor = '#171617'
         this.currentBodyTexture = null
         
         // Stockage des mesh
@@ -49,8 +51,8 @@ export default class CarCustomizer {
         this.carModel.traverse(child => {
             if(child instanceof THREE.Mesh) {
                 meshList.push(child)
-                child.castShadow = true
-                child.receiveShadow = true
+                // child.castShadow = true
+                // child.receiveShadow = true
             }
         })
         
@@ -66,7 +68,7 @@ export default class CarCustomizer {
             console.log('✅ Mesh assignment:')
             console.log(`  [0] Body → ${this.meshes.body.name}`)
             console.log(`  [1] Chassis → ${this.meshes.chassis.name}`)
-            console.log(`  [2] Paint (Accents) → ${this.meshes.paint.name}`)
+            console.log(`  [2] Paint → ${this.meshes.paint.name}`)
             console.log(`  [3] Windows → ${this.meshes.windows.name}`)
         } else {
             console.error(`⚠️ Expected 4 meshes but found ${meshList.length}`)
@@ -74,7 +76,17 @@ export default class CarCustomizer {
         
         // ✅ Pour Dominus avec 5 mesh
         if(meshList.length == 5 && this.carType === 'dominus') {
+            this.meshes.body = meshList[0]      // Body_Grain_SKmd001
+            this.meshes.chassis = meshList[1]   // Body_Grain_SKmd001_1
+            this.meshes.paint = meshList[2]     // Body_Grain_SKmd001_2
+            this.meshes.windows = meshList[3]   // Body_Grain_SKmd001_3
             this.meshes.extraColor = meshList[4]
+            
+            console.log('✅ Mesh assignment:')
+            console.log(`  [0] Body → ${this.meshes.body.name}`)
+            console.log(`  [1] Chassis → ${this.meshes.chassis.name}`)
+            console.log(`  [2] Paint → ${this.meshes.paint.name}`)
+            console.log(`  [3] Windows → ${this.meshes.windows.name}`)
             console.log(`  [4] Extra Color → ${this.meshes.extraColor.name}`)
         }
 
@@ -97,8 +109,8 @@ export default class CarCustomizer {
                 ...paintFinishes[this.currentFinish]
             })
             
-            // ✅ Force l'utilisation de UV1 pour le Body
-            this.setMaterialUVMap(this.meshes.body.material, 1)
+            if(this.config.changeBodyUV)
+                this.setMaterialUVMap(this.meshes.body.material, 1)
             
             console.log('✅ Body material applied with UV1')
         }
@@ -135,14 +147,14 @@ export default class CarCustomizer {
             console.log('✅ Chassis material applied with textures (UV0)')
         }
         
-        // 3. PAINT MATERIAL (couleur unie = Accents)
+        // 3. PAINT MATERIAL
         if(this.meshes.paint) {
             this.meshes.paint.material = new THREE.MeshStandardMaterial({
-                color: new THREE.Color(this.currentAccentColor),
+                color: new THREE.Color(this.currentPaintColor),
                 roughness: 0.318,
                 metalness: 0.316
             })
-            console.log('✅ Paint/Accents material applied (solid color)')
+            console.log('✅ Paint material applied (solid color)')
         }
         
         // // 4. WINDOWS MATERIAL
@@ -208,9 +220,9 @@ export default class CarCustomizer {
         console.log(`✅ Applied finish: ${finish.name}`)
     }
     
-    // ✅ Changer la couleur Paint/Accents
-    setAccentColor(color) {
-        this.currentAccentColor = color
+    // ✅ Changer la couleur Paint
+    setPaintColor(color) {
+        this.currentPaintColor = color
         
         if(this.meshes.paint && this.meshes.paint.material) {
             this.meshes.paint.material.color.set(color)
@@ -297,14 +309,14 @@ export default class CarCustomizer {
         
         // Colors
         const colorParams = { 
-            accentColor: this.currentAccentColor,
+            paintColor: this.currentPaintColor,
             extraColor: this.currentExtraColor
         }
         
         this.debugFolder
-            .addColor(colorParams, 'accentColor')
-            .name('Accent Color (Paint)')
-            .onChange(value => this.setAccentColor(value))
+            .addColor(colorParams, 'paintColor')
+            .name('Paint Color')
+            .onChange(value => this.setPaintColor(value))
         
         if(this.carType === 'dominus') {
             this.debugFolder

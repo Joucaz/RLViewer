@@ -63,6 +63,46 @@ export default [
         name: 'fennecDefaultBody',
         type: 'texture',
         path: 'textures/cars/fennec/DefaultBody.jpg'
+    },
+    {
+        name: 'octaneChassisColor',
+        type: 'texture',
+        path: 'textures/cars/octane/ChassisColor.jpg'
+    },
+    {
+        name: 'octaneChassisNormal',
+        type: 'texture',
+        path: 'textures/cars/octane/ChassisNormal.jpg'
+    },
+    {
+        name: 'octaneChassisEmissive',
+        type: 'texture',
+        path: 'textures/cars/octane/ChassisEmissive.jpg'
+    },
+    {
+        name: 'octaneDefaultBody',
+        type: 'texture',
+        path: 'textures/cars/octane/DefaultBody.png'
+    },
+    {
+        name: 'dominusChassisColor',
+        type: 'texture',
+        path: 'textures/cars/dominus/ChassisColor.jpg'
+    },
+    {
+        name: 'dominusChassisNormal',
+        type: 'texture',
+        path: 'textures/cars/dominus/ChassisNormal.jpg'
+    },
+    {
+        name: 'dominusChassisEmissive',
+        type: 'texture',
+        path: 'textures/cars/dominus/ChassisEmissive.jpg'
+    },
+    {
+        name: 'dominusDefaultBody',
+        type: 'texture',
+        path: 'textures/cars/dominus/DefaultBody.png'
     }
     // {
     //     name: 'model3D',

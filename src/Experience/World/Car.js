@@ -34,9 +34,9 @@ export default class Car {
         }
     }
     
-    setAccentColor(color) {
+    setPaintColor(color) {
         if(this.customizer) {
-            this.customizer.setAccentColor(color)
+            this.customizer.setPaintColor(color)
         }
     }
     

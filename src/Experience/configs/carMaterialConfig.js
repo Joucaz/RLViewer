@@ -1,11 +1,14 @@
 export const carMaterialConfig = {
     fennec: {
-        hasExtraColor: false
+        hasExtraColor: false,
+        changeBodyUV: true
     },
     octane: {
-        hasExtraColor: false
+        hasExtraColor: false,
+        changeBodyUV: false
     },
     dominus: {
-        hasExtraColor: true
+        hasExtraColor: true,
+        changeBodyUV: false
     }
 }
