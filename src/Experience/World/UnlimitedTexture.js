@@ -17,9 +17,9 @@ export default class UnlimitedTexture
 
         this.textures = {}
 
-        this.setTextureWheels()
+        // this.setTextureWheels()
 
-        this.setMaterials()
+        // this.setMaterials()
     }
 
     setTextureWheels()

@@ -13,9 +13,9 @@ export default class Environment
 
         this.debugObject = {}
 
-        this.intensityAmbientLight = 0.2
+        this.intensityAmbientLight = 1
         this.intensityAmbientLightOff = 0
-        this.intensityDirectionnalLight = 3.5
+        this.intensityDirectionnalLight = 10
         this.intensityDirectionnalLightOff = 0
         
         // Debug
@@ -26,7 +26,8 @@ export default class Environment
 
         this.setLights()
         
-        // this.setEnvironmentMap()
+        this.setEnvironmentMap()
+        
     }
 
     setLights()

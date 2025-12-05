@@ -5,15 +5,23 @@ import { wheelTypeConfigs } from '../configs/wheelPositions.js'
 export default class WheelSet {
     constructor(wheelType, wheelModel, config) {
         this.experience = new Experience()
-        this.scene = this.experience.scene
+        this.scene = this.experience.scene        
+        this.resources = this.experience.resources
         this.debug = this.experience.debug
         
         this.wheelType = wheelType
         this.config = config
         this.wheels = []
+
+        this.tireMaterial = null
+        this.jantesMaterial = null
         
         // Config spécifique au type de roue
         this.wheelConfig = wheelTypeConfigs[wheelType] || { rotationSpeed: 2.0 }
+
+        this.setMaterial(wheelType)
+        // console.log(wheelType);
+        
         
         this.setWheels(wheelModel)
         
@@ -37,17 +45,26 @@ export default class WheelSet {
             wheel.rotation.set(...cfg.rotation)
             wheel.scale.set(...cfg.scale)
             
+            let meshIndex = 0
+            
             // Matériaux et ombres
             wheel.traverse(child => {
                 if(child instanceof THREE.Mesh) {
                     child.castShadow = true
                     child.receiveShadow = true
-
-                    if(this.wheelType === 'alpha' && this.experience.world.unlimitedTexture) {
-                        // child.material = this.experience.world.unlimitedTexture.alphaMaterial
+                    
+                    // Premier mesh = Jante
+                    if(meshIndex === 0) {
+                        child.material = this.jantesMaterial
+                        console.log(`⭕ Jante material appliqué sur ${pos}`)
                     }
-                    // Pour les autres types de roues, garde le matériau par défaut
-                    // ou ajoute d'autres conditions ici plus tard
+                    // Deuxième mesh = Tire
+                    else if(meshIndex === 1) {
+                        child.material = this.tireMaterial
+                        console.log(`🛞 Tire material appliqué sur ${pos}`)
+                    }
+                    
+                    meshIndex++
                 }
             })
             
@@ -55,9 +72,105 @@ export default class WheelSet {
             this.wheels.push({
                 mesh: wheel,
                 position: pos,
-                baseRotation: cfg.rotation[1] // Stocke la rotation Y de base
+                baseRotation: cfg.rotation[1]
             })
         })
+    }
+    
+    createTireMaterial() {
+        const tireColor = this.resources.items.tireColor
+        const tireNormal = this.resources.items.tireNormal
+        const tireRoughness = this.resources.items.tireRoughness
+        const tireAO = this.resources.items.tireAO
+        
+        if(tireColor) {
+            tireColor.flipY = false
+            tireColor.colorSpace = THREE.SRGBColorSpace
+        }
+        if(tireNormal) {
+            tireNormal.flipY = false
+            tireNormal.colorSpace = THREE.LinearSRGBColorSpace
+        }
+        if(tireRoughness) {
+            tireRoughness.flipY = false
+            tireRoughness.colorSpace = THREE.SRGBColorSpace
+        }
+        if(tireAO) {
+            tireAO.flipY = false
+            tireAO.colorSpace = THREE.SRGBColorSpace
+        }
+        
+        this.tireMaterial = new THREE.MeshStandardMaterial({
+            map: tireColor,
+            roughnessMap: tireRoughness,
+            normalMap: tireNormal,
+            // aoMap: tireAO
+            // metalness: 0.636,
+            // roughness: 0.459,
+            // normalMap: chassisNormal,
+            // emissiveMap: chassisEmissive,
+            // emissive: new THREE.Color(0xffffff),
+            // emissiveIntensity: 2
+        })
+        
+        console.log('✅ Tire material created')
+    }
+
+    createAlphaMaterial() {
+        const alphaColor = this.resources.items.alphaColor
+        const alphaNormal = this.resources.items.alphaNormal
+        
+        if(alphaColor) {
+            alphaColor.flipY = false
+            alphaColor.colorSpace = THREE.SRGBColorSpace
+        }
+        if(alphaNormal) {
+            alphaNormal.flipY = false
+            alphaNormal.colorSpace = THREE.SRGBColorSpace
+        }
+
+        this.jantesMaterial = new THREE.MeshStandardMaterial({
+            map: alphaColor,
+            normalMap: alphaNormal,
+            // normalScale: 0.1,
+            roughness: 0.200,
+            metalness: 0.609,        
+        })
+        console.log("alpha material créé");
+    }
+
+    createDieciMaterial() {
+        this.jantesMaterial = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(0x000000),
+            roughness: 0.250,
+            metalness: 0.750,        
+        })
+        console.log("Dieci material créé");
+    }
+
+    createCristianoMaterial() {
+        this.jantesMaterial = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(0x000000), 
+            roughness: 0.50,               
+            metalness: 0.305,        
+        })
+        console.log("Cristiano material créé");
+    }
+
+    setMaterial(wheelType) {
+        this.createTireMaterial()
+
+        const materialFunctions = {
+            alpha: () => this.createAlphaMaterial(), 
+            dieci: () => this.createDieciMaterial(),
+            cristiano: () => this.createCristianoMaterial(),
+        };
+
+        if (materialFunctions[wheelType]) {
+            materialFunctions[wheelType]();
+        } else {
+            console.error("Type de roue inconnu :", wheelType);
+        }
     }
     
     setupDebug() {
@@ -147,17 +260,12 @@ export default class WheelSet {
             wheel.mesh.traverse(child => {
                 if(child instanceof THREE.Mesh) {
                     child.geometry.dispose()
-                    
-                    if(child.material) {
-                        if(Array.isArray(child.material)) {
-                            child.material.forEach(mat => mat.dispose())
-                        } else {
-                            child.material.dispose()
-                        }
-                    }
                 }
             })
         })
+
+        if(this.tireMaterial) this.tireMaterial.dispose()
+        if(this.jantesMaterial) this.jantesMaterial.dispose()
         
         this.wheels = []
         

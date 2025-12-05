@@ -20,21 +20,6 @@ export default [
         path: 'models/wheels/alphaWheel.glb'
     },
     {
-        name: 'alphaBake',
-        type: 'texture',
-        path: 'textures/wheels/alpha/AlphaWheelsBake.jpg'
-    },
-    {
-        name: 'alphaNormal',
-        type: 'texture',
-        path: 'textures/wheels/alpha/AlphaWheelsNormal.jpg'
-    },
-    {
-        name: 'alphaRoughness',
-        type: 'texture',
-        path: 'textures/wheels/alpha/AlphaWheelsRoughness.jpg'
-    },
-    {
         name: 'cristiano',
         type: 'gltfModel',
         path: 'models/wheels/cristianoWheel.glb'
@@ -103,7 +88,49 @@ export default [
         name: 'dominusDefaultBody',
         type: 'texture',
         path: 'textures/cars/dominus/DefaultBody.png'
-    }
+    },
+    {
+        name: 'tireColor',
+        type: 'texture',
+        path: 'textures/wheels/tire/TireColor.jpg'
+    },
+    {
+        name: 'tireNormal',
+        type: 'texture',
+        path: 'textures/wheels/tire/TireNormal.jpg'
+    },
+    {
+        name: 'tireRoughness',
+        type: 'texture',
+        path: 'textures/wheels/tire/TireRoughness.jpg'
+    },
+    {
+        name: 'tireAO',
+        type: 'texture',
+        path: 'textures/wheels/tire/TireAO.jpg'
+    },
+    {
+        name: 'alphaColor',
+        type: 'texture',
+        path: 'textures/wheels/alpha/AlphaColor.jpg'
+    },
+    {
+        name: 'alphaNormal',
+        type: 'texture',
+        path: 'textures/wheels/alpha/AlphaNormal.jpg'
+    },    
+    {
+        name: 'environmentMapTexture',
+        type: 'cubeTexture',
+        path: [
+            'textures/environmentMap/px.png',
+            'textures/environmentMap/nx.png',
+            'textures/environmentMap/py.png',
+            'textures/environmentMap/ny.png',
+            'textures/environmentMap/pz.png',
+            'textures/environmentMap/nz.png'
+        ]
+    },
     // {
     //     name: 'model3D',
     //     type: 'gltfModel',
