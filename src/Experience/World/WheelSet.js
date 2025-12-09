@@ -89,7 +89,7 @@ export default class WheelSet {
         }
         if(tireNormal) {
             tireNormal.flipY = false
-            tireNormal.colorSpace = THREE.LinearSRGBColorSpace
+            // tireNormal.colorSpace = THREE.LinearSRGBColorSpace
         }
         if(tireRoughness) {
             tireRoughness.flipY = false
@@ -105,13 +105,14 @@ export default class WheelSet {
             roughnessMap: tireRoughness,
             normalMap: tireNormal,
             // aoMap: tireAO
-            // metalness: 0.636,
+            metalness: 0,
             // roughness: 0.459,
             // normalMap: chassisNormal,
             // emissiveMap: chassisEmissive,
             // emissive: new THREE.Color(0xffffff),
             // emissiveIntensity: 2
         })
+        // this.tireMaterial.normalMapType = THREE.ObjectSpaceNormalMap
         
         console.log('✅ Tire material created')
     }
@@ -141,7 +142,7 @@ export default class WheelSet {
 
     createDieciMaterial() {
         this.jantesMaterial = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(0x000000),
+            color: new THREE.Color(0x1c1c1c),
             roughness: 0.250,
             metalness: 0.750,        
         })
@@ -150,7 +151,7 @@ export default class WheelSet {
 
     createCristianoMaterial() {
         this.jantesMaterial = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(0x000000), 
+            color: new THREE.Color(0x1c1c1c), 
             roughness: 0.50,               
             metalness: 0.305,        
         })

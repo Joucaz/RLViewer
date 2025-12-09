@@ -92,12 +92,12 @@ export default [
     {
         name: 'tireColor',
         type: 'texture',
-        path: 'textures/wheels/tire/TireColor.jpg'
+        path: 'textures/wheels/tire/TireColor.png'
     },
     {
         name: 'tireNormal',
         type: 'texture',
-        path: 'textures/wheels/tire/TireNormal.jpg'
+        path: 'textures/wheels/tire/TireNormal.png'
     },
     {
         name: 'tireRoughness',
