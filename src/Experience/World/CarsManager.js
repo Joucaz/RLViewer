@@ -4,6 +4,7 @@ import Car from './Car.js'
 import WheelSet from './WheelSet.js'
 import { wheelPositions } from '../configs/wheelPositions.js'
 import TextureStorage from '../Utils/TextureStorage.js'
+import CustomTextureManager from '../Utils/CustomtextureManager.js'
 
 export default class CarsManager {
     constructor() {
@@ -16,6 +17,7 @@ export default class CarsManager {
         this.currentWheels = null
 
         this.textureStorage = new TextureStorage()
+        this.customTextureManager = new CustomTextureManager(this.resources, this.textureStorage)
         
         // Sélections par défaut
         this.selectedCarType = 'octane'
@@ -27,12 +29,13 @@ export default class CarsManager {
             this.setupDebug()
         }
         
-        // Setup initial
-        this.setupVehicle(this.selectedCarType, this.selectedWheelType)
-        
-        // Setup UI après que les ressources soient chargées
-        this.setupUI()
-        this.setupTextureUploader()
+        // 🆕 Charge toutes les textures stockées au démarrage
+        this.customTextureManager.loadAllStored().then(() => {
+            // Setup initial après le chargement
+            this.setupVehicle(this.selectedCarType, this.selectedWheelType)
+            this.setupUI()
+            this.setupTextureUploader()
+        })
 
     }
     
@@ -59,19 +62,12 @@ export default class CarsManager {
             return
         }
 
-        // 🆕 Récupère la texture custom avant de créer la voiture
-        const savedTexture = this.textureStorage.getTexture(carType)
-
-        if(savedTexture) {
-            console.log(`📦 Found saved texture for ${carType}, will apply directly`)
-            this.showResetButton(true)
-        } else {
-            console.log(`📦 No saved texture for ${carType}, using default`)
-            this.showResetButton(false)
-        }
+        // 🆕 Vérifie si une texture custom existe (déjà chargée dans resources)
+        const hasCustomTexture = this.customTextureManager.getTexture(carType) !== null
+        this.showResetButton(hasCustomTexture)
         
         // Crée la nouvelle voiture
-        this.currentCar = new Car(carType, this.resources.items[carType], savedTexture)
+        this.currentCar = new Car(carType, this.resources.items[carType])
         
         // Crée les roues avec la config appropriée
         const wheelConfig = wheelPositions[carType]
@@ -110,46 +106,36 @@ export default class CarsManager {
         }
         
         // Gestion de l'upload
-        fileInput.addEventListener('change', (event) => {
+        fileInput.addEventListener('change', async (event) => {
             const file = event.target.files[0]
-            
             if(!file) return
             
-            // Vérification du type de fichier
+            // Vérifications
             if(!file.type.match('image/png') && !file.type.match('image/jpeg') && !file.type.match('image/jpg')) {
                 alert('Please select a PNG or JPG image!')
                 return
             }
             
-            // Vérification de la taille (max 5MB)
             if(file.size > 5 * 1024 * 1024) {
                 alert('Image too large! Maximum size is 5MB.')
                 return
             }
             
-            // Lecture du fichier
-            const reader = new FileReader()
-            
-            reader.onload = (e) => {
-                const dataURL = e.target.result
+            try {
+                // 🆕 Charge et stocke la texture
+                const texture = await this.customTextureManager.loadFromFile(this.selectedCarType, file)
                 
-                // Applique la texture
+                // Applique immédiatement à la voiture actuelle
                 if(this.currentCar && this.currentCar.customizer) {
-                    this.currentCar.customizer.loadUserTexture(file)
-                    
-                    // Sauvegarde dans le session storage
-                    this.textureStorage.saveTexture(this.selectedCarType, dataURL)
-                    
-                    // Affiche le bouton reset
+                    this.currentCar.customizer.applyCustomTexture(texture)
                     this.showResetButton(true)
-                    
-                    console.log('✅ Custom texture applied and saved!')
+                    console.log('✅ Custom texture applied!')
                 }
+            } catch (error) {
+                console.error('❌ Failed to load texture:', error)
+                alert('Failed to load texture!')
             }
             
-            reader.readAsDataURL(file)
-            
-            // Reset l'input pour permettre de recharger la même image
             event.target.value = ''
         })
         
@@ -159,12 +145,10 @@ export default class CarsManager {
                 // Réinitialise la texture
                 this.currentCar.customizer.resetBodyTexture()
                 
-                // Supprime du storage
-                this.textureStorage.removeTexture(this.selectedCarType)
+                // 🆕 Supprime de resources + storage
+                this.customTextureManager.removeTexture(this.selectedCarType)
                 
-                // Cache le bouton reset
                 this.showResetButton(false)
-                
                 console.log('✅ Texture reset to default!')
             }
         })

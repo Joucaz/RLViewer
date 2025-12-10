@@ -4,7 +4,7 @@ import { paintFinishes } from '../configs/paintFinishes.js'
 import { carMaterialConfig } from '../configs/carMaterialConfig.js'
 
 export default class CarCustomizer {
-    constructor(carType, carModel, customTexture = null) {
+    constructor(carType, carModel) {
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
@@ -25,9 +25,6 @@ export default class CarCustomizer {
         this.currentPaintColor = '#171617'
         this.currentExtraColor = '#171617'
         this.currentBodyTexture = null
-
-        this.pendingCustomTexture = customTexture
-
         
         // Stockage des mesh
         this.meshes = {
@@ -99,35 +96,28 @@ export default class CarCustomizer {
     applyMaterials() {
         // 1. BODY MATERIAL (avec texture user sur UV1)
         if(this.meshes.body) {
-
-            let bodyTexture = null
-        
-            // 🆕 Si une texture custom est en attente, on l'utilise directement
-            if(this.pendingCustomTexture) {
-                console.log('🎨 Using pending custom texture for body')
-                
-                // Charge la texture custom de manière synchrone
-                const textureLoader = new THREE.TextureLoader()
-                bodyTexture = textureLoader.load(this.pendingCustomTexture)
-                bodyTexture.flipY = false
-                bodyTexture.colorSpace = THREE.SRGBColorSpace
-                
-                this.currentBodyTexture = bodyTexture
-                this.pendingCustomTexture = null // Clear après utilisation
-            } else {
-                // Utilise la texture par défaut
+            // 🔍 Cherche d'abord une texture custom dans resources
+            const customKey = `customBody_${this.carType}`
+            let bodyTexture = this.resources.items[customKey]
+            
+            // Si pas de texture custom, utilise la texture par défaut
+            if(!bodyTexture) {
                 bodyTexture = this.resources.items[`${this.carType}DefaultBody`]
                 
                 if(bodyTexture) {
                     bodyTexture.flipY = false
                     bodyTexture.colorSpace = THREE.SRGBColorSpace
                 }
+            } else {
+                console.log(`✅ Using custom texture for ${this.carType}`)
             }
             
             this.meshes.body.material = new THREE.MeshStandardMaterial({
                 map: bodyTexture,
                 ...paintFinishes[this.currentFinish]
             })
+            
+            this.currentBodyTexture = bodyTexture
             
             // if(this.config.changeBodyUV)
             //     this.setMaterialUVMap(this.meshes.body.material, 1)
@@ -195,6 +185,29 @@ export default class CarCustomizer {
                 metalness: 0.6
             })
             // console.log('✅ Extra color material applied (Dominus)')
+        }
+    }
+
+    // Ajoute une méthode pour appliquer une texture custom déjà chargée
+    applyCustomTexture(texture) {
+        if(this.meshes.body && this.meshes.body.material) {
+            this.meshes.body.material.map = texture
+            this.meshes.body.material.needsUpdate = true
+            this.currentBodyTexture = texture
+            console.log(`✅ Custom texture applied to ${this.carType}`)
+        }
+    }
+
+    // Simplifie resetBodyTexture()
+    resetBodyTexture() {
+        const defaultTexture = this.resources.items[`${this.carType}DefaultBody`]
+        
+        if(defaultTexture && this.meshes.body && this.meshes.body.material) {
+            this.meshes.body.material.map = defaultTexture
+            this.meshes.body.material.needsUpdate = true
+            this.currentBodyTexture = defaultTexture
+            
+            console.log(`✅ Body texture reset to default for ${this.carType}`)
         }
     }
     

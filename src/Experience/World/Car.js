@@ -3,7 +3,7 @@ import Experience from '../Experience.js'
 import CarCustomizer from './CarCustomizer.js'
 
 export default class Car {
-    constructor(carType, carModel, customTexture = null) {
+    constructor(carType, carModel) {
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.debug = this.experience.debug
@@ -14,8 +14,7 @@ export default class Car {
         
         this.setModel(carModel)
         
-        // ✅ Crée le customizer qui va appliquer les matériaux
-        this.customizer = new CarCustomizer(carType, this.model, customTexture)
+        this.customizer = new CarCustomizer(carType, this.model)
         
         if(this.debug.active) {
             this.debugFolder = this.debug.ui.addFolder(`Car - ${carType}`)
