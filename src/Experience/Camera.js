@@ -35,7 +35,7 @@ export default class Camera
     setInstance()
     {
         this.instance = new THREE.PerspectiveCamera(this.baseFOV, this.aspectRatioCamera, 0.1, 100)
-        this.instance.position.set(0, 0, 2)
+        this.instance.position.set(1.3, 1, -1.3)
 
         console.log(this.aspectRatioCamera);
         console.log(this.sizes.width);
@@ -83,7 +83,26 @@ export default class Camera
     setControls()
     {
         this.controls = new OrbitControls(this.instance, this.canvas)
+
         this.controls.enableDamping = true
+        this.controls.dampingFactor = 0.03;
+
+        this.controls.autoRotate = true
+
+        // ✅ PAS de déplacement latéral
+        this.controls.enablePan = false;
+
+        // ✅ Limites de zoom
+        this.controls.minDistance = 2;
+        this.controls.maxDistance = 4;
+
+        // ✅ Limites rotation horizontale (tourner autour)
+        // this.controls.minAzimuthAngle = -Math.PI;
+        // this.controls.maxAzimuthAngle =  Math.PI;
+
+        // ✅ Limites rotation verticale (pas passer sous le sol)
+        this.controls.minPolarAngle = Math.PI / 6;
+        this.controls.maxPolarAngle = Math.PI / 2.1; 
     }
 
     resize()

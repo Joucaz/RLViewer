@@ -1,0 +1,8 @@
+STILL TO DO:
+
+- Nice UI glassmorphism for : car, wheels, paint, import/reset
+- Nice Lights
+- Background flou with color of body
+- Animation button for car arriving with wheels moving
+- screenshot button
+- boost shader
