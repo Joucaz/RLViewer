@@ -102,7 +102,7 @@ export default class Camera
 
         // ✅ Limites rotation verticale (pas passer sous le sol)
         this.controls.minPolarAngle = Math.PI / 6;
-        this.controls.maxPolarAngle = Math.PI / 2.1; 
+        this.controls.maxPolarAngle = Math.PI / 2.5; 
     }
 
     resize()

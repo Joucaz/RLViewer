@@ -6,3 +6,4 @@ STILL TO DO:
 - Animation button for car arriving with wheels moving
 - screenshot button
 - boost shader
+- flou quand texture est loin

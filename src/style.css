@@ -286,7 +286,7 @@ font-size: 0.8em;
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    background: 
+    /* background: 
         radial-gradient(circle at 15% 25%, rgba(255, 215, 0, 0.25) 0%, transparent 35%),
         radial-gradient(circle at 85% 75%, rgba(255, 200, 0, 0.2) 0%, transparent 40%),
         radial-gradient(circle at 50% 20%, rgba(255, 220, 100, 0.15) 0%, transparent 45%),
@@ -295,7 +295,16 @@ font-size: 0.8em;
         radial-gradient(circle at 10% 90%, rgba(255, 215, 0, 0.15) 0%, transparent 30%),
         radial-gradient(circle at 95% 10%, rgba(255, 220, 80, 0.2) 0%, transparent 40%),
         linear-gradient(135deg, #fafafa 0%, #ececec 50%, #ffffff 100%);
-    filter: blur(80px);
+    filter: blur(80px); */
+    
+     background:
+      radial-gradient(circle at 0% 100%, rgba(227, 180, 5, 0.08) 0%, transparent 30%),
+      radial-gradient(circle at 100% 100%, rgba(227, 180, 5, 0.08) 0%, transparent 30%),
+      radial-gradient(circle at 50% -50%, rgba(227, 180, 5, 0.08) 0%, transparent 90%),
+      linear-gradient(135deg, #0e0e0f 0%, #0e0e0f 100%);
+    
+    /* ✅ Animation fluide lors du changement */
+    /* transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
 .custom-texture-uploader {
