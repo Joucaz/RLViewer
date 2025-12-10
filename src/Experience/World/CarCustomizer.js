@@ -4,7 +4,7 @@ import { paintFinishes } from '../configs/paintFinishes.js'
 import { carMaterialConfig } from '../configs/carMaterialConfig.js'
 
 export default class CarCustomizer {
-    constructor(carType, carModel) {
+    constructor(carType, carModel, customTexture = null) {
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
@@ -26,6 +26,9 @@ export default class CarCustomizer {
         this.currentPaintColor = '#171617'
         this.currentExtraColor = '#171617'
         this.currentBodyTexture = null
+
+        this.pendingCustomTexture = customTexture
+
         
         // Stockage des mesh
         this.meshes = {
@@ -97,20 +100,38 @@ export default class CarCustomizer {
     applyMaterials() {
         // 1. BODY MATERIAL (avec texture user sur UV1)
         if(this.meshes.body) {
-            const defaultTexture = this.resources.items[`${this.carType}DefaultBody`]
-            
-            if(defaultTexture) {
-                defaultTexture.flipY = false
-                defaultTexture.colorSpace = THREE.SRGBColorSpace
+
+            let bodyTexture = null
+        
+            // 🆕 Si une texture custom est en attente, on l'utilise directement
+            if(this.pendingCustomTexture) {
+                console.log('🎨 Using pending custom texture for body')
+                
+                // Charge la texture custom de manière synchrone
+                const textureLoader = new THREE.TextureLoader()
+                bodyTexture = textureLoader.load(this.pendingCustomTexture)
+                bodyTexture.flipY = false
+                bodyTexture.colorSpace = THREE.SRGBColorSpace
+                
+                this.currentBodyTexture = bodyTexture
+                this.pendingCustomTexture = null // Clear après utilisation
+            } else {
+                // Utilise la texture par défaut
+                bodyTexture = this.resources.items[`${this.carType}DefaultBody`]
+                
+                if(bodyTexture) {
+                    bodyTexture.flipY = false
+                    bodyTexture.colorSpace = THREE.SRGBColorSpace
+                }
             }
             
             this.meshes.body.material = new THREE.MeshStandardMaterial({
-                map: defaultTexture,
+                map: bodyTexture,
                 ...paintFinishes[this.currentFinish]
             })
             
-            if(this.config.changeBodyUV)
-                this.setMaterialUVMap(this.meshes.body.material, 1)
+            // if(this.config.changeBodyUV)
+            //     this.setMaterialUVMap(this.meshes.body.material, 1)
             
             console.log('✅ Body material applied with UV1')
         }
@@ -179,23 +200,23 @@ export default class CarCustomizer {
     }
     
     // ✅ Force un matériau à utiliser un UV channel spécifique
-    setMaterialUVMap(material, uvIndex) {
-        // 0 = uv, 1 = uv1, 2 = uv2, 3 = uv3
-        if(material.map) material.map.channel = uvIndex
-        if(material.normalMap) material.normalMap.channel = uvIndex
-        if(material.roughnessMap) material.roughnessMap.channel = uvIndex
-        if(material.metalnessMap) material.metalnessMap.channel = uvIndex
-        if(material.emissiveMap) material.emissiveMap.channel = uvIndex
-        if(material.aoMap) material.aoMap.channel = uvIndex
-        if(material.bumpMap) material.bumpMap.channel = uvIndex
-        if(material.displacementMap) material.displacementMap.channel = uvIndex
-        if(material.alphaMap) material.alphaMap.channel = uvIndex
-        if(material.lightMap) material.lightMap.channel = uvIndex
+    // setMaterialUVMap(material, uvIndex) {
+    //     // 0 = uv, 1 = uv1, 2 = uv2, 3 = uv3
+    //     if(material.map) material.map.channel = uvIndex
+    //     if(material.normalMap) material.normalMap.channel = uvIndex
+    //     if(material.roughnessMap) material.roughnessMap.channel = uvIndex
+    //     if(material.metalnessMap) material.metalnessMap.channel = uvIndex
+    //     if(material.emissiveMap) material.emissiveMap.channel = uvIndex
+    //     if(material.aoMap) material.aoMap.channel = uvIndex
+    //     if(material.bumpMap) material.bumpMap.channel = uvIndex
+    //     if(material.displacementMap) material.displacementMap.channel = uvIndex
+    //     if(material.alphaMap) material.alphaMap.channel = uvIndex
+    //     if(material.lightMap) material.lightMap.channel = uvIndex
         
-        material.needsUpdate = true
+    //     material.needsUpdate = true
         
-        console.log(`✅ Material textures set to UV channel ${uvIndex}`)
-    }
+    //     console.log(`✅ Material textures set to UV channel ${uvIndex}`)
+    // }
     
     // ✅ Changer le finish (sur le Body seulement)
     setFinish(finishType) {
@@ -240,36 +261,148 @@ export default class CarCustomizer {
             console.log(`✅ Extra color changed to ${color} (Dominus only)`)
         }
     }
-    
-    // ✅ Charger une texture utilisateur (sur Body avec UV1)
-    loadUserTexture(file) {
+
+    // ✅ Réinitialiser la texture du body à la texture par défaut
+    resetBodyTexture() {
+        const defaultTexture = this.resources.items[`${this.carType}DefaultBody`]
+        
+        if(defaultTexture && this.meshes.body && this.meshes.body.material) {
+            if(this.currentBodyTexture && this.currentBodyTexture !== defaultTexture) {
+                this.currentBodyTexture.dispose()
+            }
+            
+            this.meshes.body.material.map = defaultTexture
+            this.meshes.body.material.needsUpdate = true
+            this.currentBodyTexture = defaultTexture
+            
+            console.log(`✅ Body texture reset to default for ${this.carType}`)
+        }
+    }
+
+    // Remplace la méthode loadUserTexture par cette version avec plus de logs
+    loadUserTexture(fileOrDataURL) {
+        console.log('🔍 loadUserTexture called with:', typeof fileOrDataURL)
+        
+        // Si c'est une string (dataURL), on charge directement
+        if(typeof fileOrDataURL === 'string') {
+            console.log('📦 Loading from dataURL, length:', fileOrDataURL.length)
+            const textureLoader = new THREE.TextureLoader()
+            
+            textureLoader.load(
+                fileOrDataURL, 
+                (texture) => {
+                    console.log('✅ Texture loaded successfully!')
+                    console.log('   - Size:', texture.image.width, 'x', texture.image.height)
+                    console.log('   - Format:', texture.format)
+                    
+                    texture.flipY = false
+                    texture.colorSpace = THREE.SRGBColorSpace
+                    texture.needsUpdate = true
+                    
+                    console.log('   - flipY:', texture.flipY)
+                    console.log('   - colorSpace:', texture.colorSpace)
+                    
+                    if(this.currentBodyTexture) {
+                        const defaultTexture = this.resources.items[`${this.carType}DefaultBody`]
+                        if(this.currentBodyTexture !== defaultTexture) {
+                            console.log('🗑️ Disposing old custom texture')
+                            this.currentBodyTexture.dispose()
+                        }
+                    }
+                    
+                    if(this.meshes.body && this.meshes.body.material) {
+                        console.log('🎨 Applying texture to body material')
+                        console.log('   - Material type:', this.meshes.body.material.type)
+                        console.log('   - Material before:', this.meshes.body.material.map)
+                        
+                        this.meshes.body.material.map = texture
+                        this.meshes.body.material.needsUpdate = true
+                        
+                        console.log('   - Material after:', this.meshes.body.material.map)
+                        console.log('   - Material color:', this.meshes.body.material.color)
+                        console.log('   - Material metalness:', this.meshes.body.material.metalness)
+                        console.log('   - Material roughness:', this.meshes.body.material.roughness)
+                    } else {
+                        console.error('❌ Body mesh or material not found!')
+                        console.log('   - meshes.body:', this.meshes.body)
+                        if(this.meshes.body) {
+                            console.log('   - body.material:', this.meshes.body.material)
+                        }
+                    }
+                    
+                    this.currentBodyTexture = texture
+                    
+                    console.log('✅ Texture application complete!')
+                },
+                (progress) => {
+                    console.log('⏳ Loading progress:', progress)
+                },
+                (error) => {
+                    console.error('❌ Error loading texture:', error)
+                }
+            )
+            
+            return
+        }
+        
+        // Si c'est un File, on utilise FileReader
+        console.log('📁 Loading from File:', fileOrDataURL.name)
+        console.log('   - Type:', fileOrDataURL.type)
+        console.log('   - Size:', fileOrDataURL.size, 'bytes')
+        
         const reader = new FileReader()
         
         reader.onload = (e) => {
+            console.log('📖 FileReader loaded, dataURL length:', e.target.result.length)
             const textureLoader = new THREE.TextureLoader()
             
-            textureLoader.load(e.target.result, (texture) => {
-                texture.flipY = false
-                texture.colorSpace = THREE.SRGBColorSpace
-                
-                if(this.currentBodyTexture) {
-                    this.currentBodyTexture.dispose()
+            textureLoader.load(
+                e.target.result, 
+                (texture) => {
+                    console.log('✅ Texture loaded from file successfully!')
+                    console.log('   - Size:', texture.image.width, 'x', texture.image.height)
+                    console.log('   - Format:', texture.format)
+                    
+                    texture.flipY = false
+                    texture.colorSpace = THREE.SRGBColorSpace
+                    texture.needsUpdate = true
+                    
+                    if(this.currentBodyTexture) {
+                        const defaultTexture = this.resources.items[`${this.carType}DefaultBody`]
+                        if(this.currentBodyTexture !== defaultTexture) {
+                            console.log('🗑️ Disposing old custom texture')
+                            this.currentBodyTexture.dispose()
+                        }
+                    }
+                    
+                    if(this.meshes.body && this.meshes.body.material) {
+                        console.log('🎨 Applying texture to body material')
+                        this.meshes.body.material.map = texture
+                        this.meshes.body.material.needsUpdate = true
+                        
+                        console.log('   - Material updated successfully')
+                    } else {
+                        console.error('❌ Body mesh or material not found!')
+                    }
+                    
+                    this.currentBodyTexture = texture
+                    
+                    console.log('✅ User texture loaded from file!')
+                },
+                undefined,
+                (error) => {
+                    console.error('❌ Error loading texture from file:', error)
                 }
-                
-                if(this.meshes.body && this.meshes.body.material) {
-                    this.meshes.body.material.map = texture
-                    this.meshes.body.material.needsUpdate = true
-                }
-                
-                this.currentBodyTexture = texture
-                
-                console.log('✅ User texture loaded on Body (UV1)!')
-            })
+            )
         }
         
-        reader.readAsDataURL(file)
+        reader.onerror = (error) => {
+            console.error('❌ FileReader error:', error)
+        }
+        
+        reader.readAsDataURL(fileOrDataURL)
     }
-    
+        
     setupDebug() {
         if(!this.debug.active) return
         
