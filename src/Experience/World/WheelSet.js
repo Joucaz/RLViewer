@@ -56,12 +56,12 @@ export default class WheelSet {
                     // Premier mesh = Jante
                     if(meshIndex === 0) {
                         child.material = this.jantesMaterial
-                        console.log(`⭕ Jante material appliqué sur ${pos}`)
+                        // console.log(`⭕ Jante material appliqué sur ${pos}`)
                     }
                     // Deuxième mesh = Tire
                     else if(meshIndex === 1) {
                         child.material = this.tireMaterial
-                        console.log(`🛞 Tire material appliqué sur ${pos}`)
+                        // console.log(`🛞 Tire material appliqué sur ${pos}`)
                     }
                     
                     meshIndex++
@@ -114,7 +114,7 @@ export default class WheelSet {
         })
         // this.tireMaterial.normalMapType = THREE.ObjectSpaceNormalMap
         
-        console.log('✅ Tire material created')
+        // console.log('✅ Tire material created')
     }
 
     createAlphaMaterial() {
@@ -137,7 +137,7 @@ export default class WheelSet {
             roughness: 0.200,
             metalness: 0.609,        
         })
-        console.log("alpha material créé");
+        // console.log("alpha material créé");
     }
 
     createDieciMaterial() {
@@ -146,7 +146,7 @@ export default class WheelSet {
             roughness: 0.250,
             metalness: 0.750,        
         })
-        console.log("Dieci material créé");
+        // console.log("Dieci material créé");
     }
 
     createCristianoMaterial() {
@@ -155,7 +155,7 @@ export default class WheelSet {
             roughness: 0.50,               
             metalness: 0.305,        
         })
-        console.log("Cristiano material créé");
+        // console.log("Cristiano material créé");
     }
 
     setMaterial(wheelType) {

@@ -18,7 +18,6 @@ export default class CarCustomizer {
             console.error(`No material config found for car type: ${carType}`)
             return
         }
-        console.log(this.config);
         
         
         // État actuel
@@ -59,7 +58,7 @@ export default class CarCustomizer {
             }
         })
         
-        console.log(`Found ${meshList.length} meshes in ${this.carType}`)
+        // console.log(`Found ${meshList.length} meshes in ${this.carType}`)
         
         // ✅ Assigne selon l'ordre : 0=body, 1=chassis, 2=paint, 3=windows
         if(meshList.length == 4) {
@@ -68,11 +67,11 @@ export default class CarCustomizer {
             this.meshes.paint = meshList[2]     // Body_Grain_SKmd001_2
             this.meshes.windows = meshList[3]   // Body_Grain_SKmd001_3
             
-            console.log('✅ Mesh assignment:')
-            console.log(`  [0] Body → ${this.meshes.body.name}`)
-            console.log(`  [1] Chassis → ${this.meshes.chassis.name}`)
-            console.log(`  [2] Paint → ${this.meshes.paint.name}`)
-            console.log(`  [3] Windows → ${this.meshes.windows.name}`)
+            // console.log('✅ Mesh assignment:')
+            // console.log(`  [0] Body → ${this.meshes.body.name}`)
+            // console.log(`  [1] Chassis → ${this.meshes.chassis.name}`)
+            // console.log(`  [2] Paint → ${this.meshes.paint.name}`)
+            // console.log(`  [3] Windows → ${this.meshes.windows.name}`)
         } else {
             console.error(`⚠️ Expected 4 meshes but found ${meshList.length}`)
         }
@@ -85,12 +84,12 @@ export default class CarCustomizer {
             this.meshes.windows = meshList[3]   // Body_Grain_SKmd001_3
             this.meshes.extraColor = meshList[4]
             
-            console.log('✅ Mesh assignment:')
-            console.log(`  [0] Body → ${this.meshes.body.name}`)
-            console.log(`  [1] Chassis → ${this.meshes.chassis.name}`)
-            console.log(`  [2] Paint → ${this.meshes.paint.name}`)
-            console.log(`  [3] Windows → ${this.meshes.windows.name}`)
-            console.log(`  [4] Extra Color → ${this.meshes.extraColor.name}`)
+            // console.log('✅ Mesh assignment:')
+            // console.log(`  [0] Body → ${this.meshes.body.name}`)
+            // console.log(`  [1] Chassis → ${this.meshes.chassis.name}`)
+            // console.log(`  [2] Paint → ${this.meshes.paint.name}`)
+            // console.log(`  [3] Windows → ${this.meshes.windows.name}`)
+            // console.log(`  [4] Extra Color → ${this.meshes.extraColor.name}`)
         }
 
         
@@ -133,7 +132,7 @@ export default class CarCustomizer {
             // if(this.config.changeBodyUV)
             //     this.setMaterialUVMap(this.meshes.body.material, 1)
             
-            console.log('✅ Body material applied with UV1')
+            // console.log('✅ Body material applied with UV1')
         }
         
         // 2. CHASSIS MATERIAL (avec textures baked sur UV0)
@@ -165,7 +164,7 @@ export default class CarCustomizer {
                 emissiveIntensity: 2
             })
             
-            console.log('✅ Chassis material applied with textures (UV0)')
+            // console.log('✅ Chassis material applied with textures (UV0)')
         }
         
         // 3. PAINT MATERIAL
@@ -175,7 +174,7 @@ export default class CarCustomizer {
                 roughness: 0.318,
                 metalness: 0.316
             })
-            console.log('✅ Paint material applied (solid color)')
+            // console.log('✅ Paint material applied (solid color)')
         }
         
         // // 4. WINDOWS MATERIAL
@@ -185,7 +184,7 @@ export default class CarCustomizer {
                 roughness: 0.1,                   // plus petit = plus de reflets
                 metalness: 0.0,        
             })
-            console.log('✅ Windows material applied')
+            // console.log('✅ Windows material applied')
         }
         
         // 5. EXTRA COLOR (Dominus seulement)
@@ -195,7 +194,7 @@ export default class CarCustomizer {
                 roughness: 0.5,
                 metalness: 0.6
             })
-            console.log('✅ Extra color material applied (Dominus)')
+            // console.log('✅ Extra color material applied (Dominus)')
         }
     }
     
@@ -258,7 +257,7 @@ export default class CarCustomizer {
         if(this.meshes.extraColor && this.meshes.extraColor.material) {
             this.meshes.extraColor.material.color.set(color)
             this.meshes.extraColor.material.needsUpdate = true
-            console.log(`✅ Extra color changed to ${color} (Dominus only)`)
+            // console.log(`✅ Extra color changed to ${color} (Dominus only)`)
         }
     }
 

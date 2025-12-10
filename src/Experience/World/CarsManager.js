@@ -18,7 +18,7 @@ export default class CarsManager {
         this.textureStorage = new TextureStorage()
         
         // Sélections par défaut
-        this.selectedCarType = 'fennec'
+        this.selectedCarType = 'octane'
         this.selectedWheelType = 'dieci'
         
         // Debug
@@ -75,7 +75,6 @@ export default class CarsManager {
         
         // Crée les roues avec la config appropriée
         const wheelConfig = wheelPositions[carType]
-        console.log(wheelConfig);
         
         this.currentWheels = new WheelSet(
             wheelType, 
