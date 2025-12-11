@@ -94,42 +94,177 @@
         </div>
     </div>
 
-    <!-- Vehicle Selector UI -->
-    <div class="vehicle-selector">
-        <div class="selector-section">
-            <h3>Choose Your Car</h3>
-            <div class="car-selector">
-                <button id="btn-fennec" class="selector-btn active">Fennec</button>
-                <button id="btn-octane" class="selector-btn">Octane</button>
-                <button id="btn-dominus" class="selector-btn">Dominus</button>
+    <!-- NOUVELLE UI -->
+    <div class="customization-ui">
+        <!-- Barre verticale de catégories -->
+        <div class="category-bar">
+            <div class="category-item" data-category="car">
+                <img src="images/thumbnails/car/Logo Gameward.png" alt="Fennec" class="category-thumbnail">
+                <span class="category-name">Fennec</span>
             </div>
-        </div>
-        
-        <div class="selector-section">
-            <h3>Choose Your Wheels</h3>
-            <div class="wheel-selector">
-                <button id="btn-alpha" class="selector-btn active">Alpha Wheel</button>
-                <button id="btn-cristiano" class="selector-btn">Cristiano Wheel</button>
-                <button id="btn-dieci" class="selector-btn">Dieci Wheel</button>
+            
+            <div class="category-item" data-category="texture">
+                <span>Texture</span>
             </div>
+
+            <div class="category-item" data-category="finish">
+                <span>Finish</span>
+            </div>
+            
+            <div class="category-item" data-category="paint">
+                <span>Paint</span>
+            </div>
+            
+            <div class="category-item" data-category="wheels">
+                <span>Wheels</span>
+            </div>
+
+            <div class="category-item" data-category="wheels-paint">
+                <span>Wheels Paint</span>
+            </div>
+
+            <div class="category-item">
+                <span>Animate Car</span>
+            </div>
+
+            <div class="category-item">
+                <span>Screenshot</span>
+            </div>
+
+            <div class="category-item" data-category="settings">
+                <span>Settings</span>
+            </div>
+
         </div>
 
-        
+        <!-- Panneau de sélection -->
+        <div class="selection-panel" id="selection-panel">
+            <div class="panel-content active" data-panel="car">
+                <div class="options-list">
+                    <div class="option-item active" id="btn-fennec" data-car="fennec">
+                        <img src="textures/cars/fennec/thumbnail.jpg" alt="Fennec" class="option-image">
+                        <span class="option-name">Fennec</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-octane" data-car="octane">
+                        <img src="textures/cars/octane/thumbnail.jpg" alt="Octane" class="option-image">
+                        <span class="option-name">Octane</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="option-item" id="btn-dominus" data-car="dominus">
+                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <span class="option-name">Dominus</span>
+                        <div class="check-icon">✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu PAINT -->
+            <div class="panel-content" data-panel="paint">
+                <h3>Paint Colors</h3>
+                <div class="options-grid">
+                    <div class="color-option" style="background: #171617;" data-color="#171617"></div>
+                    <div class="color-option" style="background: #e3b405;" data-color="#e3b405"></div>
+                    <div class="color-option" style="background: #ff6b6b;" data-color="#ff6b6b"></div>
+                    <div class="color-option" style="background: #4ecdc4;" data-color="#4ecdc4"></div>
+                    <div class="color-option" style="background: #95e1d3;" data-color="#95e1d3"></div>
+                    <div class="color-option" style="background: #f38181;" data-color="#f38181"></div>
+                    <div class="color-option" style="background: #aa96da;" data-color="#aa96da"></div>
+                    <div class="color-option" style="background: #fcbad3;" data-color="#fcbad3"></div>
+                    <div class="color-option" style="background: #ffffff;" data-color="#ffffff"></div>
+                </div>
+            </div>
+
+            <!-- Contenu TEXTURE -->
+            <div class="panel-content" data-panel="texture">
+                <h3>Custom Texture</h3>
+                <div class="texture-options">
+                    <label for="texture-upload" class="upload-card" id="upload-card">
+                        <div class="upload-preview" id="texture-preview" style="display: none;">
+                            <img src="" alt="Texture preview" id="texture-preview-img">
+                        </div>
+                        <div class="upload-content" id="upload-content">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <span>Upload Texture</span>
+                            <small>PNG or JPG • Max 5MB</small>
+                        </div>
+                    </label>
+                    <input type="file" id="texture-upload" accept="image/png,image/jpg,image/jpeg" style="display: none;">
+                    
+                    <button id="reset-texture" class="reset-card" style="display: none;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                        </svg>
+                        <span>Reset to Default</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contenu WHEELS -->
+            <div class="panel-content" data-panel="wheels">
+                <h3>Choose Your Wheels</h3>
+                <div class="options-grid">
+                    <div class="option-card active" id="btn-alpha">
+                        <div class="option-icon">⭕</div>
+                        <span>Alpha</span>
+                    </div>
+                    <div class="option-card" id="btn-cristiano">
+                        <div class="option-icon">🔵</div>
+                        <span>Cristiano</span>
+                    </div>
+                    <div class="option-card" id="btn-dieci">
+                        <div class="option-icon">⚪</div>
+                        <span>Dieci</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Après la section .vehicle-selector, ajoute : -->
-        <div class="custom-texture-uploader">
-            <label for="texture-upload" class="upload-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                Import Custom Texture
-            </label>
-            <input type="file" id="texture-upload" accept="image/png,image/jpg,image/jpeg" style="display: none;">
-            <button id="reset-texture" class="reset-btn" style="display: none;">Reset to Default</button>
-        </div>
     
     <script type="module" src="./script.js"></script>
 
