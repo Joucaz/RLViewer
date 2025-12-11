@@ -7,3 +7,4 @@ STILL TO DO:
 - screenshot button
 - boost shader
 - flou quand texture est loin
+- Universal decal and normal one (how to automatically detect?)

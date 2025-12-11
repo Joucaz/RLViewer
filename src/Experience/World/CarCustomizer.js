@@ -120,7 +120,7 @@ export default class CarCustomizer {
             
             this.currentBodyTexture = bodyTexture
 
-            setTimeout(() => this.updateBackground(), 2000)
+            setTimeout(() => this.updateBackground(), 100)
             
             // if(this.config.changeBodyUV)
             //     this.setMaterialUVMap(this.meshes.body.material, 1)
@@ -245,7 +245,7 @@ export default class CarCustomizer {
             this.meshes.body.material.needsUpdate = true
             this.currentBodyTexture = texture
             console.log(`✅ Custom texture applied to ${this.carType}`)
-            setTimeout(() => this.updateBackground(), 2000)
+            setTimeout(() => this.updateBackground(), 100)
         }
     }
 
