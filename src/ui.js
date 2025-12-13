@@ -1,22 +1,29 @@
 // src/ui.js
 
+import Experience from "./Experience/Experience";
+
 export default class UIManager {
     constructor() {
+
+        this.experience = new Experience()
+
         this.carConfig = {
-            fennec: { name: 'Fennec', thumbnail: 'textures/cars/fennec/thumbnail.jpg' },
-            octane: { name: 'Octane', thumbnail: 'textures/cars/octane/thumbnail.jpg' },
-            dominus: { name: 'Dominus', thumbnail: 'textures/cars/dominus/thumbnail.jpg' }
+            fennec: { name: 'Fennec', thumbnail: 'images/thumbnails/car/FennecThumbnail.png' },
+            octane: { name: 'Octane', thumbnail: 'images/thumbnails/car/OctaneThumbnail.png' },
+            dominus: { name: 'Dominus', thumbnail: 'images/thumbnails/car/DominusThumbnail.png' }
         };
 
         this.wheelConfig = {
-            alpha: { name: 'Alpha', thumbnail: 'textures/wheels/alpha/thumbnail.jpg' },
-            cristiano: { name: 'Cristiano', thumbnail: 'textures/wheels/cristiano/thumbnail.jpg' },
-            dieci: { name: 'Dieci', thumbnail: 'textures/wheels/dieci/thumbnail.jpg' }
+            alpha: { name: 'Alpha', thumbnail: 'images/thumbnails/wheels/AlphaThumbnail.png' },
+            cristiano: { name: 'Cristiano', thumbnail: 'images/thumbnails/wheels/CristianoThumbnail.png' },
+            dieci: { name: 'Dieci', thumbnail: 'images/thumbnails/wheels/DieciThumbnail.png' }
         };
 
-        this.currentCar = 'fennec';
-        this.currentWheel = 'alpha';
+        this.currentCar = 'octane';
+        this.currentWheel = 'dieci';
         this.currentPaintColor = '#171617';
+        this.currentWheelColor = '#1c1c1c';
+        this.currentFinish = 'anodized';
 
         this.init();
     }
@@ -27,7 +34,12 @@ export default class UIManager {
             this.setupCarSelection();
             this.setupWheelSelection();
             this.setupPaintSelection();
+            this.setupWheelPaintSelection();
+            this.setupFinishSelection();
             this.setupTextureUpload();
+            this.setupAnimateButton();
+            this.setupScreenshotButton();
+            this.setupSettings();
         });
     }
 
@@ -39,6 +51,9 @@ export default class UIManager {
         categoryItems.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 const category = item.dataset.category;
+                
+                // Ignore si c'est un bouton action (animate, screenshot)
+                if (!category) return;
                 
                 categoryItems.forEach(cat => cat.classList.remove('active'));
                 item.classList.add('active');
@@ -78,12 +93,49 @@ export default class UIManager {
     }
 
     setupPaintSelection() {
-        document.querySelectorAll('.color-option').forEach(colorBtn => {
+        // Preset colors
+        document.querySelectorAll('[data-color]').forEach(colorBtn => {
             colorBtn.addEventListener('click', () => {
                 const color = colorBtn.dataset.color;
                 this.updatePaintColor(color);
             });
         });
+
+        // Color picker
+        const colorPicker = document.getElementById('paint-color-picker');
+        if (colorPicker) {
+            colorPicker.addEventListener('input', (e) => {
+                this.updatePaintColor(e.target.value);
+            });
+        }
+    }
+
+    setupWheelPaintSelection() {
+        // Preset colors pour wheels
+        document.querySelectorAll('[data-wheel-color]').forEach(colorBtn => {
+            colorBtn.addEventListener('click', () => {
+                const color = colorBtn.dataset.wheelColor;
+                this.updateWheelColor(color);
+            });
+        });
+
+        // Color picker pour wheels
+        const wheelColorPicker = document.getElementById('wheel-color-picker');
+        if (wheelColorPicker) {
+            wheelColorPicker.addEventListener('input', (e) => {
+                this.updateWheelColor(e.target.value);
+            });
+        }
+    }
+
+    setupFinishSelection() {
+        const finishSelect = document.getElementById('finish-select');
+        if (finishSelect) {
+            finishSelect.addEventListener('change', (e) => {
+                const finish = e.target.value;
+                this.updateFinish(finish);
+            });
+        }
     }
 
     setupTextureUpload() {
@@ -91,6 +143,8 @@ export default class UIManager {
         const texturePreview = document.getElementById('texture-preview');
         const texturePreviewImg = document.getElementById('texture-preview-img');
         const resetBtn = document.getElementById('reset-texture');
+
+        if (!fileInput || !texturePreview || !resetBtn) return;
 
         fileInput.addEventListener('change', async (event) => {
             const file = event.target.files[0];
@@ -114,13 +168,13 @@ export default class UIManager {
                 texturePreview.style.display = 'block';
                 resetBtn.style.display = 'block';
                 
-                if (window.experience?.world?.carsManager) {
-                    const customTextureManager = window.experience.world.carsManager.customTextureManager;
-                    const currentCar = window.experience.world.carsManager.selectedCarType;
+                if (this.experience?.world?.carsManager) {
+                    const customTextureManager = this.experience.world.carsManager.customTextureManager;
+                    const currentCar = this.experience.world.carsManager.selectedCarType;
                     
                     customTextureManager.loadFromFile(currentCar, file).then(texture => {
-                        if (window.experience.world.carsManager.currentCar?.customizer) {
-                            window.experience.world.carsManager.currentCar.customizer.applyCustomTexture(texture);
+                        if (this.experience.world.carsManager.currentCar?.customizer) {
+                            this.experience.world.carsManager.currentCar.customizer.applyCustomTexture(texture);
                         }
                     });
                 }
@@ -135,14 +189,129 @@ export default class UIManager {
             texturePreviewImg.src = '';
             resetBtn.style.display = 'none';
             
-            if (window.experience?.world?.carsManager?.currentCar?.customizer) {
-                window.experience.world.carsManager.currentCar.customizer.resetBodyTexture();
+            if (this.experience?.world?.carsManager?.currentCar?.customizer) {
+                this.experience.world.carsManager.currentCar.customizer.resetBodyTexture();
                 
-                const customTextureManager = window.experience.world.carsManager.customTextureManager;
-                const currentCar = window.experience.world.carsManager.selectedCarType;
+                const customTextureManager = this.experience.world.carsManager.customTextureManager;
+                const currentCar = this.experience.world.carsManager.selectedCarType;
                 customTextureManager.removeTexture(currentCar);
             }
         });
+    }
+
+    setupAnimateButton() {
+        const animateBtn = document.getElementById('animate-car');
+        if (animateBtn) {
+            animateBtn.addEventListener('click', () => {
+                console.log('🎬 Animate car clicked!');
+                // TODO: Implémenter l'animation
+                // if (this.experience?.camera?.controls) {
+                //     this.experience.camera.controls.autoRotate = !this.experience.camera.controls.autoRotate;
+                // }
+                alert('Animation feature coming soon! 🎬');
+            });
+        }
+    }
+
+    setupScreenshotButton() {
+        const screenshotBtn = document.getElementById('screenshot-btn');
+        if (screenshotBtn) {
+            screenshotBtn.addEventListener('click', () => {
+                console.log('📸 Screenshot clicked!');
+                this.takeScreenshot();
+            });
+        }
+    }
+
+    takeScreenshot() {
+        if (!this.experience?.renderer?.instance) {
+            alert('Renderer not ready!');
+            return;
+        }
+
+        try {
+            const canvas = this.experience.renderer.instance.domElement;
+            const dataURL = canvas.toDataURL('image/png');
+            
+            // Crée un lien de téléchargement
+            const link = document.createElement('a');
+            link.download = `rl-viewer-${Date.now()}.png`;
+            link.href = dataURL;
+            link.click();
+            
+            console.log('✅ Screenshot saved!');
+        } catch (error) {
+            console.error('❌ Screenshot failed:', error);
+            alert('Failed to take screenshot!');
+        }
+    }
+
+    setupSettings() {
+        // Music toggle
+        const musicToggle = document.getElementById('music-toggle');
+        if (musicToggle) {
+            musicToggle.addEventListener('change', (e) => {
+                console.log('🎵 Music:', e.target.checked ? 'ON' : 'OFF');
+                // TODO: Implémenter le toggle de musique
+            });
+        }
+
+        // Auto rotation toggle
+        const rotationToggle = document.getElementById('rotation-toggle');
+        if (rotationToggle) {
+            rotationToggle.addEventListener('change', (e) => {
+                if (this.experience?.camera?.controls) {
+                    this.experience.camera.controls.autoRotate = e.target.checked;
+                    console.log('🔄 Auto rotation:', e.target.checked ? 'ON' : 'OFF');
+                }
+            });
+        }
+
+        // Rotation speed
+        const rotationSpeed = document.getElementById('rotation-speed');
+        const rotationSpeedValue = document.getElementById('rotation-speed-value');
+        if (rotationSpeed && rotationSpeedValue) {
+            rotationSpeed.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                rotationSpeedValue.textContent = value.toFixed(1);
+                
+                if (this.experience?.camera?.controls) {
+                    this.experience.camera.controls.autoRotateSpeed = value;
+                    console.log('⚡ Rotation speed:', value);
+                }
+            });
+        }
+
+        // Light intensity
+        const lightIntensity = document.getElementById('light-intensity');
+        const lightIntensityValue = document.getElementById('light-intensity-value');
+        if (lightIntensity && lightIntensityValue) {
+            lightIntensity.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                lightIntensityValue.textContent = value;
+                
+                if (this.experience?.world?.environment?.directionalLight) {
+                    this.experience.world.environment.directionalLight.intensity = value;
+                    console.log('💡 Light intensity:', value);
+                }
+            });
+        }
+
+        // Environment intensity
+        const envIntensity = document.getElementById('env-intensity');
+        const envIntensityValue = document.getElementById('env-intensity-value');
+        if (envIntensity && envIntensityValue) {
+            envIntensity.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                envIntensityValue.textContent = value.toFixed(1);
+                
+                if (this.experience?.world?.environment?.environmentMap) {
+                    this.experience.world.environment.environmentMap.intensity = value;
+                    this.experience.world.environment.environmentMap.updateMaterials();
+                    console.log('🌍 Environment intensity:', value);
+                }
+            });
+        }
     }
 
     updateCarSelection(newCar) {
@@ -158,8 +327,8 @@ export default class UIManager {
         });
         document.querySelector(`[data-car="${newCar}"]`).classList.add('active');
 
-        if (window.experience?.world?.carsManager) {
-            window.experience.world.carsManager.switchCar(newCar);
+        if (this.experience?.world?.carsManager) {
+            this.experience.world.carsManager.switchCar(newCar);
         }
     }
 
@@ -176,24 +345,85 @@ export default class UIManager {
         });
         document.querySelector(`[data-wheel="${newWheel}"]`).classList.add('active');
 
-        if (window.experience?.world?.carsManager) {
-            window.experience.world.carsManager.switchWheels(newWheel);
+        if (this.experience?.world?.carsManager) {
+            this.experience.world.carsManager.switchWheels(newWheel);
         }
     }
 
     updatePaintColor(color) {
         this.currentPaintColor = color;
 
-        document.querySelectorAll('.color-option').forEach(opt => {
+        // Met à jour le color picker
+        const colorPicker = document.getElementById('paint-color-picker');
+        if (colorPicker) {
+            colorPicker.value = color;
+        }
+
+        // Met à jour les preset colors
+        document.querySelectorAll('[data-color]').forEach(opt => {
             opt.classList.remove('active');
         });
-        document.querySelector(`[data-color="${color}"]`).classList.add('active');
+        const activePreset = document.querySelector(`[data-color="${color}"]`);
+        if (activePreset) {
+            activePreset.classList.add('active');
+        }
 
+        // Met à jour la catégorie Paint
         const paintCategory = document.querySelector('[data-category="paint"]');
-        paintCategory.querySelector('.category-color-preview').style.background = color;
+        if (paintCategory) {
+            const preview = paintCategory.querySelector('.category-color-preview');
+            if (preview) {
+                preview.style.background = color;
+            }
+        }
 
-        if (window.experience?.world?.carsManager?.currentCar) {
-            window.experience.world.carsManager.currentCar.setPaintColor(color);
+        // Applique à Three.js
+        if (this.experience?.world?.carsManager?.currentCar) {
+            this.experience.world.carsManager.currentCar.setPaintColor(color);
+        }
+    }
+
+    updateWheelColor(color) {
+        this.currentWheelColor = color;
+
+        // Met à jour le color picker
+        const wheelColorPicker = document.getElementById('wheel-color-picker');
+        if (wheelColorPicker) {
+            wheelColorPicker.value = color;
+        }
+
+        // Met à jour les preset colors
+        document.querySelectorAll('[data-wheel-color]').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        const activePreset = document.querySelector(`[data-wheel-color="${color}"]`);
+        if (activePreset) {
+            activePreset.classList.add('active');
+        }
+
+        // Met à jour la catégorie Wheels Paint
+        const wheelsPaintCategory = document.querySelector('[data-category="wheels-paint"]');
+        if (wheelsPaintCategory) {
+            const preview = wheelsPaintCategory.querySelector('.category-color-preview');
+            if (preview) {
+                preview.style.background = color;
+            }
+        }
+
+        // Applique à Three.js (roues)
+        if (this.experience?.world?.carsManager?.currentWheels) {
+            // TODO: Ajouter une méthode setWheelColor dans WheelSet.js
+            console.log('🎨 Wheel color:', color);
+            // this.experience.world.carsManager.currentWheels.setColor(color);
+        }
+    }
+
+    updateFinish(finish) {
+        this.currentFinish = finish;
+        
+        if (this.experience?.world?.carsManager?.currentCar?.customizer) {
+            this.experience.world.carsManager.currentCar.customizer.setFinish(finish);
+            console.log('✨ Finish updated:', finish);
         }
     }
 }

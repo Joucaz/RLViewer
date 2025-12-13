@@ -26,6 +26,8 @@ export default class World
         {            
 
             console.log("ready");
+
+            this.scene.position.y = -0.2
             
             this.unlimitedTexture = new UnlimitedTexture()
 

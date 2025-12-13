@@ -99,7 +99,7 @@
         <!-- Barre verticale de catégories -->
         <div class="category-bar">
             <div class="category-item" data-category="car">
-                <img src="images/thumbnails/car/Logo Gameward.png" alt="Fennec" class="category-thumbnail">
+                <img src="images/thumbnails/car/FennecThumbnail.png" alt="Fennec" class="category-thumbnail">
                 <span class="category-name">Fennec</span>
             </div>
             
@@ -116,9 +116,10 @@
             </div>
             
             <div class="category-item" data-category="wheels">
-                <span>Wheels</span>
+                <img src="images/thumbnails/wheels/DieciThumbnail.png" alt="Dieci" class="category-thumbnail">
+                <span class="category-name">Dieci</span>
             </div>
-
+            
             <div class="category-item" data-category="wheels-paint">
                 <span>Wheels Paint</span>
             </div>
@@ -142,78 +143,59 @@
             <div class="panel-content active" data-panel="car">
                 <div class="options-list">
                     <div class="option-item active" id="btn-fennec" data-car="fennec">
-                        <img src="textures/cars/fennec/thumbnail.jpg" alt="Fennec" class="option-image">
+                        <img src="images/thumbnails/car/FennecThumbnail.png" alt="Fennec" class="option-image">
                         <span class="option-name">Fennec</span>
                         <div class="check-icon">✓</div>
                     </div>
                     <div class="option-item" id="btn-octane" data-car="octane">
-                        <img src="textures/cars/octane/thumbnail.jpg" alt="Octane" class="option-image">
+                        <img src="images/thumbnails/car/OctaneThumbnail.png" alt="Octane" class="option-image">
                         <span class="option-name">Octane</span>
                         <div class="check-icon">✓</div>
                     </div>
                     <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
-                        <span class="option-name">Dominus</span>
-                        <div class="check-icon">✓</div>
-                    </div>
-                    <div class="option-item" id="btn-dominus" data-car="dominus">
-                        <img src="textures/cars/dominus/thumbnail.jpg" alt="Dominus" class="option-image">
+                        <img src="images/thumbnails/car/DominusThumbnail.png" alt="Dominus" class="option-image">
                         <span class="option-name">Dominus</span>
                         <div class="check-icon">✓</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Contenu PAINT -->
+             <!-- Contenu PAINT -->
             <div class="panel-content" data-panel="paint">
                 <h3>Paint Colors</h3>
-                <div class="options-grid">
-                    <div class="color-option" style="background: #171617;" data-color="#171617"></div>
-                    <div class="color-option" style="background: #e3b405;" data-color="#e3b405"></div>
-                    <div class="color-option" style="background: #ff6b6b;" data-color="#ff6b6b"></div>
-                    <div class="color-option" style="background: #4ecdc4;" data-color="#4ecdc4"></div>
-                    <div class="color-option" style="background: #95e1d3;" data-color="#95e1d3"></div>
-                    <div class="color-option" style="background: #f38181;" data-color="#f38181"></div>
-                    <div class="color-option" style="background: #aa96da;" data-color="#aa96da"></div>
-                    <div class="color-option" style="background: #fcbad3;" data-color="#fcbad3"></div>
-                    <div class="color-option" style="background: #ffffff;" data-color="#ffffff"></div>
+                <div class="paint-container">
+                    <div class="preset-colors">
+                        <div class="color-option active" style="background: #171617;" data-color="#171617"></div>
+                        <div class="color-option" style="background: #e3b405;" data-color="#e3b405"></div>
+                        <div class="color-option" style="background: #ff6b6b;" data-color="#ff6b6b"></div>
+                        <div class="color-option" style="background: #4ecdc4;" data-color="#4ecdc4"></div>
+                        <div class="color-option" style="background: #ffffff;" data-color="#ffffff"></div>
+                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
+                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
+                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
+                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
+                    </div>
+                    <div class="color-picker-wrapper">
+                        <label for="paint-color-picker" class="color-picker-label">Custom Color</label>
+                        <input type="color" id="paint-color-picker" value="#171617">
+                    </div>
                 </div>
             </div>
+
+            <!-- Contenu FINISH -->
+            <div class="panel-content" data-panel="finish">
+                <h3>Paint Finish</h3>
+                <div class="dropdown-container">
+                    <select id="finish-select" class="finish-dropdown">
+                        <option value="anodized" selected>Anodized</option>
+                        <option value="matte">Matte</option>
+                        <option value="metallic">Metallic</option>
+                        <option value="glossy">Glossy</option>
+                    </select>
+                </div>
+            </div>
+
+            
 
             <!-- Contenu TEXTURE -->
             <div class="panel-content" data-panel="texture">
@@ -247,22 +229,98 @@
 
             <!-- Contenu WHEELS -->
             <div class="panel-content" data-panel="wheels">
-                <h3>Choose Your Wheels</h3>
-                <div class="options-grid">
-                    <div class="option-card active" id="btn-alpha">
-                        <div class="option-icon">⭕</div>
-                        <span>Alpha</span>
+                <div class="options-list">
+                    <div class="option-item" id="btn-alpha" data-wheel="alpha">
+                        <img src="images/thumbnails/wheels/AlphaThumbnail.png" alt="Alpha" class="option-image">
+                        <span class="option-name">Alpha</span>
+                        <div class="check-icon">✓</div>
                     </div>
-                    <div class="option-card" id="btn-cristiano">
-                        <div class="option-icon">🔵</div>
-                        <span>Cristiano</span>
+                    <div class="option-item" id="btn-cristiano" data-wheel="cristiano">
+                        <img src="images/thumbnails/wheels/CristianoThumbnail.png" alt="Cristiano" class="option-image">
+                        <span class="option-name">Cristiano</span>
+                        <div class="check-icon">✓</div>
                     </div>
-                    <div class="option-card" id="btn-dieci">
-                        <div class="option-icon">⚪</div>
-                        <span>Dieci</span>
+                    <div class="option-item active" id="btn-dieci" data-wheel="dieci">
+                        <img src="images/thumbnails/wheels/DieciThumbnail.png" alt="Dieci" class="option-image">
+                        <span class="option-name">Dieci</span>
+                        <div class="check-icon">✓</div>
                     </div>
                 </div>
             </div>
+
+            <!-- Contenu WHEELS PAINT -->
+            <div class="panel-content" data-panel="wheels-paint">
+                <h3>Wheels Paint</h3>
+                <div class="paint-container">
+                    <div class="preset-colors">
+                        <div class="color-option active" style="background: #1c1c1c;" data-wheel-color="#1c1c1c"></div>
+                        <div class="color-option" style="background: #e3b405;" data-wheel-color="#e3b405"></div>
+                        <div class="color-option" style="background: #ff6b6b;" data-wheel-color="#ff6b6b"></div>
+                        <div class="color-option" style="background: #4ecdc4;" data-wheel-color="#4ecdc4"></div>
+                        <div class="color-option" style="background: #ffffff;" data-wheel-color="#ffffff"></div>
+                        <div class="color-option" style="background: #9b59b6;" data-wheel-color="#9b59b6"></div>
+                        <div class="color-option" style="background: #4ecdc4;" data-wheel-color="#4ecdc4"></div>
+                        <div class="color-option" style="background: #ffffff;" data-wheel-color="#ffffff"></div>
+                        <div class="color-option" style="background: #9b59b6;" data-wheel-color="#9b59b6"></div>
+                    </div>
+                    <div class="color-picker-wrapper">
+                        <label for="wheel-color-picker" class="color-picker-label">Custom Color</label>
+                        <input type="color" id="wheel-color-picker" value="#1c1c1c">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-content" data-panel="settings">
+                <h3>Settings</h3>
+                <div class="settings-container">
+                    <!-- Mute Music -->
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span>Music</span>
+                            <input type="checkbox" id="music-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Auto Rotation -->
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span>Auto Rotation</span>
+                            <input type="checkbox" id="rotation-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Rotation Speed -->
+                    <div class="setting-item">
+                        <label class="setting-label-range">
+                            <span>Rotation Speed</span>
+                            <input type="range" id="rotation-speed" min="0" max="2" step="0.1" value="1">
+                            <span class="range-value" id="rotation-speed-value">1.0</span>
+                        </label>
+                    </div>
+
+                    <!-- Light Intensity -->
+                    <div class="setting-item">
+                        <label class="setting-label-range">
+                            <span>Light Intensity</span>
+                            <input type="range" id="light-intensity" min="0" max="20" step="0.5" value="10">
+                            <span class="range-value" id="light-intensity-value">10</span>
+                        </label>
+                    </div>
+
+                    <!-- Environment Intensity -->
+                    <div class="setting-item">
+                        <label class="setting-label-range">
+                            <span>Environment</span>
+                            <input type="range" id="env-intensity" min="0" max="2" step="0.1" value="0.4">
+                            <span class="range-value" id="env-intensity-value">0.4</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            
         </div>
     </div>
     
