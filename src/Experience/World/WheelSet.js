@@ -173,6 +173,23 @@ export default class WheelSet {
             console.error("Type de roue inconnu :", wheelType);
         }
     }
+
+    setColor(color) {
+        // ✅ Alpha ne peut PAS changer de couleur (texture baked)
+        if (this.wheelType === 'alpha') {
+            console.log('⚠️ Alpha wheels cannot change color (baked texture)');
+            return;
+        }
+        
+        // ✅ Dieci et Cristiano peuvent changer
+        if (this.wheelType === 'dieci' || this.wheelType === 'cristiano') {
+            if (this.jantesMaterial) {
+                this.jantesMaterial.color.set(color);
+                this.jantesMaterial.needsUpdate = true;
+                console.log(`🎨 Wheel color changed to ${color} for ${this.wheelType}`);
+            }
+        }
+    }
     
     setupDebug() {
         if(!this.debug.active || this.wheels.length === 0) return

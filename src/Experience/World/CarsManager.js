@@ -82,11 +82,15 @@ export default class CarsManager {
         this.updateUIState()
     }
     
-    switchCar(carType) {
+    switchCar(carType, wheelType = null) {
         if(carType === this.selectedCarType) return
         
         this.selectedCarType = carType
-        this.setupVehicle(carType, this.selectedWheelType)
+        
+        // Utilise le wheelType passé en paramètre, sinon garde l'actuel
+        const wheelsToUse = wheelType || this.selectedWheelType
+        
+        this.setupVehicle(carType, wheelsToUse)
     }
     
     switchWheels(wheelType) {

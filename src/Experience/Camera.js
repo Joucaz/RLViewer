@@ -35,7 +35,7 @@ export default class Camera
     setInstance()
     {
         this.instance = new THREE.PerspectiveCamera(this.baseFOV, this.aspectRatioCamera, 0.1, 100)
-        this.instance.position.set(0.5, 1, -1.3)
+        this.instance.position.set(0.6, 1, -1.3)
 
         console.log(this.aspectRatioCamera);
         console.log(this.sizes.width);

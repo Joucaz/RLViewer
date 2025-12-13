@@ -19,11 +19,33 @@ export default class UIManager {
             dieci: { name: 'Dieci', thumbnail: 'images/thumbnails/wheels/DieciThumbnail.png' }
         };
 
+        // 🆕 État global actuel
         this.currentCar = 'octane';
-        this.currentWheel = 'dieci';
-        this.currentPaintColor = '#171617';
-        this.currentWheelColor = '#1c1c1c';
-        this.currentFinish = 'anodized';
+        
+        // 🆕 Mémoire des paramètres PAR VOITURE
+        this.carStates = {
+            fennec: {
+                wheelType: 'dieci',
+                paintColor: '#171617',
+                wheelColor: '#1c1c1c',
+                finish: 'anodized',
+                hasCustomTexture: false
+            },
+            octane: {
+                wheelType: 'dieci',
+                paintColor: '#171617',
+                wheelColor: '#1c1c1c',
+                finish: 'anodized',
+                hasCustomTexture: false
+            },
+            dominus: {
+                wheelType: 'dieci',
+                paintColor: '#171617',
+                wheelColor: '#1c1c1c',
+                finish: 'anodized',
+                hasCustomTexture: false
+            }
+        };
 
         this.init();
     }
@@ -40,7 +62,141 @@ export default class UIManager {
             this.setupAnimateButton();
             this.setupScreenshotButton();
             this.setupSettings();
+            
+            // 🆕 Restaure l'état initial de la voiture par défaut
+            this.restoreCarState('octane');
         });
+    }
+
+    // 🆕 Sauvegarde l'état actuel de la voiture
+    saveCurrentCarState() {
+        const state = this.carStates[this.currentCar];
+        // On ne sauvegarde pas car les valeurs sont déjà à jour dans updateXXX()
+    }
+
+    // 🆕 Restaure l'état d'une voiture dans l'UI
+    restoreCarState(carType) {
+        const state = this.carStates[carType];
+        
+        console.log(`🔄 Restoring state for ${carType}:`, state);
+        
+        // Restaure les roues
+        this.restoreWheelUI(state.wheelType);
+        
+        // Restaure la couleur de paint
+        this.restorePaintColorUI(state.paintColor);
+        
+        // Restaure la couleur de wheel
+        this.restoreWheelColorUI(state.wheelColor);
+        
+        // Restaure le finish
+        this.restoreFinishUI(state.finish);
+        
+        // Restaure la texture (affiche/cache le bouton reset)
+        this.restoreTextureUI(state.hasCustomTexture);
+    }
+
+    // 🆕 Restaure l'UI des roues
+    restoreWheelUI(wheelType) {
+        const wheelCategory = document.querySelector('[data-category="wheels"]');
+        wheelCategory.querySelector('.category-thumbnail').src = this.wheelConfig[wheelType].thumbnail;
+        wheelCategory.querySelector('.category-thumbnail').alt = this.wheelConfig[wheelType].name;
+        wheelCategory.querySelector('.category-name').textContent = this.wheelConfig[wheelType].name;
+
+        document.querySelectorAll('[data-wheel]').forEach(item => {
+            item.classList.remove('active');
+        });
+        const activeWheel = document.querySelector(`[data-wheel="${wheelType}"]`);
+        if (activeWheel) activeWheel.classList.add('active');
+    }
+
+    // 🆕 Restaure l'UI de la couleur de paint
+    restorePaintColorUI(color) {
+        const colorPicker = document.getElementById('paint-color-picker');
+        if (colorPicker) colorPicker.value = color;
+
+        document.querySelectorAll('[data-color]').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        const activePreset = document.querySelector(`[data-color="${color}"]`);
+        if (activePreset) activePreset.classList.add('active');
+
+        const paintCategory = document.querySelector('[data-category="paint"]');
+        if (paintCategory) {
+            let preview = paintCategory.querySelector('.category-color-preview');
+            if (!preview) {
+                // Crée le preview s'il n'existe pas
+                preview = document.createElement('div');
+                preview.className = 'category-color-preview';
+                const existingContent = paintCategory.querySelector('span');
+                if (existingContent) {
+                    paintCategory.removeChild(existingContent);
+                }
+                paintCategory.insertBefore(preview, paintCategory.firstChild);
+            }
+            preview.style.background = color;
+        }
+    }
+
+    // 🆕 Restaure l'UI de la couleur de wheel
+    restoreWheelColorUI(color) {
+        const wheelColorPicker = document.getElementById('wheel-color-picker');
+        if (wheelColorPicker) wheelColorPicker.value = color;
+
+        document.querySelectorAll('[data-wheel-color]').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        const activePreset = document.querySelector(`[data-wheel-color="${color}"]`);
+        if (activePreset) activePreset.classList.add('active');
+
+        const wheelsPaintCategory = document.querySelector('[data-category="wheels-paint"]');
+        if (wheelsPaintCategory) {
+            let preview = wheelsPaintCategory.querySelector('.category-color-preview');
+            if (!preview) {
+                preview = document.createElement('div');
+                preview.className = 'category-color-preview';
+                const existingContent = wheelsPaintCategory.querySelector('span');
+                if (existingContent) {
+                    wheelsPaintCategory.removeChild(existingContent);
+                }
+                wheelsPaintCategory.insertBefore(preview, wheelsPaintCategory.firstChild);
+            }
+            preview.style.background = color;
+        }
+    }
+
+    // 🆕 Restaure l'UI du finish
+    restoreFinishUI(finish) {
+        const finishSelect = document.getElementById('finish-select');
+        if (finishSelect) finishSelect.value = finish;
+    }
+
+    // 🆕 Restaure l'UI de la texture
+    restoreTextureUI(hasCustomTexture) {
+        const resetBtn = document.getElementById('reset-texture');
+        const texturePreview = document.getElementById('texture-preview');
+        const texturePreviewImg = document.getElementById('texture-preview-img');
+        
+        if (hasCustomTexture) {
+            // Affiche le bouton reset
+            if (resetBtn) resetBtn.style.display = 'block';
+            
+            // ✅ Vérifie si une texture custom existe dans le storage
+            const customTextureManager = this.experience?.world?.carsManager?.customTextureManager;
+            if (customTextureManager) {
+                const texture = customTextureManager.getTexture(this.currentCar);
+                if (texture && texture.image) {
+                    // Affiche la preview
+                    if (texturePreviewImg) texturePreviewImg.src = texture.image.src;
+                    if (texturePreview) texturePreview.style.display = 'block';
+                }
+            }
+        } else {
+            // Cache tout
+            if (resetBtn) resetBtn.style.display = 'none';
+            if (texturePreview) texturePreview.style.display = 'none';
+            if (texturePreviewImg) texturePreviewImg.src = '';
+        }
     }
 
     setupCategoryHover() {
@@ -52,7 +208,6 @@ export default class UIManager {
             item.addEventListener('mouseenter', () => {
                 const category = item.dataset.category;
                 
-                // Ignore si c'est un bouton action (animate, screenshot)
                 if (!category) return;
                 
                 categoryItems.forEach(cat => cat.classList.remove('active'));
@@ -93,7 +248,6 @@ export default class UIManager {
     }
 
     setupPaintSelection() {
-        // Preset colors
         document.querySelectorAll('[data-color]').forEach(colorBtn => {
             colorBtn.addEventListener('click', () => {
                 const color = colorBtn.dataset.color;
@@ -101,7 +255,6 @@ export default class UIManager {
             });
         });
 
-        // Color picker
         const colorPicker = document.getElementById('paint-color-picker');
         if (colorPicker) {
             colorPicker.addEventListener('input', (e) => {
@@ -111,7 +264,6 @@ export default class UIManager {
     }
 
     setupWheelPaintSelection() {
-        // Preset colors pour wheels
         document.querySelectorAll('[data-wheel-color]').forEach(colorBtn => {
             colorBtn.addEventListener('click', () => {
                 const color = colorBtn.dataset.wheelColor;
@@ -119,7 +271,6 @@ export default class UIManager {
             });
         });
 
-        // Color picker pour wheels
         const wheelColorPicker = document.getElementById('wheel-color-picker');
         if (wheelColorPicker) {
             wheelColorPicker.addEventListener('input', (e) => {
@@ -168,6 +319,9 @@ export default class UIManager {
                 texturePreview.style.display = 'block';
                 resetBtn.style.display = 'block';
                 
+                // 🆕 Sauvegarde dans l'état
+                this.carStates[this.currentCar].hasCustomTexture = true;
+                
                 if (this.experience?.world?.carsManager) {
                     const customTextureManager = this.experience.world.carsManager.customTextureManager;
                     const currentCar = this.experience.world.carsManager.selectedCarType;
@@ -189,6 +343,9 @@ export default class UIManager {
             texturePreviewImg.src = '';
             resetBtn.style.display = 'none';
             
+            // 🆕 Sauvegarde dans l'état
+            this.carStates[this.currentCar].hasCustomTexture = false;
+            
             if (this.experience?.world?.carsManager?.currentCar?.customizer) {
                 this.experience.world.carsManager.currentCar.customizer.resetBodyTexture();
                 
@@ -204,10 +361,6 @@ export default class UIManager {
         if (animateBtn) {
             animateBtn.addEventListener('click', () => {
                 console.log('🎬 Animate car clicked!');
-                // TODO: Implémenter l'animation
-                // if (this.experience?.camera?.controls) {
-                //     this.experience.camera.controls.autoRotate = !this.experience.camera.controls.autoRotate;
-                // }
                 alert('Animation feature coming soon! 🎬');
             });
         }
@@ -233,7 +386,6 @@ export default class UIManager {
             const canvas = this.experience.renderer.instance.domElement;
             const dataURL = canvas.toDataURL('image/png');
             
-            // Crée un lien de téléchargement
             const link = document.createElement('a');
             link.download = `rl-viewer-${Date.now()}.png`;
             link.href = dataURL;
@@ -247,16 +399,13 @@ export default class UIManager {
     }
 
     setupSettings() {
-        // Music toggle
         const musicToggle = document.getElementById('music-toggle');
         if (musicToggle) {
             musicToggle.addEventListener('change', (e) => {
                 console.log('🎵 Music:', e.target.checked ? 'ON' : 'OFF');
-                // TODO: Implémenter le toggle de musique
             });
         }
 
-        // Auto rotation toggle
         const rotationToggle = document.getElementById('rotation-toggle');
         if (rotationToggle) {
             rotationToggle.addEventListener('change', (e) => {
@@ -267,7 +416,6 @@ export default class UIManager {
             });
         }
 
-        // Rotation speed
         const rotationSpeed = document.getElementById('rotation-speed');
         const rotationSpeedValue = document.getElementById('rotation-speed-value');
         if (rotationSpeed && rotationSpeedValue) {
@@ -282,7 +430,6 @@ export default class UIManager {
             });
         }
 
-        // Light intensity
         const lightIntensity = document.getElementById('light-intensity');
         const lightIntensityValue = document.getElementById('light-intensity-value');
         if (lightIntensity && lightIntensityValue) {
@@ -297,7 +444,6 @@ export default class UIManager {
             });
         }
 
-        // Environment intensity
         const envIntensity = document.getElementById('env-intensity');
         const envIntensityValue = document.getElementById('env-intensity-value');
         if (envIntensity && envIntensityValue) {
@@ -315,8 +461,14 @@ export default class UIManager {
     }
 
     updateCarSelection(newCar) {
+        if (newCar === this.currentCar) return;
+        
+        console.log(`🚗 Switching from ${this.currentCar} to ${newCar}`);
+        
+        // Change la voiture actuelle
         this.currentCar = newCar;
 
+        // Met à jour la catégorie Car
         const carCategory = document.querySelector('[data-category="car"]');
         carCategory.querySelector('.category-thumbnail').src = this.carConfig[newCar].thumbnail;
         carCategory.querySelector('.category-thumbnail').alt = this.carConfig[newCar].name;
@@ -327,99 +479,75 @@ export default class UIManager {
         });
         document.querySelector(`[data-car="${newCar}"]`).classList.add('active');
 
+        // 🆕 Restaure l'état de la nouvelle voiture AVANT de switch
+        this.restoreCarState(newCar);
+
+        // Switch dans Three.js avec l'état restauré
         if (this.experience?.world?.carsManager) {
-            this.experience.world.carsManager.switchCar(newCar);
+            const state = this.carStates[newCar];
+            this.experience.world.carsManager.switchCar(newCar, state.wheelType);
+            
+            // Applique les paramètres sauvegardés
+            setTimeout(() => {
+                if (this.experience.world.carsManager.currentCar) {
+                    this.experience.world.carsManager.currentCar.setPaintColor(state.paintColor);
+                    this.experience.world.carsManager.currentCar.setFinish(state.finish);
+                }
+                if (this.experience.world.carsManager.currentWheels) {
+                    this.experience.world.carsManager.currentWheels.setColor(state.wheelColor);
+                }
+            }, 100);
         }
     }
 
     updateWheelSelection(newWheel) {
-        this.currentWheel = newWheel;
+        const state = this.carStates[this.currentCar];
+        if (newWheel === state.wheelType) return;
+        
+        // 🆕 Sauvegarde dans l'état
+        state.wheelType = newWheel;
 
-        const wheelCategory = document.querySelector('[data-category="wheels"]');
-        wheelCategory.querySelector('.category-thumbnail').src = this.wheelConfig[newWheel].thumbnail;
-        wheelCategory.querySelector('.category-thumbnail').alt = this.wheelConfig[newWheel].name;
-        wheelCategory.querySelector('.category-name').textContent = this.wheelConfig[newWheel].name;
-
-        document.querySelectorAll('[data-wheel]').forEach(item => {
-            item.classList.remove('active');
-        });
-        document.querySelector(`[data-wheel="${newWheel}"]`).classList.add('active');
+        this.restoreWheelUI(newWheel);
 
         if (this.experience?.world?.carsManager) {
             this.experience.world.carsManager.switchWheels(newWheel);
+            
+            // Réapplique la couleur des roues
+            setTimeout(() => {
+                if (this.experience.world.carsManager.currentWheels) {
+                    this.experience.world.carsManager.currentWheels.setColor(state.wheelColor);
+                }
+            }, 100);
         }
     }
 
     updatePaintColor(color) {
-        this.currentPaintColor = color;
+        // 🆕 Sauvegarde dans l'état
+        this.carStates[this.currentCar].paintColor = color;
 
-        // Met à jour le color picker
-        const colorPicker = document.getElementById('paint-color-picker');
-        if (colorPicker) {
-            colorPicker.value = color;
-        }
+        this.restorePaintColorUI(color);
 
-        // Met à jour les preset colors
-        document.querySelectorAll('[data-color]').forEach(opt => {
-            opt.classList.remove('active');
-        });
-        const activePreset = document.querySelector(`[data-color="${color}"]`);
-        if (activePreset) {
-            activePreset.classList.add('active');
-        }
-
-        // Met à jour la catégorie Paint
-        const paintCategory = document.querySelector('[data-category="paint"]');
-        if (paintCategory) {
-            const preview = paintCategory.querySelector('.category-color-preview');
-            if (preview) {
-                preview.style.background = color;
-            }
-        }
-
-        // Applique à Three.js
         if (this.experience?.world?.carsManager?.currentCar) {
             this.experience.world.carsManager.currentCar.setPaintColor(color);
         }
     }
 
     updateWheelColor(color) {
-        this.currentWheelColor = color;
+        // 🆕 Sauvegarde dans l'état
+        this.carStates[this.currentCar].wheelColor = color;
 
-        // Met à jour le color picker
-        const wheelColorPicker = document.getElementById('wheel-color-picker');
-        if (wheelColorPicker) {
-            wheelColorPicker.value = color;
-        }
+        this.restoreWheelColorUI(color);
 
-        // Met à jour les preset colors
-        document.querySelectorAll('[data-wheel-color]').forEach(opt => {
-            opt.classList.remove('active');
-        });
-        const activePreset = document.querySelector(`[data-wheel-color="${color}"]`);
-        if (activePreset) {
-            activePreset.classList.add('active');
-        }
-
-        // Met à jour la catégorie Wheels Paint
-        const wheelsPaintCategory = document.querySelector('[data-category="wheels-paint"]');
-        if (wheelsPaintCategory) {
-            const preview = wheelsPaintCategory.querySelector('.category-color-preview');
-            if (preview) {
-                preview.style.background = color;
-            }
-        }
-
-        // Applique à Three.js (roues)
         if (this.experience?.world?.carsManager?.currentWheels) {
-            // TODO: Ajouter une méthode setWheelColor dans WheelSet.js
-            console.log('🎨 Wheel color:', color);
-            // this.experience.world.carsManager.currentWheels.setColor(color);
+            this.experience.world.carsManager.currentWheels.setColor(color);
         }
     }
 
     updateFinish(finish) {
-        this.currentFinish = finish;
+        // 🆕 Sauvegarde dans l'état
+        this.carStates[this.currentCar].finish = finish;
+        
+        this.restoreFinishUI(finish);
         
         if (this.experience?.world?.carsManager?.currentCar?.customizer) {
             this.experience.world.carsManager.currentCar.customizer.setFinish(finish);
