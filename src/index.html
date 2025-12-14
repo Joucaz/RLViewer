@@ -277,54 +277,29 @@
             </div>
 
             <div class="panel-content" data-panel="rendering">
-                <!-- <h3>Settings</h3> -->
-                <div class="settings-container">
-                    <!-- Mute Music -->
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <span>Music</span>
-                            <input type="checkbox" id="music-toggle" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
+            <div class="settings-container">
+                <!-- Animate Car Button -->
+                <div class="setting-item action-button" id="animate-car">
+                    <div class="action-content">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                        <span>Animate Car</span>
                     </div>
+                </div>
 
-                    <!-- Auto Rotation -->
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <span>Auto Rotation</span>
-                            <input type="checkbox" id="rotation-toggle" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <!-- Rotation Speed -->
-                    <div class="setting-item">
-                        <label class="setting-label-range">
-                            <span>Rotation Speed</span>
-                            <input type="range" id="rotation-speed" min="0" max="2" step="0.1" value="1">
-                            <span class="range-value" id="rotation-speed-value">1.0</span>
-                        </label>
-                    </div>
-
-                    <!-- Light Intensity -->
-                    <div class="setting-item">
-                        <label class="setting-label-range">
-                            <span>Light Intensity</span>
-                            <input type="range" id="light-intensity" min="0" max="20" step="0.5" value="10">
-                            <span class="range-value" id="light-intensity-value">10</span>
-                        </label>
-                    </div>
-
-                    <!-- Environment Intensity -->
-                    <div class="setting-item">
-                        <label class="setting-label-range">
-                            <span>Environment</span>
-                            <input type="range" id="env-intensity" min="0" max="2" step="0.1" value="0.4">
-                            <span class="range-value" id="env-intensity-value">0.4</span>
-                        </label>
+                <!-- Screenshot Button -->
+                <div class="setting-item action-button" id="screenshot-btn">
+                    <div class="action-content">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                        <span>Screenshot</span>
                     </div>
                 </div>
             </div>
+        </div>
 
             <div class="panel-content" data-panel="settings">
                 <!-- <h3>Settings</h3> -->

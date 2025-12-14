@@ -9,3 +9,15 @@ STILL TO DO:
 - flou quand texture est loin
 - Universal decal and normal one (how to automatically detect?)
 - reset texture didnt work
+
+BUG
+- Faire new design Background
+- reset doit bien marcher
+- tourner moiins vite
+- check doit mieux marcher
+- couleur de paint et paint wheels
+- ajouter d'autres roues
+- animation voiture
+- faire un rendu 
+- finish doit mieux marcher
+- faire des meilleurs lumières
