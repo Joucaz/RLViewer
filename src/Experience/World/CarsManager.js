@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import Experience from '../Experience.js'
 import Car from './Car.js'
 import WheelSet from './WheelSet.js'
+import CarAnimator from './CarAnimator.js' // 🆕
 import { wheelPositions } from '../configs/wheelPositions.js'
 import TextureStorage from '../Utils/TextureStorage.js'
 import CustomTextureManager from '../Utils/CustomtextureManager.js'
@@ -15,6 +16,7 @@ export default class CarsManager {
         
         this.currentCar = null
         this.currentWheels = null
+        this.animator = new CarAnimator() // 🆕 Créé une seule fois
 
         this.textureStorage = new TextureStorage()
         this.customTextureManager = new CustomTextureManager(this.resources, this.textureStorage)
@@ -29,47 +31,55 @@ export default class CarsManager {
             this.setupDebug()
         }
         
-        // 🆕 Charge toutes les textures stockées au démarrage
+        // Charge toutes les textures stockées au démarrage
         this.customTextureManager.loadAllStored().then(() => {
-            // Setup initial après le chargement
-            this.setupVehicle(this.selectedCarType, this.selectedWheelType)
+            // Setup initial après le chargement AVEC animation la première fois
+            this.setupVehicle(this.selectedCarType, this.selectedWheelType, true)
             this.setupUI()
             this.setupTextureUploader()
         })
-
     }
     
-    setupVehicle(carType, wheelType) {
-        console.log(`Setting up vehicle: ${carType} with ${wheelType}`)
+    setupVehicle(carType, wheelType, animate = true) { // 🆕 Paramètre animate
+        console.log(`🚗 Setting up vehicle: ${carType} with ${wheelType}`)
         
-        // Supprime l'ancien véhicule
+        // 🔧 D'abord détacher du groupe d'animation
+        if (this.animator) {
+            this.animator.detachVehicle()
+        }
+        
+        // 🔧 Ensuite détruire l'ancien véhicule
         if (this.currentCar) {
+            console.log('  🗑️ Destroying old car...')
             this.currentCar.destroy()
             this.currentCar = null
         }
         if (this.currentWheels) {
+            console.log('  🗑️ Destroying old wheels...')
             this.currentWheels.destroy()
             this.currentWheels = null
         }
         
         // Vérifie que les ressources sont chargées
         if(!this.resources.items[carType]) {
-            console.error(`Car model ${carType} not loaded!`)
+            console.error(`❌ Car model ${carType} not loaded!`)
             return
         }
         if(!this.resources.items[wheelType]) {
-            console.error(`Wheel model ${wheelType} not loaded!`)
+            console.error(`❌ Wheel model ${wheelType} not loaded!`)
             return
         }
 
-        // 🆕 Vérifie si une texture custom existe (déjà chargée dans resources)
+        // Vérifie si une texture custom existe
         const hasCustomTexture = this.customTextureManager.getTexture(carType) !== null
         this.showResetButton(hasCustomTexture)
         
-        // Crée la nouvelle voiture
+        // 🔧 Crée la nouvelle voiture
+        console.log('  🏗️ Creating new car...')
         this.currentCar = new Car(carType, this.resources.items[carType])
         
-        // Crée les roues avec la config appropriée
+        // 🔧 Crée les roues avec la config appropriée
+        console.log('  🏗️ Creating new wheels...')
         const wheelConfig = wheelPositions[carType]
         
         this.currentWheels = new WheelSet(
@@ -78,8 +88,29 @@ export default class CarsManager {
             wheelConfig
         )
         
+        // 🔧 Attache au groupe d'animation
+        console.log('  🔗 Attaching to animation group...')
+        this.animator.attachVehicle(this.currentCar, this.currentWheels, carType) // 🆕 Passe carType
+        
+        // 🆕 Lance l'animation si demandé
+        if (animate) {
+            console.log('  🎬 Starting animation...')
+            this.animator.startEntryAnimation().then(() => {
+                console.log('✅ Car entry animation finished!')
+            })
+        }
+        
         // Update les boutons UI
         this.updateUIState()
+        
+        console.log('✅ Vehicle setup complete!')
+    }
+    
+    // 🆕 Méthode publique pour lancer l'animation
+    async playEntryAnimation() {
+        if (this.animator) {
+            return this.animator.startEntryAnimation()
+        }
     }
     
     switchCar(carType, wheelType = null) {
@@ -90,14 +121,14 @@ export default class CarsManager {
         // Utilise le wheelType passé en paramètre, sinon garde l'actuel
         const wheelsToUse = wheelType || this.selectedWheelType
         
-        this.setupVehicle(carType, wheelsToUse)
+        this.setupVehicle(carType, wheelsToUse, true) // 🆕 Anime lors du switch
     }
     
     switchWheels(wheelType) {
         if(wheelType === this.selectedWheelType) return
         
         this.selectedWheelType = wheelType
-        this.setupVehicle(this.selectedCarType, wheelType)
+        this.setupVehicle(this.selectedCarType, wheelType, false) // Pas d'animation pour les roues
     }
 
     setupTextureUploader() {
@@ -126,7 +157,7 @@ export default class CarsManager {
             }
             
             try {
-                // 🆕 Charge et stocke la texture
+                // Charge et stocke la texture
                 const texture = await this.customTextureManager.loadFromFile(this.selectedCarType, file)
                 
                 // Applique immédiatement à la voiture actuelle
@@ -149,7 +180,7 @@ export default class CarsManager {
                 // Réinitialise la texture
                 this.currentCar.customizer.resetBodyTexture()
                 
-                // 🆕 Supprime de resources + storage
+                // Supprime de resources + storage
                 this.customTextureManager.removeTexture(this.selectedCarType)
                 
                 this.showResetButton(false)
@@ -242,20 +273,47 @@ export default class CarsManager {
             .add(debugParams, 'wheels', ['alpha', 'cristiano', 'dieci'])
             .name('Wheel Type')
             .onChange(value => this.switchWheels(value))
+        
+        // Bouton pour tester l'animation
+        const animationControls = {
+            playAnimation: () => this.playEntryAnimation()
+        }
+        
+        this.debugFolder
+            .add(animationControls, 'playAnimation')
+            .name('▶️ Play Animation')
+        
+        // Paramètres d'animation
+        const animFolder = this.debugFolder.addFolder('Animation Settings')
+        
+        animFolder
+            .add(this.animator.config, 'duration', 0.5, 5, 0.1)
+            .name('Duration (s)')
+        
+        animFolder
+            .add(this.animator.config, 'startX', -10, 0, 0.5)
+            .name('Start X Position')
+        
+        animFolder
+            .add(this.animator.config, 'wheelRadius', 0.05, 0.3, 0.01)
+            .name('Wheel Radius')
     }
     
     update() {
         if(this.currentCar) {
             this.currentCar.update()
         }
-        if(this.currentWheels) {
-            this.currentWheels.update(this.experience.time.delta * 0.001)
+        
+        // 🆕 Update l'animator
+        if(this.animator) {
+            this.animator.update(this.experience.time.delta * 0.001)
         }
     }
     
     destroy() {
         if(this.currentCar) this.currentCar.destroy()
         if(this.currentWheels) this.currentWheels.destroy()
+        if(this.animator) this.animator.destroy()
         
         if(this.debug.active && this.debugFolder) {
             this.debugFolder.destroy()

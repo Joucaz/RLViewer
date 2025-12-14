@@ -87,7 +87,7 @@ export default class Camera
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.03;
 
-        this.controls.autoRotate = true
+        // this.controls.autoRotate = true
 
         // ✅ PAS de déplacement latéral
         this.controls.enablePan = false;

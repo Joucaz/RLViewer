@@ -46,23 +46,23 @@ export const wheelPositions = {
     dominus: {
         frontLeft: { 
             position: [0.418662, 0.13, -0.315336], 
-            scale: [0.780, 0.780, 0.8], 
-            rotation: [Math.PI, 0, 0] 
+            scale: [-0.780, -0.780, -0.8], 
+            rotation: [0, 0, 0] 
         },
         frontRight: { 
             position: [0.418662, 0.13, 0.315336], 
-            scale: [0.780, 0.780, 0.8], 
-            rotation: [0, 0, 0] 
+            scale: [-0.780, -0.780, -0.8], 
+            rotation: [Math.PI, 0, 0] 
         },
         backgroundLeft: { 
             position: [-0.436358, 0.143, -0.325832], 
-            scale: [0.871, 0.871, 0.901], 
-            rotation: [Math.PI, 0, 0] 
+            scale: [-0.871, -0.871, -0.901], 
+            rotation: [0, 0, 0] 
         },
         backgroundRight: { 
             position: [-0.436358, 0.143, 0.325832], 
-            scale: [0.871, 0.871, 0.901], 
-            rotation: [0, 0, 0] 
+            scale: [-0.871, -0.871, -0.901], 
+            rotation: [Math.PI, 0, 0] 
         }
     }
 }
