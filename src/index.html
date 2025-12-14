@@ -99,7 +99,7 @@
         <!-- Barre verticale de catégories -->
         <div class="category-bar">
             <div class="category-item" data-category="car">
-                <img src="images/thumbnails/car/FennecThumbnail.png" alt="Fennec" class="category-thumbnail">
+                <img src="images/thumbnails/car/OctaneThumbnail.png" alt="Octane" class="category-thumbnail">
                 <!-- <span class="category-name">Fennec</span> -->
             </div>
             
@@ -123,7 +123,7 @@
             
             <div class="category-item" data-category="wheels-paint">
                 <span class="category-name">Wheels Paint</span>
-                <div class="category-color-preview" style="background: #1c1c1c;"></div>
+                <div class="category-color-preview" style="background: #171617;"></div>
             </div>
 
             <div class="category-item" data-category="rendering">
@@ -148,12 +148,12 @@
         <div class="selection-panel" id="selection-panel">
             <div class="panel-content active" data-panel="car">
                 <div class="options-list">
-                    <div class="option-item active" id="btn-fennec" data-car="fennec">
+                    <div class="option-item" id="btn-fennec" data-car="fennec">
                         <img src="images/thumbnails/car/FennecThumbnail.png" alt="Fennec" class="option-image">
                         <span class="option-name">Fennec</span>
                         <div class="check-icon">✓</div>
                     </div>
-                    <div class="option-item" id="btn-octane" data-car="octane">
+                    <div class="option-item active" id="btn-octane" data-car="octane">
                         <img src="images/thumbnails/car/OctaneThumbnail.png" alt="Octane" class="option-image">
                         <span class="option-name">Octane</span>
                         <div class="check-icon">✓</div>
@@ -172,14 +172,14 @@
                 <div class="paint-container">
                     <div class="preset-colors">
                         <div class="color-option active" style="background: #171617;" data-color="#171617"></div>
-                        <div class="color-option" style="background: #e3b405;" data-color="#e3b405"></div>
-                        <div class="color-option" style="background: #ff6b6b;" data-color="#ff6b6b"></div>
-                        <div class="color-option" style="background: #4ecdc4;" data-color="#4ecdc4"></div>
+                        <div class="color-option" style="background: #808080;" data-color="#808080"></div>
                         <div class="color-option" style="background: #ffffff;" data-color="#ffffff"></div>
-                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
-                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
-                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
-                        <div class="color-option" style="background: #9b59b6;" data-color="#9b59b6"></div>
+                        <div class="color-option" style="background: #13aae6;" data-color="#13aae6"></div>
+                        <div class="color-option" style="background: #b7ff00;" data-color="#b7ff00"></div>
+                        <div class="color-option" style="background: #ffd034;" data-color="#ffd034"></div>
+                        <div class="color-option" style="background: #ff8c00;" data-color="#ff8c00"></div>
+                        <div class="color-option" style="background: #ff49b3;" data-color="#ff49b3"></div>
+                        <div class="color-option" style="background: #8a2be2;" data-color="#8a2be2"></div>
                     </div>
                     <div class="color-picker-wrapper">
                         <label for="paint-color-picker" class="color-picker-label">Custom Color</label>
@@ -259,15 +259,15 @@
                 <!-- <h3>Wheels Paint</h3> -->
                 <div class="paint-container">
                     <div class="preset-colors">
-                        <div class="color-option active" style="background: #1c1c1c;" data-wheel-color="#1c1c1c"></div>
-                        <div class="color-option" style="background: #e3b405;" data-wheel-color="#e3b405"></div>
-                        <div class="color-option" style="background: #ff6b6b;" data-wheel-color="#ff6b6b"></div>
-                        <div class="color-option" style="background: #4ecdc4;" data-wheel-color="#4ecdc4"></div>
+                        <div class="color-option active" style="background: #171617;" data-wheel-color="#171617"></div>
+                        <div class="color-option" style="background: #808080;" data-wheel-color="#808080"></div>
                         <div class="color-option" style="background: #ffffff;" data-wheel-color="#ffffff"></div>
-                        <div class="color-option" style="background: #9b59b6;" data-wheel-color="#9b59b6"></div>
-                        <div class="color-option" style="background: #4ecdc4;" data-wheel-color="#4ecdc4"></div>
-                        <div class="color-option" style="background: #ffffff;" data-wheel-color="#ffffff"></div>
-                        <div class="color-option" style="background: #9b59b6;" data-wheel-color="#9b59b6"></div>
+                        <div class="color-option" style="background: #13aae6;" data-wheel-color="#13aae6"></div>
+                        <div class="color-option" style="background: #b7ff00;" data-wheel-color="#b7ff00"></div>
+                        <div class="color-option" style="background: #ffd034;" data-wheel-color="#ffd034"></div>
+                        <div class="color-option" style="background: #ff8c00;" data-wheel-color="#ff8c00"></div>
+                        <div class="color-option" style="background: #ff49b3;" data-wheel-color="#ff49b3"></div>
+                        <div class="color-option" style="background: #8a2be2;" data-wheel-color="#8a2be2"></div>
                     </div>
                     <div class="color-picker-wrapper">
                         <label for="wheel-color-picker" class="color-picker-label">Custom Color</label>
@@ -281,9 +281,6 @@
                     <!-- Play Animation Button -->
                     <div class="setting-item action-button" id="play-animation-btn">
                         <div class="action-content">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5 3 19 12 5 21 5 3"/>
-                            </svg>
                             <span>Play Animation</span>
                         </div>
                     </div>
@@ -291,10 +288,6 @@
                     <!-- Save Animation Button -->
                     <div class="setting-item action-button" id="save-animation-btn">
                         <div class="action-content">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <circle cx="12" cy="12" r="3" fill="currentColor"/>
-                            </svg>
                             <span id="save-animation-text">Save Animation</span>
                         </div>
                     </div>
@@ -302,10 +295,6 @@
                     <!-- Save Image Button -->
                     <div class="setting-item action-button" id="save-image-btn">
                         <div class="action-content">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                                <circle cx="12" cy="13" r="4"/>
-                            </svg>
                             <span>Save Image</span>
                         </div>
                     </div>
@@ -337,8 +326,8 @@
                     <div class="setting-item">
                         <label class="setting-label-range">
                             <span>Rotation Speed</span>
-                            <input type="range" id="rotation-speed" min="0" max="2" step="0.1" value="1">
-                            <span class="range-value" id="rotation-speed-value">1.0</span>
+                            <input type="range" id="rotation-speed" min="0" max="2" step="0.1" value="0.5">
+                            <span class="range-value" id="rotation-speed-value">0.5</span>
                         </label>
                     </div>
 

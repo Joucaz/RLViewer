@@ -142,7 +142,7 @@ export default class WheelSet {
 
     createDieciMaterial() {
         this.jantesMaterial = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(0x1c1c1c),
+            color: new THREE.Color(0x171617),
             roughness: 0.250,
             metalness: 0.750,        
         })
@@ -151,7 +151,7 @@ export default class WheelSet {
 
     createCristianoMaterial() {
         this.jantesMaterial = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(0x1c1c1c), 
+            color: new THREE.Color(0x171617), 
             roughness: 0.50,               
             metalness: 0.305,        
         })

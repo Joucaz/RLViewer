@@ -24,21 +24,21 @@ export default class UIManager {
             fennec: {
                 wheelType: 'dieci',
                 paintColor: '#171617',
-                wheelColor: '#1c1c1c',
+                wheelColor: '#171617',
                 finish: 'anodized',
                 hasCustomTexture: false
             },
             octane: {
                 wheelType: 'dieci',
                 paintColor: '#171617',
-                wheelColor: '#1c1c1c',
+                wheelColor: '#171617',
                 finish: 'anodized',
                 hasCustomTexture: false
             },
             dominus: {
                 wheelType: 'dieci',
                 paintColor: '#171617',
-                wheelColor: '#1c1c1c',
+                wheelColor: '#171617',
                 finish: 'anodized',
                 hasCustomTexture: false
             }
