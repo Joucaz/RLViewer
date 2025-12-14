@@ -100,7 +100,7 @@
         <div class="category-bar">
             <div class="category-item" data-category="car">
                 <img src="images/thumbnails/car/FennecThumbnail.png" alt="Fennec" class="category-thumbnail">
-                <span class="category-name">Fennec</span>
+                <!-- <span class="category-name">Fennec</span> -->
             </div>
             
             <div class="category-item" data-category="texture">
@@ -112,27 +112,31 @@
             </div>
             
             <div class="category-item" data-category="paint">
-                <div class="category-color-preview" style="background: #171617;"></div>
                 <span class="category-name">Paint</span>
+                <div class="category-color-preview" style="background: #171617;"></div>
             </div>
             
             <div class="category-item" data-category="wheels">
                 <img src="images/thumbnails/wheels/DieciThumbnail.png" alt="Dieci" class="category-thumbnail">
-                <span class="category-name">Dieci</span>
+                <!-- <span class="category-name">Dieci</span> -->
             </div>
             
             <div class="category-item" data-category="wheels-paint">
-                <div class="category-color-preview" style="background: #1c1c1c;"></div>
                 <span class="category-name">Wheels Paint</span>
+                <div class="category-color-preview" style="background: #1c1c1c;"></div>
             </div>
 
-            <div class="category-item">
+            <div class="category-item" data-category="rendering">
+                <span>Rendering</span>
+            </div>
+
+            <!-- <div class="category-item">
                 <span>Animate Car</span>
             </div>
 
             <div class="category-item">
                 <span>Screenshot</span>
-            </div>
+            </div> -->
 
             <div class="category-item" data-category="settings">
                 <span>Settings</span>
@@ -164,7 +168,7 @@
 
              <!-- Contenu PAINT -->
             <div class="panel-content" data-panel="paint">
-                <h3>Paint Colors</h3>
+                <!-- <h3>Paint Colors</h3> -->
                 <div class="paint-container">
                     <div class="preset-colors">
                         <div class="color-option active" style="background: #171617;" data-color="#171617"></div>
@@ -186,7 +190,7 @@
 
             <!-- Contenu FINISH -->
             <div class="panel-content" data-panel="finish">
-                <h3>Paint Finish</h3>
+                <!-- <h3>Paint Finish</h3> -->
                 <div class="dropdown-container">
                     <select id="finish-select" class="finish-dropdown">
                         <option value="anodized" selected>Anodized</option>
@@ -252,7 +256,7 @@
 
             <!-- Contenu WHEELS PAINT -->
             <div class="panel-content" data-panel="wheels-paint">
-                <h3>Wheels Paint</h3>
+                <!-- <h3>Wheels Paint</h3> -->
                 <div class="paint-container">
                     <div class="preset-colors">
                         <div class="color-option active" style="background: #1c1c1c;" data-wheel-color="#1c1c1c"></div>
@@ -272,8 +276,58 @@
                 </div>
             </div>
 
+            <div class="panel-content" data-panel="rendering">
+                <!-- <h3>Settings</h3> -->
+                <div class="settings-container">
+                    <!-- Mute Music -->
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span>Music</span>
+                            <input type="checkbox" id="music-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Auto Rotation -->
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span>Auto Rotation</span>
+                            <input type="checkbox" id="rotation-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Rotation Speed -->
+                    <div class="setting-item">
+                        <label class="setting-label-range">
+                            <span>Rotation Speed</span>
+                            <input type="range" id="rotation-speed" min="0" max="2" step="0.1" value="1">
+                            <span class="range-value" id="rotation-speed-value">1.0</span>
+                        </label>
+                    </div>
+
+                    <!-- Light Intensity -->
+                    <div class="setting-item">
+                        <label class="setting-label-range">
+                            <span>Light Intensity</span>
+                            <input type="range" id="light-intensity" min="0" max="20" step="0.5" value="10">
+                            <span class="range-value" id="light-intensity-value">10</span>
+                        </label>
+                    </div>
+
+                    <!-- Environment Intensity -->
+                    <div class="setting-item">
+                        <label class="setting-label-range">
+                            <span>Environment</span>
+                            <input type="range" id="env-intensity" min="0" max="2" step="0.1" value="0.4">
+                            <span class="range-value" id="env-intensity-value">0.4</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <div class="panel-content" data-panel="settings">
-                <h3>Settings</h3>
+                <!-- <h3>Settings</h3> -->
                 <div class="settings-container">
                     <!-- Mute Music -->
                     <div class="setting-item">
