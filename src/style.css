@@ -679,6 +679,90 @@ body {
     height: 18px;
     stroke: currentColor;
 }
+/* ==================== PRESET TEXTURES GALLERY ==================== */
+.preset-textures {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px; /* 🔧 Ajuste l'espace entre les images */
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 12px 6px rgba(255, 255, 255, 0.6);
+    padding: 15px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.preset-textures::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.texture-option {
+    aspect-ratio: 1; /* 🔧 Garde un ratio carré (1:1) */
+    /* 🆕 OU fixe une hauteur précise : */
+    height: 80px;
+    width: 80px;
+    
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.texture-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.texture-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.texture-option.active {
+    border-color: rgba(227, 180, 5, 0.8);
+    box-shadow: 0 0 20px rgba(227, 180, 5, 0.4);
+}
+
+.texture-option.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 2em; /* 🔧 Ajuste la taille du checkmark */
+    font-weight: bold;
+    text-shadow: 
+        0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(227, 180, 5, 0.6);
+    background: rgba(227, 180, 5, 0.3);
+    width: 50px; /* 🔧 Ajuste la taille du cercle du checkmark */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+}
 
 /* ==================== ACTION BUTTONS ==================== */
 .action-button {

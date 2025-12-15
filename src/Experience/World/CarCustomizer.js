@@ -101,9 +101,9 @@ export default class CarCustomizer {
             const customKey = `customBody_${this.carType}`
             let bodyTexture = this.resources.items[customKey]
             
-            // Si pas de texture custom, utilise la texture par défaut
+            // Si pas de texture custom, utilise preset1 par défaut
             if(!bodyTexture) {
-                bodyTexture = this.resources.items[`${this.carType}DefaultBody`]
+                bodyTexture = this.resources.items[`${this.carType}Preset1`] // 🆕 Remplace DefaultBody par Preset1
                 
                 if(bodyTexture) {
                     bodyTexture.flipY = false
@@ -122,20 +122,14 @@ export default class CarCustomizer {
 
             if(bodyTexture && bodyTexture.image) {
                 if(bodyTexture.image.complete) {
-                    // Image déjà chargée
                     this.updateBackground()
                 } else {
-                    // Attend que l'image soit chargée
                     bodyTexture.image.onload = () => {
                         console.log('🎨 Texture image loaded, updating background...')
                         this.updateBackground()
                     }
                 }
-            }            
-            // if(this.config.changeBodyUV)
-            //     this.setMaterialUVMap(this.meshes.body.material, 1)
-            
-            // console.log('✅ Body material applied with UV1')
+            }
         }
         
         // 2. CHASSIS MATERIAL (avec textures baked sur UV0)
@@ -321,16 +315,15 @@ export default class CarCustomizer {
         }
     }
 
-    // Simplifie resetBodyTexture()
     resetBodyTexture() {
-        const defaultTexture = this.resources.items[`${this.carType}DefaultBody`]
+        const defaultTexture = this.resources.items[`${this.carType}Preset1`] // 🆕 Utilise Preset1
         
         if(defaultTexture && this.meshes.body && this.meshes.body.material) {
             this.meshes.body.material.map = defaultTexture
             this.meshes.body.material.needsUpdate = true
             this.currentBodyTexture = defaultTexture
             
-            console.log(`✅ Body texture reset to default for ${this.carType}`)
+            console.log(`✅ Body texture reset to preset1 for ${this.carType}`)
         }
     }
     

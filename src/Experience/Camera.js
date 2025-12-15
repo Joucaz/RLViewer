@@ -87,23 +87,23 @@ export default class Camera
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.03;
 
-        // this.controls.autoRotate = true
-        // this.controls.autoRotateSpeed = 0.5
+        this.controls.autoRotate = true
+        this.controls.autoRotateSpeed = 0.5
 
-        // // ✅ PAS de déplacement latéral
-        // this.controls.enablePan = false;
+        // ✅ PAS de déplacement latéral
+        this.controls.enablePan = false;
 
-        // // ✅ Limites de zoom
-        // this.controls.minDistance = 1.5;
-        // this.controls.maxDistance = 3;
+        // ✅ Limites de zoom
+        this.controls.minDistance = 1.5;
+        this.controls.maxDistance = 3;
 
-        // // ✅ Limites rotation horizontale (tourner autour)
-        // // this.controls.minAzimuthAngle = -Math.PI;
-        // // this.controls.maxAzimuthAngle =  Math.PI;
+        // ✅ Limites rotation horizontale (tourner autour)
+        // this.controls.minAzimuthAngle = -Math.PI;
+        // this.controls.maxAzimuthAngle =  Math.PI;
 
-        // // ✅ Limites rotation verticale (pas passer sous le sol)
-        // this.controls.minPolarAngle = Math.PI / 6;
-        // this.controls.maxPolarAngle = Math.PI / 2.5; 
+        // ✅ Limites rotation verticale (pas passer sous le sol)
+        this.controls.minPolarAngle = Math.PI / 6;
+        this.controls.maxPolarAngle = Math.PI / 2.5; 
     }
 
     resize()

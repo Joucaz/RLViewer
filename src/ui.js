@@ -1,5 +1,6 @@
 // src/ui.js - Version modifiée avec animation
 
+import * as THREE from 'three'
 import Experience from "./Experience/Experience";
 
 export default class UIManager {
@@ -22,27 +23,51 @@ export default class UIManager {
 
         this.currentCar = 'octane';
         
+        this.presetTexturesConfig = {
+            fennec: [
+                { name: 'fennecPreset1', path: 'textures/cars/fennec/presets/FennecM8.png' },
+                { name: 'fennecPreset2', path: 'textures/cars/fennec/presets/FennecBDS.png' },
+                { name: 'fennecPreset3', path: 'textures/cars/fennec/presets/FennecFuria.png' },
+                { name: 'fennecPreset4', path: 'textures/cars/fennec/presets/FennecComplexity.png' }
+            ],
+            octane: [
+                { name: 'octanePreset1', path: 'textures/cars/octane/presets/preset1.jpg' },
+                { name: 'octanePreset2', path: 'textures/cars/octane/presets/preset2.jpg' },
+                { name: 'octanePreset3', path: 'textures/cars/octane/presets/preset3.jpg' },
+                { name: 'octanePreset4', path: 'textures/cars/octane/presets/preset4.jpg' }
+            ],
+            dominus: [
+                { name: 'dominusPreset1', path: 'textures/cars/dominus/presets/preset1.jpg' },
+                { name: 'dominusPreset2', path: 'textures/cars/dominus/presets/preset2.jpg' },
+                { name: 'dominusPreset3', path: 'textures/cars/dominus/presets/preset3.jpg' },
+                { name: 'dominusPreset4', path: 'textures/cars/dominus/presets/preset4.jpg' }
+            ]
+        };
+
         this.carStates = {
             fennec: {
                 wheelType: 'dieci',
                 paintColor: '#171617',
                 wheelColor: '#171617',
                 finish: 'anodized',
-                hasCustomTexture: false
+                hasCustomTexture: false,
+                selectedPresetTexture: 'fennecPreset1' // 🆕
             },
             octane: {
                 wheelType: 'dieci',
                 paintColor: '#171617',
                 wheelColor: '#171617',
                 finish: 'anodized',
-                hasCustomTexture: false
+                hasCustomTexture: false,
+                selectedPresetTexture: 'octanePreset1' // 🆕
             },
             dominus: {
                 wheelType: 'dieci',
                 paintColor: '#171617',
                 wheelColor: '#171617',
                 finish: 'anodized',
-                hasCustomTexture: false
+                hasCustomTexture: false,
+                selectedPresetTexture: 'dominusPreset1' // 🆕
             }
         };
 
@@ -57,10 +82,12 @@ export default class UIManager {
             this.setupPaintSelection();
             this.setupWheelPaintSelection();
             this.setupFinishSelection();
+            this.updatePresetTexturesGallery(); // 🆕 Génère la galerie initiale
+            this.setupPresetTextureSelection();
             this.setupTextureUpload();
-            this.setupPlayAnimationButton(); // 🆕 Renommé
-            this.setupSaveAnimationButton(); // 🆕 Nouveau
-            this.setupSaveImageButton(); // 🆕 Renommé
+            this.setupPlayAnimationButton();
+            this.setupSaveAnimationButton();
+            this.setupSaveImageButton();
             this.setupSettings();
             
             this.restoreCarState('octane');
@@ -80,6 +107,7 @@ export default class UIManager {
         this.restorePaintColorUI(state.paintColor);
         this.restoreWheelColorUI(state.wheelColor);
         this.restoreFinishUI(state.finish);
+        this.restorePresetTextureUI(carType); // 🆕 Restaure les preset textures
         this.restoreTextureUI(state.hasCustomTexture);
     }
 
@@ -270,6 +298,160 @@ export default class UIManager {
         }
     }
 
+    setupPresetTextureSelection() {
+        document.querySelectorAll('[data-preset-texture]').forEach(textureBtn => {
+            textureBtn.addEventListener('click', () => {
+                const textureName = textureBtn.dataset.presetTexture;
+                this.updatePresetTexture(textureName);
+            });
+        });
+    }
+
+    updatePresetTexture(textureName) {
+        console.log(`🎨 Applying preset texture: ${textureName}`);
+        
+        // Met à jour l'UI - retire active de tous
+        document.querySelectorAll('[data-preset-texture]').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        
+        // Ajoute active sur celui sélectionné
+        const activeTexture = document.querySelector(`[data-preset-texture="${textureName}"]`);
+        if (activeTexture) activeTexture.classList.add('active');
+        
+        // Applique la texture à la voiture
+        if (this.experience?.world?.carsManager?.currentCar?.customizer) {
+            const texture = this.experience.resources.items[textureName];
+            
+            if (texture) {
+                // Configure la texture
+                texture.flipY = false;
+                texture.colorSpace = THREE.SRGBColorSpace;
+                texture.needsUpdate = true;
+                
+                // Applique au customizer
+                this.experience.world.carsManager.currentCar.customizer.applyCustomTexture(texture);
+                
+                // Cache la preview d'upload et le bouton reset
+                const texturePreview = document.getElementById('texture-preview');
+                const resetBtn = document.getElementById('reset-texture');
+                if (texturePreview) texturePreview.style.display = 'none';
+                if (resetBtn) resetBtn.style.display = 'none';
+                
+                // Met à jour l'état
+                this.carStates[this.currentCar].hasCustomTexture = false;
+                
+                console.log(`✅ Preset texture ${textureName} applied!`);
+            } else {
+                console.error(`❌ Texture ${textureName} not found in resources!`);
+            }
+        }
+    }
+
+    // 🆕 Génère la galerie de textures pour la voiture actuelle
+    updatePresetTexturesGallery() {
+        const gallery = document.getElementById('preset-textures-gallery');
+        if (!gallery) return;
+        
+        // Vide la galerie
+        gallery.innerHTML = '';
+        
+        // Récupère les textures pour la voiture actuelle
+        const presets = this.presetTexturesConfig[this.currentCar];
+        if (!presets) {
+            console.error(`No preset textures for ${this.currentCar}`);
+            return;
+        }
+        
+        // Crée les éléments
+        presets.forEach((preset, index) => {
+            const option = document.createElement('div');
+            option.className = 'texture-option';
+            option.dataset.presetTexture = preset.name;
+            
+            // Active la première texture ou celle sauvegardée
+            if (preset.name === this.carStates[this.currentCar].selectedPresetTexture) {
+                option.classList.add('active');
+            }
+            
+            const img = document.createElement('img');
+            img.src = preset.path;
+            img.alt = `Preset ${index + 1}`;
+            
+            option.appendChild(img);
+            gallery.appendChild(option);
+            
+            // Event listener
+            option.addEventListener('click', () => {
+                this.updatePresetTexture(preset.name);
+            });
+        });
+        
+        console.log(`✅ Preset textures gallery updated for ${this.currentCar}`);
+    }
+
+    setupPresetTextureSelection() {
+        // La galerie est créée dynamiquement, pas besoin de setup initial ici
+        // Les event listeners sont ajoutés dans updatePresetTexturesGallery()
+    }
+
+    updatePresetTexture(textureName) {
+        console.log(`🎨 Applying preset texture: ${textureName}`);
+        
+        // Sauvegarde dans l'état
+        this.carStates[this.currentCar].selectedPresetTexture = textureName;
+        this.carStates[this.currentCar].hasCustomTexture = false;
+        
+        // Met à jour l'UI - retire active de tous
+        document.querySelectorAll('[data-preset-texture]').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        
+        // Ajoute active sur celui sélectionné
+        const activeTexture = document.querySelector(`[data-preset-texture="${textureName}"]`);
+        if (activeTexture) activeTexture.classList.add('active');
+        
+        // Applique la texture à la voiture
+        if (this.experience?.resources?.items && this.experience?.world?.carsManager?.currentCar?.customizer) {
+            const texture = this.experience.resources.items[textureName];
+            
+            if (texture) {
+                // Configure la texture
+                texture.flipY = false;
+                texture.colorSpace = THREE.SRGBColorSpace;
+                texture.needsUpdate = true;
+                
+                // Applique au customizer
+                this.experience.world.carsManager.currentCar.customizer.applyCustomTexture(texture);
+                
+                // Cache la preview d'upload et le bouton reset
+                const texturePreview = document.getElementById('texture-preview');
+                const resetBtn = document.getElementById('reset-texture');
+                if (texturePreview) texturePreview.style.display = 'none';
+                if (resetBtn) resetBtn.style.display = 'none';
+                
+                console.log(`✅ Preset texture ${textureName} applied!`);
+            } else {
+                console.error(`❌ Texture ${textureName} not found in resources!`);
+            }
+        }
+    }
+
+    // 🆕 Restaure la texture preset dans l'UI
+    restorePresetTextureUI(carType) {
+        const selectedTexture = this.carStates[carType].selectedPresetTexture;
+        
+        // Met à jour la galerie pour cette voiture
+        this.updatePresetTexturesGallery();
+        
+        // Applique la texture si ce n'est pas une custom texture
+        if (!this.carStates[carType].hasCustomTexture) {
+            // Attend un frame pour que les ressources soient prêtes
+            setTimeout(() => {
+                this.updatePresetTexture(selectedTexture);
+            }, 100);
+        }
+    }
     setupTextureUpload() {
         const fileInput = document.getElementById('texture-upload');
         const texturePreview = document.getElementById('texture-preview');
@@ -302,6 +484,11 @@ export default class UIManager {
                 
                 this.carStates[this.currentCar].hasCustomTexture = true;
                 
+                // 🆕 Désactive la sélection des presets
+                document.querySelectorAll('[data-preset-texture]').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                
                 if (this.experience?.world?.carsManager) {
                     const customTextureManager = this.experience.world.carsManager.customTextureManager;
                     const currentCar = this.experience.world.carsManager.selectedCarType;
@@ -319,18 +506,24 @@ export default class UIManager {
         });
 
         resetBtn.addEventListener('click', () => {
-            texturePreview.style.display = 'none';
-            texturePreviewImg.src = '';
-            resetBtn.style.display = 'none';
-            
-            this.carStates[this.currentCar].hasCustomTexture = false;
-            
-            if (this.experience?.world?.carsManager?.currentCar?.customizer) {
-                this.experience.world.carsManager.currentCar.customizer.resetBodyTexture();
+            if(this.currentCar && this.experience?.world?.carsManager?.currentCar?.customizer) {
+                texturePreview.style.display = 'none';
+                texturePreviewImg.src = '';
+                resetBtn.style.display = 'none';
                 
+                // 🆕 Réinitialise à preset1
+                const preset1Name = `${this.currentCar}Preset1`;
+                this.carStates[this.currentCar].hasCustomTexture = false;
+                this.carStates[this.currentCar].selectedPresetTexture = preset1Name;
+                
+                // Applique preset1
+                this.updatePresetTexture(preset1Name);
+                
+                // Supprime la custom texture du storage
                 const customTextureManager = this.experience.world.carsManager.customTextureManager;
-                const currentCar = this.experience.world.carsManager.selectedCarType;
-                customTextureManager.removeTexture(currentCar);
+                customTextureManager.removeTexture(this.currentCar);
+                
+                console.log(`✅ Texture reset to preset1 for ${this.currentCar}`);
             }
         });
     }
