@@ -120,8 +120,18 @@ export default class CarCustomizer {
             
             this.currentBodyTexture = bodyTexture
 
-            setTimeout(() => this.updateBackground(), 100)
-            
+            if(bodyTexture && bodyTexture.image) {
+                if(bodyTexture.image.complete) {
+                    // Image déjà chargée
+                    this.updateBackground()
+                } else {
+                    // Attend que l'image soit chargée
+                    bodyTexture.image.onload = () => {
+                        console.log('🎨 Texture image loaded, updating background...')
+                        this.updateBackground()
+                    }
+                }
+            }            
             // if(this.config.changeBodyUV)
             //     this.setMaterialUVMap(this.meshes.body.material, 1)
             
@@ -277,10 +287,12 @@ export default class CarCustomizer {
                 ${this.hexToRgba(c3, 0.1)} 60%,
                 ${this.hexToRgba(endColor, 0)} 100%
             ),
-            radial-gradient(circle at 115% -25%, 
-                ${this.hexToRgba(color, 0.5)} 0%, 
-                ${this.hexToRgba(endColor, 0)} 35%,
-                ${this.hexToRgba(endColor, 0)} 80%
+            radial-gradient(circle at 130% -30%, 
+                ${this.hexToRgba(color, 1)} 0%, 
+                ${this.hexToRgba(c1, 0.6)} 20%,
+                ${this.hexToRgba(c2, 0.3)} 40%, 
+                ${this.hexToRgba(c3, 0.1)} 60%,
+                ${this.hexToRgba(endColor, 0)} 100%
             )
         `
 
@@ -295,7 +307,17 @@ export default class CarCustomizer {
             this.meshes.body.material.needsUpdate = true
             this.currentBodyTexture = texture
             console.log(`✅ Custom texture applied to ${this.carType}`)
-            setTimeout(() => this.updateBackground(), 100)
+            // 🔧 Attend que la texture soit chargée avant de mettre à jour le background
+            if(texture.image) {
+                if(texture.image.complete) {
+                    this.updateBackground()
+                } else {
+                    texture.image.onload = () => {
+                        console.log('🎨 Custom texture loaded, updating background...')
+                        this.updateBackground()
+                    }
+                }
+            }
         }
     }
 
