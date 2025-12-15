@@ -14,5 +14,7 @@ BUG
 - Faire new design Background
 - reset doit bien marcher
 - ajouter d'autres roues
-- finish doit mieux marcher
-- faire des meilleurs lumières
+- ajouter 3 texture par defaut par voitures
+- text doit etre meme taille
+- mobile version
+- nice design

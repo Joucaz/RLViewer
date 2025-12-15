@@ -215,7 +215,8 @@ export default class CarsManager {
         const wheelButtons = {
             'btn-alpha': 'alpha',
             'btn-cristiano': 'cristiano',
-            'btn-dieci': 'dieci'
+            'btn-dieci': 'dieci',
+            'btn-urus': 'urus',
         }
         
         Object.entries(wheelButtons).forEach(([btnId, wheelType]) => {
@@ -246,7 +247,8 @@ export default class CarsManager {
         const wheelBtnMap = {
             'alpha': 'btn-alpha',
             'cristiano': 'btn-cristiano',
-            'dieci': 'btn-dieci'
+            'dieci': 'btn-dieci',
+            'urus': 'btn-urus',
         }
         
         const activeCarBtn = document.getElementById(carBtnMap[this.selectedCarType])

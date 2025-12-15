@@ -295,8 +295,6 @@ export default class CarCustomizer {
             const mat = this.meshes.body.material
             mat.roughness = finish.roughness
             mat.metalness = finish.metalness
-            mat.clearcoat = finish.clearcoat
-            mat.clearcoatRoughness = finish.clearcoatRoughness
             mat.envMapIntensity = finish.envMapIntensity
             mat.needsUpdate = true
         }

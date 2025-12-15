@@ -34,7 +34,7 @@ export default class Renderer
         console.log('Max Anisotropy:', maxAnisotropy)
 
         this.instance.toneMapping = THREE.CineonToneMapping
-        this.instance.toneMappingExposure = 1.0
+        this.instance.toneMappingExposure = 0.5
         // this.instance.shadowMap.enabled = true
         // this.instance.shadowMap.type = THREE.PCFSoftShadowMap
         this.instance.setClearColor('#000000', 0)

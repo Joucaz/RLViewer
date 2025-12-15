@@ -30,6 +30,17 @@ export default [
         path: 'models/wheels/dieciWheel.glb'
     },
     {
+        name: 'urus',
+        type: 'gltfModel',
+        path: 'models/wheels/urusWheel.glb'
+    },
+    
+    {
+        name: 'skyline',
+        type: 'gltfModel',
+        path: 'models/wheels/skylineWheel.glb'
+    },
+    {
         name: 'fennecChassisColor',
         type: 'texture',
         path: 'textures/cars/fennec/ChassisColor.jpg'
@@ -118,7 +129,27 @@ export default [
         name: 'alphaNormal',
         type: 'texture',
         path: 'textures/wheels/alpha/AlphaNormal.jpg'
-    },    
+    },
+    {
+        name: 'urusColor',
+        type: 'texture',
+        path: 'textures/wheels/urus/UrusColor.jpg'
+    },
+    {
+        name: 'urusNormal',
+        type: 'texture',
+        path: 'textures/wheels/urus/UrusNormal.jpg'
+    },      
+    {
+        name: 'skylineColor',
+        type: 'texture',
+        path: 'textures/wheels/skyline/SkylineColor.jpg'
+    },
+    {
+        name: 'skylineNormal',
+        type: 'texture',
+        path: 'textures/wheels/skyline/SkylineNormal.jpg'
+    },  
     {
         name: 'environmentMapTexture',
         type: 'cubeTexture',

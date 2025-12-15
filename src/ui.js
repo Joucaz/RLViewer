@@ -15,7 +15,9 @@ export default class UIManager {
         this.wheelConfig = {
             alpha: { name: 'Alpha', thumbnail: 'images/thumbnails/wheels/AlphaThumbnail.png' },
             cristiano: { name: 'Cristiano', thumbnail: 'images/thumbnails/wheels/CristianoThumbnail.png' },
-            dieci: { name: 'Dieci', thumbnail: 'images/thumbnails/wheels/DieciThumbnail.png' }
+            dieci: { name: 'Dieci', thumbnail: 'images/thumbnails/wheels/DieciThumbnail.png' },
+            urus: { name: 'Urus', thumbnail: 'images/thumbnails/wheels/UrusThumbnail.png' },
+            skyline: { name: 'Skyline', thumbnail: 'images/thumbnails/wheels/SkylineThumbnail.png' },
         };
 
         this.currentCar = 'octane';

@@ -132,7 +132,7 @@ export default class WheelSet {
 
         this.jantesMaterial = new THREE.MeshStandardMaterial({
             map: alphaColor,
-            normalMap: alphaNormal,
+            // normalMap: alphaNormal,
             // normalScale: 0.1,
             roughness: 0.200,
             metalness: 0.609,        
@@ -158,6 +158,52 @@ export default class WheelSet {
         // console.log("Cristiano material créé");
     }
 
+    createUrusMaterial() {
+        const urusColor = this.resources.items.urusColor
+        const urusNormal = this.resources.items.urusNormal
+        
+        if(urusColor) {
+            urusColor.flipY = false
+            urusColor.colorSpace = THREE.SRGBColorSpace
+        }
+        if(urusNormal) {
+            urusNormal.flipY = false
+            urusNormal.colorSpace = THREE.SRGBColorSpace
+        }
+
+        this.jantesMaterial = new THREE.MeshStandardMaterial({
+            map: urusColor,
+            // normalMap: urusNormal,
+            // normalScale: 0.1,
+            roughness: 0.300,
+            metalness: 1.0,        
+        })
+        // console.log("alpha material créé");
+    }
+
+    createSkylineMaterial() {
+        const skylineColor = this.resources.items.skylineColor
+        const skylineNormal = this.resources.items.skylineNormal
+        
+        if(skylineColor) {
+            skylineColor.flipY = false
+            skylineColor.colorSpace = THREE.SRGBColorSpace
+        }
+        if(skylineNormal) {
+            skylineNormal.flipY = false
+            skylineNormal.colorSpace = THREE.SRGBColorSpace
+        }
+
+        this.jantesMaterial = new THREE.MeshStandardMaterial({
+            map: skylineColor,
+            // normalMap: skylineNormal,
+            // normalScale: 0.5,
+            roughness: 0.500,
+            metalness: 0.5,        
+        })
+        // console.log("alpha material créé");
+    }
+
     setMaterial(wheelType) {
         this.createTireMaterial()
 
@@ -165,6 +211,8 @@ export default class WheelSet {
             alpha: () => this.createAlphaMaterial(), 
             dieci: () => this.createDieciMaterial(),
             cristiano: () => this.createCristianoMaterial(),
+            urus: () => this.createUrusMaterial(),
+            skyline: () => this.createSkylineMaterial(),
         };
 
         if (materialFunctions[wheelType]) {
