@@ -25,7 +25,7 @@ export default class Renderer
     {
         this.instance = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: true,
+            antialias: false,
             powerPreference: 'high-performance',
             alpha: true
         })
@@ -38,6 +38,7 @@ export default class Renderer
         // this.instance.shadowMap.enabled = true
         // this.instance.shadowMap.type = THREE.PCFSoftShadowMap
         this.instance.setClearColor('#000000', 0)
+        this.instance.physicallyCorrectLights = true;
         
         // Output encoding (important pour l'env map)
         this.instance.outputColorSpace = THREE.SRGBColorSpace

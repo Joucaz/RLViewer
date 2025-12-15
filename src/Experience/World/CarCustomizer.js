@@ -205,7 +205,7 @@ export default class CarCustomizer {
         console.log('🎨 Dominant colors:', color1, color2)
         
         // Applique au CSS
-        if(this.carType == 'dominus'){
+        if(this.carType == 'dominus' && color1 == "#282828"){
             this.applyGradientBackground(color2)
         }
         else{
@@ -220,20 +220,70 @@ export default class CarCustomizer {
         return `rgba(${r}, ${g}, ${b}, ${alpha})`
     }
 
+    // Fonction pour convertir hex -> RGB (utile pour interpolation)
+    hexToRgb(hex) {
+        return {
+            r: parseInt(hex.slice(1, 3), 16),
+            g: parseInt(hex.slice(3, 5), 16),
+            b: parseInt(hex.slice(5, 7), 16),
+        }
+    }
+
+    // Interpolation linéaire entre 2 couleurs
+    interpolateColor(color1, color2, factor) {
+        return {
+            r: Math.round(color1.r + (color2.r - color1.r) * factor),
+            g: Math.round(color1.g + (color2.g - color1.g) * factor),
+            b: Math.round(color1.b + (color2.b - color1.b) * factor),
+        }
+    }
+
+    // RGB -> hex
+    rgbToHex({ r, g, b }) {
+        return (
+            "#" +
+            [r, g, b]
+                .map(v => v.toString(16).padStart(2, "0"))
+                .join("")
+        )
+    }
+
+    // Génération des 3 couleurs intermédiaires
+    generateGradientColors(startHex, endHex) {
+        const start = this.hexToRgb(startHex)
+        const end = this.hexToRgb(endHex)
+        return [
+            this.rgbToHex(this.interpolateColor(start, end, 0.25)),
+            this.rgbToHex(this.interpolateColor(start, end, 0.5)),
+            this.rgbToHex(this.interpolateColor(start, end, 0.75)),
+        ]
+    }
+
+    // Applique le gradient
     applyGradientBackground(color) {
         const gradient = document.querySelector('.background-gradient')
         if (!gradient) return        
 
-        console.log(gradient);
-        console.log(color);
-        console.log(this.hexToRgba(color));
-        
-        gradient.style.background = `radial-gradient(circle at 0% 100%, ${this.hexToRgba(color)} 0%, transparent 30%), radial-gradient(circle at 100% 100%, ${this.hexToRgba(color)} 0%, transparent 30%), radial-gradient(circle at 50% -50%, ${this.hexToRgba(color)} 0%, transparent 90%), linear-gradient(135deg, #171617 0%, #171617 100%)`
-        
-        console.log(gradient.style);
-        
-        
-        
+        const endColor = '#171617'
+        const [c1, c2, c3] = this.generateGradientColors(color, endColor)
+
+        gradient.style.backgroundColor = endColor; // fond global noir
+
+        gradient.style.backgroundImage = `
+            radial-gradient(circle at -30% 130%, 
+                ${this.hexToRgba(color, 1)} 0%, 
+                ${this.hexToRgba(c1, 0.6)} 20%,
+                ${this.hexToRgba(c2, 0.3)} 40%, 
+                ${this.hexToRgba(c3, 0.1)} 60%,
+                ${this.hexToRgba(endColor, 0)} 100%
+            ),
+            radial-gradient(circle at 115% -25%, 
+                ${this.hexToRgba(color, 0.5)} 0%, 
+                ${this.hexToRgba(endColor, 0)} 35%,
+                ${this.hexToRgba(endColor, 0)} 80%
+            )
+        `
+
         // Animation de transition
         gradient.style.transition = 'background 0.8s ease-in-out'
     }
