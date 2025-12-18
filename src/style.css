@@ -513,6 +513,80 @@ body {
     border-radius: 10px;
 }
 
+/* ==================== BAKKESMOD CODE ==================== */
+.bakkesmod-result {
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bakkesmod-result::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.bakkesmod-code-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.bakkesmod-code-container input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #e3b405;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.bakkesmod-code-container input:focus {
+    outline: none;
+    border-color: #e3b405;
+}
+
+.bakkesmod-code-container button {
+    background: rgba(227, 180, 5, 0.2);
+    border: 1px solid rgba(227, 180, 5, 0.4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+}
+
+.bakkesmod-code-container button:hover {
+    background: rgba(227, 180, 5, 0.4);
+    transform: scale(1.05);
+}
+
+.bakkesmod-code-container button.copied {
+    background: rgba(46, 204, 113, 0.4);
+    border-color: rgba(46, 204, 113, 0.6);
+}
+
+.bakkesmod-result small {
+    display: block;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75em;
+    text-align: center;
+}
+
 /* ==================== TEXTURE ==================== */
 .texture-options {
     display: flex;

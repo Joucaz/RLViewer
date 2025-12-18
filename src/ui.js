@@ -2,6 +2,7 @@
 
 import * as THREE from 'three'
 import Experience from "./Experience/Experience";
+import { generateCodeFromState, BODY, WHEELS, DECAL } from './Experience/Utils/BakkesModGenerator.js';
 
 export default class UIManager {
     constructor() {
@@ -82,13 +83,14 @@ export default class UIManager {
             this.setupPaintSelection();
             this.setupWheelPaintSelection();
             this.setupFinishSelection();
-            this.updatePresetTexturesGallery(); // 🆕 Génère la galerie initiale
+            this.updatePresetTexturesGallery();
             this.setupPresetTextureSelection();
             this.setupTextureUpload();
             this.setupPlayAnimationButton();
             this.setupSaveAnimationButton();
             this.setupSaveImageButton();
             this.setupSettings();
+            this.setupBakkesModButton(); 
             
             this.restoreCarState('octane');
         });
@@ -642,6 +644,75 @@ export default class UIManager {
                 }
             });
         }
+    }
+
+    // 🆕 Bouton BakkesMod
+    setupBakkesModButton() {
+        const bakkesBtn = document.getElementById('bakkesmod-btn');
+        const resultDiv = document.getElementById('bakkesmod-result');
+        const codeInput = document.getElementById('bakkesmod-code');
+        const copyBtn = document.getElementById('copy-code-btn');
+        
+        if (!bakkesBtn || !resultDiv || !codeInput || !copyBtn) {
+            console.warn('⚠️ BakkesMod elements not found');
+            return;
+        }
+        
+        bakkesBtn.addEventListener('click', () => {
+            console.log('🎮 Generating BakkesMod code...');
+            
+            // Récupère l'état actuel
+            const carState = this.carStates[this.currentCar];
+            
+            // Génère le code
+            const code = generateCodeFromState(carState, this.currentCar);
+            
+            console.log('📋 Generated code:', code);
+            console.log('   Car:', this.currentCar);
+            console.log('   Wheels:', carState.wheelType);
+            console.log('   Texture:', carState.selectedPresetTexture);
+            console.log('   Wheel Color:', carState.wheelColor);
+            
+            // Affiche le résultat
+            codeInput.value = code;
+            resultDiv.style.display = 'block';
+            
+            // Copie automatiquement dans le presse-papiers
+            navigator.clipboard.writeText(code).then(() => {
+                copyBtn.textContent = '✅';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+                
+                console.log('✅ Code copied to clipboard!');
+            }).catch(err => {
+                console.error('❌ Failed to copy:', err);
+            });
+        });
+        
+        // Bouton de copie manuel
+        copyBtn.addEventListener('click', () => {
+            const code = codeInput.value;
+            if (!code) return;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                copyBtn.textContent = '✅';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            });
+        });
+        
+        // Permet de sélectionner tout le texte au clic
+        codeInput.addEventListener('click', () => {
+            codeInput.select();
+        });
     }
 
     setupSettings() {
