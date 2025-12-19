@@ -734,6 +734,9 @@ export default class UIManager {
             return;
         }
         
+        // 🆕 Variable pour stocker le timer
+        let hideTimer = null;
+        
         bakkesBtn.addEventListener('click', () => {
             console.log('🎮 Generating BakkesMod code...');
             
@@ -749,6 +752,12 @@ export default class UIManager {
             codeInput.value = code;
             resultDiv.style.display = 'block';
             
+            // 🆕 Annule le timer précédent s'il existe
+            if (hideTimer) {
+                clearTimeout(hideTimer);
+            }
+            
+            // Copie automatiquement dans le clipboard
             navigator.clipboard.writeText(code).then(() => {
                 copyBtn.textContent = '✅';
                 copyBtn.classList.add('copied');
@@ -762,6 +771,19 @@ export default class UIManager {
             }).catch(err => {
                 console.error('❌ Failed to copy:', err);
             });
+            
+            // 🆕 Cache le résultat après 5 secondes
+            hideTimer = setTimeout(() => {
+                resultDiv.style.transition = 'opacity 0.3s ease-out';
+                resultDiv.style.opacity = '0';
+                
+                setTimeout(() => {
+                    resultDiv.style.display = 'none';
+                    resultDiv.style.opacity = '1'; // Reset pour la prochaine fois
+                }, 300); // Attend la fin de la transition
+                
+                console.log('🕐 BakkesMod code hidden after 5 seconds');
+            }, 5000);
         });
         
         copyBtn.addEventListener('click', () => {
@@ -776,6 +798,23 @@ export default class UIManager {
                     copyBtn.textContent = '📋';
                     copyBtn.classList.remove('copied');
                 }, 2000);
+                
+                // 🆕 Reset le timer de 5 secondes quand on copie manuellement
+                if (hideTimer) {
+                    clearTimeout(hideTimer);
+                }
+                
+                hideTimer = setTimeout(() => {
+                    resultDiv.style.transition = 'opacity 0.3s ease-out';
+                    resultDiv.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        resultDiv.style.display = 'none';
+                        resultDiv.style.opacity = '1';
+                    }, 300);
+                    
+                    console.log('🕐 BakkesMod code hidden after 5 seconds');
+                }, 5000);
             });
         });
         
