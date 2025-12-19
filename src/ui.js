@@ -1,4 +1,4 @@
-// src/ui.js - Version modifiée avec animation
+// src/ui.js - Version modifiée avec passage d'état aux méthodes switch
 
 import * as THREE from 'three'
 import Experience from "./Experience/Experience";
@@ -52,7 +52,7 @@ export default class UIManager {
                 wheelColor: '#171617',
                 finish: 'anodized',
                 hasCustomTexture: false,
-                selectedPresetTexture: 'fennecPreset1' // 🆕
+                selectedPresetTexture: 'fennecPreset1'
             },
             octane: {
                 wheelType: 'dieci',
@@ -60,7 +60,7 @@ export default class UIManager {
                 wheelColor: '#171617',
                 finish: 'anodized',
                 hasCustomTexture: false,
-                selectedPresetTexture: 'octanePreset1' // 🆕
+                selectedPresetTexture: 'octanePreset1'
             },
             dominus: {
                 wheelType: 'dieci',
@@ -68,7 +68,7 @@ export default class UIManager {
                 wheelColor: '#171617',
                 finish: 'anodized',
                 hasCustomTexture: false,
-                selectedPresetTexture: 'dominusPreset1' // 🆕
+                selectedPresetTexture: 'dominusPreset1'
             }
         };
 
@@ -103,23 +103,29 @@ export default class UIManager {
     restoreCarState(carType) {
         const state = this.carStates[carType];
         
-        console.log(`🔄 Restoring state for ${carType}:`, state);
+        console.log(`🔄 Restoring UI state for ${carType}:`, state);
         
         this.restoreWheelUI(state.wheelType);
         this.restorePaintColorUI(state.paintColor);
         this.restoreWheelColorUI(state.wheelColor);
         this.restoreFinishUI(state.finish);
-        this.restorePresetTextureUI(carType); // 🆕 Restaure les preset textures
+        this.updatePresetTexturesGallery(); // Met à jour la galerie pour cette voiture
+        this.restorePresetTextureUI(carType);
         this.restoreTextureUI(state.hasCustomTexture);
     }
 
     restoreWheelUI(wheelType) {
         const wheelCategory = document.querySelector('[data-category="wheels"]');
-        wheelCategory.querySelector('.category-thumbnail').src = this.wheelConfig[wheelType].thumbnail;
-        wheelCategory.querySelector('.category-thumbnail').alt = this.wheelConfig[wheelType].name;
+        if (!wheelCategory) return;
+        
+        const thumbnail = wheelCategory.querySelector('.category-thumbnail');
+        if (thumbnail && this.wheelConfig[wheelType]) {
+            thumbnail.src = this.wheelConfig[wheelType].thumbnail;
+            thumbnail.alt = this.wheelConfig[wheelType].name;
+        }
         
         const categoryName = wheelCategory.querySelector('.category-name');
-        if (categoryName) {
+        if (categoryName && this.wheelConfig[wheelType]) {
             categoryName.textContent = this.wheelConfig[wheelType].name;
         }
 
@@ -143,16 +149,9 @@ export default class UIManager {
         const paintCategory = document.querySelector('[data-category="paint"]');
         if (paintCategory) {
             let preview = paintCategory.querySelector('.category-color-preview');
-            if (!preview) {
-                preview = document.createElement('div');
-                preview.className = 'category-color-preview';
-                const existingContent = paintCategory.querySelector('span');
-                if (existingContent) {
-                    paintCategory.removeChild(existingContent);
-                }
-                paintCategory.insertBefore(preview, paintCategory.firstChild);
+            if (preview) {
+                preview.style.background = color;
             }
-            preview.style.background = color;
         }
     }
 
@@ -169,16 +168,9 @@ export default class UIManager {
         const wheelsPaintCategory = document.querySelector('[data-category="wheels-paint"]');
         if (wheelsPaintCategory) {
             let preview = wheelsPaintCategory.querySelector('.category-color-preview');
-            if (!preview) {
-                preview = document.createElement('div');
-                preview.className = 'category-color-preview';
-                const existingContent = wheelsPaintCategory.querySelector('span');
-                if (existingContent) {
-                    wheelsPaintCategory.removeChild(existingContent);
-                }
-                wheelsPaintCategory.insertBefore(preview, wheelsPaintCategory.firstChild);
+            if (preview) {
+                preview.style.background = color;
             }
-            preview.style.background = color;
         }
     }
 
@@ -208,6 +200,18 @@ export default class UIManager {
             if (texturePreview) texturePreview.style.display = 'none';
             if (texturePreviewImg) texturePreviewImg.src = '';
         }
+    }
+
+    // Restaure la texture preset dans l'UI
+    restorePresetTextureUI(carType) {
+        const selectedTexture = this.carStates[carType].selectedPresetTexture;
+        
+        // Met à jour l'UI pour marquer la texture sélectionnée
+        document.querySelectorAll('[data-preset-texture]').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        const activeTexture = document.querySelector(`[data-preset-texture="${selectedTexture}"]`);
+        if (activeTexture) activeTexture.classList.add('active');
     }
 
     setupCategoryHover() {
@@ -301,56 +305,10 @@ export default class UIManager {
     }
 
     setupPresetTextureSelection() {
-        document.querySelectorAll('[data-preset-texture]').forEach(textureBtn => {
-            textureBtn.addEventListener('click', () => {
-                const textureName = textureBtn.dataset.presetTexture;
-                this.updatePresetTexture(textureName);
-            });
-        });
+        // Les event listeners sont ajoutés dans updatePresetTexturesGallery()
     }
 
-    updatePresetTexture(textureName) {
-        console.log(`🎨 Applying preset texture: ${textureName}`);
-        
-        // Met à jour l'UI - retire active de tous
-        document.querySelectorAll('[data-preset-texture]').forEach(opt => {
-            opt.classList.remove('active');
-        });
-        
-        // Ajoute active sur celui sélectionné
-        const activeTexture = document.querySelector(`[data-preset-texture="${textureName}"]`);
-        if (activeTexture) activeTexture.classList.add('active');
-        
-        // Applique la texture à la voiture
-        if (this.experience?.world?.carsManager?.currentCar?.customizer) {
-            const texture = this.experience.resources.items[textureName];
-            
-            if (texture) {
-                // Configure la texture
-                texture.flipY = false;
-                texture.colorSpace = THREE.SRGBColorSpace;
-                texture.needsUpdate = true;
-                
-                // Applique au customizer
-                this.experience.world.carsManager.currentCar.customizer.applyCustomTexture(texture);
-                
-                // Cache la preview d'upload et le bouton reset
-                const texturePreview = document.getElementById('texture-preview');
-                const resetBtn = document.getElementById('reset-texture');
-                if (texturePreview) texturePreview.style.display = 'none';
-                if (resetBtn) resetBtn.style.display = 'none';
-                
-                // Met à jour l'état
-                this.carStates[this.currentCar].hasCustomTexture = false;
-                
-                console.log(`✅ Preset texture ${textureName} applied!`);
-            } else {
-                console.error(`❌ Texture ${textureName} not found in resources!`);
-            }
-        }
-    }
-
-    // 🆕 Génère la galerie de textures pour la voiture actuelle
+    // Génère la galerie de textures pour la voiture actuelle
     updatePresetTexturesGallery() {
         const gallery = document.getElementById('preset-textures-gallery');
         if (!gallery) return;
@@ -371,7 +329,7 @@ export default class UIManager {
             option.className = 'texture-option';
             option.dataset.presetTexture = preset.name;
             
-            // Active la première texture ou celle sauvegardée
+            // Active la texture sauvegardée
             if (preset.name === this.carStates[this.currentCar].selectedPresetTexture) {
                 option.classList.add('active');
             }
@@ -390,11 +348,6 @@ export default class UIManager {
         });
         
         console.log(`✅ Preset textures gallery updated for ${this.currentCar}`);
-    }
-
-    setupPresetTextureSelection() {
-        // La galerie est créée dynamiquement, pas besoin de setup initial ici
-        // Les event listeners sont ajoutés dans updatePresetTexturesGallery()
     }
 
     updatePresetTexture(textureName) {
@@ -439,21 +392,6 @@ export default class UIManager {
         }
     }
 
-    // 🆕 Restaure la texture preset dans l'UI
-    restorePresetTextureUI(carType) {
-        const selectedTexture = this.carStates[carType].selectedPresetTexture;
-        
-        // Met à jour la galerie pour cette voiture
-        this.updatePresetTexturesGallery();
-        
-        // Applique la texture si ce n'est pas une custom texture
-        if (!this.carStates[carType].hasCustomTexture) {
-            // Attend un frame pour que les ressources soient prêtes
-            setTimeout(() => {
-                this.updatePresetTexture(selectedTexture);
-            }, 100);
-        }
-    }
     setupTextureUpload() {
         const fileInput = document.getElementById('texture-upload');
         const texturePreview = document.getElementById('texture-preview');
@@ -486,7 +424,7 @@ export default class UIManager {
                 
                 this.carStates[this.currentCar].hasCustomTexture = true;
                 
-                // 🆕 Désactive la sélection des presets
+                // Désactive la sélection des presets
                 document.querySelectorAll('[data-preset-texture]').forEach(opt => {
                     opt.classList.remove('active');
                 });
@@ -513,7 +451,7 @@ export default class UIManager {
                 texturePreviewImg.src = '';
                 resetBtn.style.display = 'none';
                 
-                // 🆕 Réinitialise à preset1
+                // Réinitialise à preset1
                 const preset1Name = `${this.currentCar}Preset1`;
                 this.carStates[this.currentCar].hasCustomTexture = false;
                 this.carStates[this.currentCar].selectedPresetTexture = preset1Name;
@@ -530,7 +468,7 @@ export default class UIManager {
         });
     }
 
-    // 🆕 Bouton Play Animation
+    // Bouton Play Animation
     setupPlayAnimationButton() {
         const playBtn = document.getElementById('play-animation-btn');
         if (playBtn) {
@@ -563,7 +501,7 @@ export default class UIManager {
         }
     }
 
-    // 🆕 Bouton Save Animation
+    // Bouton Save Animation
     setupSaveAnimationButton() {
         const saveAnimBtn = document.getElementById('save-animation-btn');
         const saveAnimText = document.getElementById('save-animation-text');
@@ -607,7 +545,7 @@ export default class UIManager {
         }
     }
 
-    // 🆕 Bouton Save Image
+    // Bouton Save Image
     setupSaveImageButton() {
         const saveImgBtn = document.getElementById('save-image-btn');
         if (saveImgBtn) {
@@ -646,7 +584,7 @@ export default class UIManager {
         }
     }
 
-    // 🆕 Bouton BakkesMod
+    // Bouton BakkesMod
     setupBakkesModButton() {
         const bakkesBtn = document.getElementById('bakkesmod-btn');
         const resultDiv = document.getElementById('bakkesmod-result');
@@ -777,6 +715,7 @@ export default class UIManager {
         }
     }
 
+    // 🆕 MODIFIÉ - Passe l'état sauvegardé lors du switch de voiture
     updateCarSelection(newCar) {
         if (newCar === this.currentCar) return;
         
@@ -784,53 +723,54 @@ export default class UIManager {
         
         this.currentCar = newCar;
 
+        // Met à jour la thumbnail de la catégorie
         const carCategory = document.querySelector('[data-category="car"]');
-        carCategory.querySelector('.category-thumbnail').src = this.carConfig[newCar].thumbnail;
-        carCategory.querySelector('.category-thumbnail').alt = this.carConfig[newCar].name;
-        
-        const categoryName = carCategory.querySelector('.category-name');
-        if (categoryName) {
-            categoryName.textContent = this.carConfig[newCar].name;
+        if (carCategory) {
+            const thumbnail = carCategory.querySelector('.category-thumbnail');
+            if (thumbnail && this.carConfig[newCar]) {
+                thumbnail.src = this.carConfig[newCar].thumbnail;
+                thumbnail.alt = this.carConfig[newCar].name;
+            }
+            
+            const categoryName = carCategory.querySelector('.category-name');
+            if (categoryName && this.carConfig[newCar]) {
+                categoryName.textContent = this.carConfig[newCar].name;
+            }
         }
 
+        // Met à jour les boutons actifs
         document.querySelectorAll('[data-car]').forEach(item => {
             item.classList.remove('active');
         });
-        document.querySelector(`[data-car="${newCar}"]`).classList.add('active');
+        const activeBtn = document.querySelector(`[data-car="${newCar}"]`);
+        if (activeBtn) activeBtn.classList.add('active');
 
+        // Restaure l'UI pour cette voiture
         this.restoreCarState(newCar);
 
+        // 🆕 Passe l'état sauvegardé au CarsManager
         if (this.experience?.world?.carsManager) {
             const state = this.carStates[newCar];
-            this.experience.world.carsManager.switchCar(newCar, state.wheelType);
-            
-            setTimeout(() => {
-                if (this.experience.world.carsManager.currentCar) {
-                    this.experience.world.carsManager.currentCar.setPaintColor(state.paintColor);
-                    this.experience.world.carsManager.currentCar.setFinish(state.finish);
-                }
-                if (this.experience.world.carsManager.currentWheels) {
-                    this.experience.world.carsManager.currentWheels.setColor(state.wheelColor);
-                }
-            }, 100);
+            this.experience.world.carsManager.switchCar(newCar, state.wheelType, state);
         }
     }
 
+    // 🆕 MODIFIÉ - Passe l'état sauvegardé lors du switch de roues
     updateWheelSelection(newWheel) {
         const state = this.carStates[this.currentCar];
         if (newWheel === state.wheelType) return;
         
+        console.log(`🛞 Switching wheels from ${state.wheelType} to ${newWheel}`);
+        
+        // Sauvegarde le nouveau type de roue dans l'état
         state.wheelType = newWheel;
+        
+        // Met à jour l'UI
         this.restoreWheelUI(newWheel);
 
+        // 🆕 Passe l'état COMPLET au CarsManager pour préserver paint, texture, etc.
         if (this.experience?.world?.carsManager) {
-            this.experience.world.carsManager.switchWheels(newWheel);
-            
-            setTimeout(() => {
-                if (this.experience.world.carsManager.currentWheels) {
-                    this.experience.world.carsManager.currentWheels.setColor(state.wheelColor);
-                }
-            }, 100);
+            this.experience.world.carsManager.switchWheels(newWheel, state);
         }
     }
 

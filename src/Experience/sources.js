@@ -63,7 +63,7 @@ export default [
     {
         name: 'fennecPreset2',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecBDS.png'
+        path: 'textures/cars/fennec/presets/FennecKarmine.png'
     },
     {
         name: 'fennecPreset3',
@@ -73,7 +73,7 @@ export default [
     {
         name: 'fennecPreset4',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecComplexity.png'
+        path: 'textures/cars/fennec/presets/FennecGiants.png'
     },
     {
         name: 'octaneChassisColor',
@@ -93,22 +93,22 @@ export default [
     {
         name: 'octanePreset1',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecM8.png'
+        path: 'textures/cars/octane/presets/OctaneG2.png'
     },
     {
         name: 'octanePreset2',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecFuria.png'
+        path: 'textures/cars/octane/presets/OctaneNikeYellow.png'
     },
     {
         name: 'octanePreset3',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecComplexity.png'
+        path: 'textures/cars/octane/presets/OctaneElevate.png'
     },
     {
         name: 'octanePreset4',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecBDS.png'
+        path: 'textures/cars/octane/presets/OctaneBDS.png'
     },
     {
         name: 'dominusChassisColor',
@@ -128,22 +128,22 @@ export default [
     {
         name: 'dominusPreset1',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecM8.png'
+        path: 'textures/cars/dominus/presets/DominusV1.png'
     },
     {
         name: 'dominusPreset2',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecFuria.png'
+        path: 'textures/cars/dominus/presets/DominusG2.png'
     },
     {
         name: 'dominusPreset3',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecComplexity.png'
+        path: 'textures/cars/dominus/presets/DominusSolary.png'
     },
     {
         name: 'dominusPreset4',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecBDS.png'
+        path: 'textures/cars/dominus/presets/DominusBDS.png'
     },
     {
         name: 'tireColor',

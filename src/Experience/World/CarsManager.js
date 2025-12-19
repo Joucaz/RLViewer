@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import Experience from '../Experience.js'
 import Car from './Car.js'
 import WheelSet from './WheelSet.js'
-import CarAnimator from './CarAnimator.js' // 🆕
+import CarAnimator from './CarAnimator.js'
 import { wheelPositions } from '../configs/wheelPositions.js'
 import TextureStorage from '../Utils/TextureStorage.js'
 import CustomTextureManager from '../Utils/CustomtextureManager.js'
@@ -16,7 +16,7 @@ export default class CarsManager {
         
         this.currentCar = null
         this.currentWheels = null
-        this.animator = new CarAnimator() // 🆕 Créé une seule fois
+        this.animator = new CarAnimator()
 
         this.textureStorage = new TextureStorage()
         this.customTextureManager = new CustomTextureManager(this.resources, this.textureStorage)
@@ -40,15 +40,19 @@ export default class CarsManager {
         })
     }
     
-    setupVehicle(carType, wheelType, animate = true) { // 🆕 Paramètre animate
+    // 🆕 Paramètre savedState pour restaurer l'état après création
+    setupVehicle(carType, wheelType, animate = true, savedState = null) {
         console.log(`🚗 Setting up vehicle: ${carType} with ${wheelType}`)
+        if (savedState) {
+            console.log(`  📦 With saved state:`, savedState)
+        }
         
-        // 🔧 D'abord détacher du groupe d'animation
+        // D'abord détacher du groupe d'animation
         if (this.animator) {
             this.animator.detachVehicle()
         }
         
-        // 🔧 Ensuite détruire l'ancien véhicule
+        // Ensuite détruire l'ancien véhicule
         if (this.currentCar) {
             console.log('  🗑️ Destroying old car...')
             this.currentCar.destroy()
@@ -74,11 +78,11 @@ export default class CarsManager {
         const hasCustomTexture = this.customTextureManager.getTexture(carType) !== null
         this.showResetButton(hasCustomTexture)
         
-        // 🔧 Crée la nouvelle voiture
+        // Crée la nouvelle voiture
         console.log('  🏗️ Creating new car...')
         this.currentCar = new Car(carType, this.resources.items[carType])
         
-        // 🔧 Crée les roues avec la config appropriée
+        // Crée les roues avec la config appropriée
         console.log('  🏗️ Creating new wheels...')
         const wheelConfig = wheelPositions[carType]
         
@@ -88,11 +92,16 @@ export default class CarsManager {
             wheelConfig
         )
         
-        // 🔧 Attache au groupe d'animation
-        console.log('  🔗 Attaching to animation group...')
-        this.animator.attachVehicle(this.currentCar, this.currentWheels, carType) // 🆕 Passe carType
+        // 🆕 RESTAURE L'ÉTAT IMMÉDIATEMENT APRÈS CRÉATION
+        if (savedState) {
+            this.applyState(savedState)
+        }
         
-        // 🆕 Lance l'animation si demandé
+        // Attache au groupe d'animation
+        console.log('  🔗 Attaching to animation group...')
+        this.animator.attachVehicle(this.currentCar, this.currentWheels, carType)
+        
+        // Lance l'animation si demandé
         if (animate) {
             console.log('  🎬 Starting animation...')
             this.animator.startEntryAnimation().then(() => {
@@ -106,29 +115,77 @@ export default class CarsManager {
         console.log('✅ Vehicle setup complete!')
     }
     
-    // 🆕 Méthode publique pour lancer l'animation
+    // 🆕 Applique un état sauvegardé à la voiture et aux roues actuelles
+    applyState(state) {
+        console.log('🔧 Applying saved state...', state)
+        
+        // Applique la paint color
+        if (state.paintColor && this.currentCar?.customizer) {
+            this.currentCar.customizer.setPaintColor(state.paintColor)
+            console.log(`  ✅ Paint color: ${state.paintColor}`)
+        }
+        
+        // Applique le finish
+        if (state.finish && this.currentCar?.customizer) {
+            this.currentCar.customizer.setFinish(state.finish)
+            console.log(`  ✅ Finish: ${state.finish}`)
+        }
+        
+        // Applique la couleur des roues
+        if (state.wheelColor && this.currentWheels) {
+            this.currentWheels.setColor(state.wheelColor)
+            console.log(`  ✅ Wheel color: ${state.wheelColor}`)
+        }
+        
+        // Applique la texture (preset ou custom)
+        if (state.hasCustomTexture) {
+            // Texture custom - elle devrait déjà être chargée via customTextureManager
+            const customTexture = this.customTextureManager.getTexture(this.selectedCarType)
+            if (customTexture && this.currentCar?.customizer) {
+                this.currentCar.customizer.applyCustomTexture(customTexture)
+                console.log(`  ✅ Custom texture applied`)
+            }
+        } else if (state.selectedPresetTexture && this.currentCar?.customizer) {
+            // Texture preset
+            const presetTexture = this.resources.items[state.selectedPresetTexture]
+            if (presetTexture) {
+                presetTexture.flipY = false
+                presetTexture.colorSpace = THREE.SRGBColorSpace
+                presetTexture.needsUpdate = true
+                this.currentCar.customizer.applyCustomTexture(presetTexture)
+                console.log(`  ✅ Preset texture: ${state.selectedPresetTexture}`)
+            }
+        }
+        
+        console.log('✅ State applied!')
+    }
+    
+    // Méthode publique pour lancer l'animation
     async playEntryAnimation() {
         if (this.animator) {
             return this.animator.startEntryAnimation()
         }
     }
     
-    switchCar(carType, wheelType = null) {
-        if(carType === this.selectedCarType) return
+    // 🆕 Modifié pour accepter un état sauvegardé
+    switchCar(carType, wheelType = null, savedState = null) {
+        if(carType === this.selectedCarType && !savedState) return
         
         this.selectedCarType = carType
         
         // Utilise le wheelType passé en paramètre, sinon garde l'actuel
         const wheelsToUse = wheelType || this.selectedWheelType
+        this.selectedWheelType = wheelsToUse
         
-        this.setupVehicle(carType, wheelsToUse, true) // 🆕 Anime lors du switch
+        this.setupVehicle(carType, wheelsToUse, true, savedState)
     }
     
-    switchWheels(wheelType) {
-        if(wheelType === this.selectedWheelType) return
+    // 🆕 Modifié pour accepter un état sauvegardé
+    switchWheels(wheelType, savedState = null) {
+        if(wheelType === this.selectedWheelType && !savedState) return
         
         this.selectedWheelType = wheelType
-        this.setupVehicle(this.selectedCarType, wheelType, false) // Pas d'animation pour les roues
+        this.setupVehicle(this.selectedCarType, wheelType, false, savedState)
     }
 
     setupTextureUploader() {
@@ -306,7 +363,7 @@ export default class CarsManager {
             this.currentCar.update()
         }
         
-        // 🆕 Update l'animator
+        // Update l'animator
         if(this.animator) {
             this.animator.update(this.experience.time.delta * 0.001)
         }
