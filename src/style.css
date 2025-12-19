@@ -251,11 +251,11 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
+    /* box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.5),
         inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 12px 6px rgba(255, 255, 255, 0.6);
+        inset 0 0 12px 6px rgba(255, 255, 255, 0.6); */
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -414,11 +414,6 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 12px 6px rgba(255, 255, 255, 0.6);
     padding: 15px;
     position: relative;
     overflow: hidden;
@@ -433,6 +428,9 @@ body {
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
 }
+
+
+
 
 .color-option {
     width: 100%;
@@ -604,11 +602,11 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border-radius: 15px;
     border: 2px dashed rgba(255, 255, 255, 0.3);
-    box-shadow: 
+    /* box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.5),
         inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 12px 6px rgba(255, 255, 255, 0.6);
+        inset 0 0 12px 6px rgba(255, 255, 255, 0.6); */
     padding: 25px 15px;
     display: flex;
     flex-direction: column;
@@ -767,11 +765,11 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
+    /* box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.5),
         inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 12px 6px rgba(255, 255, 255, 0.6);
+        inset 0 0 12px 6px rgba(255, 255, 255, 0.6); */
     padding: 15px;
     position: relative;
     overflow: hidden;
@@ -845,15 +843,17 @@ body {
 .action-button {
     cursor: pointer;
     transition: all 0.3s ease;
-    background: rgba(227, 180, 5, 0.15);
+    /* background: rgba(227, 180, 5, 0.15); */
     border: 1px solid rgba(227, 180, 5, 0.3);
 }
 
 .action-button:hover {
-    background: rgba(227, 180, 5, 0.25);
-    border-color: rgba(227, 180, 5, 0.5);
+    color: rgba(255, 255, 255, 1);
+    transform: translateX(3px);
+    background: rgba(175, 175, 175, 0.15);
+    /* border-color: rgba(227, 180, 5, 0.5);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(227, 180, 5, 0.3);
+    box-shadow: 0 4px 15px rgba(227, 180, 5, 0.3); */
 }
 
 .action-button:active {
@@ -866,7 +866,8 @@ body {
     justify-content: center;
     gap: 12px;
     color: rgba(255, 255, 255, 0.9);
-    font-weight: 600;
+    font-size: 0.9em;
+    /* font-weight: 600; */
 }
 
 .action-content svg {
