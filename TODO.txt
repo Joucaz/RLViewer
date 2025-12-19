@@ -18,3 +18,10 @@ BUG
 - text doit etre meme taille
 - mobile version
 - nice design
+
+- faire changement de couleur urus etc
+
+- mobile version
+- title same
+- bakkesmod code different
+- light intensity = 1 de base et divider all

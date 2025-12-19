@@ -804,14 +804,23 @@ export default class UIManager {
         const lightIntensity = document.getElementById('light-intensity');
         const lightIntensityValue = document.getElementById('light-intensity-value');
         if (lightIntensity && lightIntensityValue) {
+            // 🆕 Change les valeurs min/max/step pour un multiplicateur (0 à 2, avec 1 = 100%)
+            lightIntensity.min = 0;
+            lightIntensity.max = 3;
+            lightIntensity.step = 0.1;
+            lightIntensity.value = 1; // Valeur par défaut = 1 (100%)
+            lightIntensityValue.textContent = '1.0';
+            
             lightIntensity.addEventListener('input', (e) => {
-                const value = parseFloat(e.target.value);
-                lightIntensityValue.textContent = value;
+                const multiplier = parseFloat(e.target.value);
+                lightIntensityValue.textContent = multiplier.toFixed(1);
                 
-                if (this.experience?.world?.environment?.directionalLight) {
-                    this.experience.world.environment.directionalLight.intensity = value;
-                    console.log('💡 Light intensity:', value);
+                // 🆕 Utilise la nouvelle méthode setLightMultiplier
+                if (this.experience?.world?.environment) {
+                    this.experience.world.environment.setLightMultiplier(multiplier);
                 }
+                
+                console.log('💡 Light multiplier:', multiplier);
             });
         }
 
