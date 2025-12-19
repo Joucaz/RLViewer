@@ -457,9 +457,13 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 1.5em;
+    font-size: 1.2em;
     font-weight: bold;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+.color-option:first-child {
+    position: relative;
 }
 
 .color-picker-wrapper {
@@ -819,23 +823,22 @@ body {
 .texture-option.active::after {
     content: '✓';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 4px;
+    right: 4px;
+    left: auto;
+    transform: none;
     color: #fff;
-    font-size: 2em; /* 🔧 Ajuste la taille du checkmark */
+    font-size: 0.7em;
     font-weight: bold;
-    text-shadow: 
-        0 0 10px rgba(0, 0, 0, 0.8),
-        0 0 20px rgba(227, 180, 5, 0.6);
-    background: rgba(227, 180, 5, 0.3);
-    width: 50px; /* 🔧 Ajuste la taille du cercle du checkmark */
-    height: 50px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    background: rgba(227, 180, 5, 0.9);
+    width: 18px;
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(227, 180, 5, 0.5);
 }
 
 /* ==================== ACTION BUTTONS ==================== */
