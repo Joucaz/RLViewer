@@ -22,6 +22,13 @@ export default class UIManager {
             skyline: { name: 'Skyline', thumbnail: 'images/thumbnails/wheels/SkylineThumbnail.png' },
         };
 
+        this.finishLightIntensity = {
+            matte: 0.7,
+            glossy: 1.1,
+            metallic: 1.2,
+            anodized: 1.0
+        };
+
         this.currentCar = 'octane';
         
         this.presetTexturesConfig = {
@@ -195,7 +202,13 @@ export default class UIManager {
         this.restoreFinishUI(state.finish);
         this.updatePresetTexturesGallery();
         this.restorePresetTextureUI(carType);
-        this.restoreTextureUI(state.hasCustomTexture, state.customTextureDataURL); // 🆕 Passe le dataURL
+        this.restoreTextureUI(state.hasCustomTexture, state.customTextureDataURL);
+        
+        // 🆕 AJOUTE CES 4 LIGNES
+        const lightIntensity = this.finishLightIntensity[state.finish];
+        if (lightIntensity !== undefined) {
+            this.updateLightIntensitySlider(lightIntensity);
+        }
     }
 
     restoreWheelUI(wheelType) {
@@ -927,7 +940,6 @@ export default class UIManager {
     updateFinish(finish) {
         this.carStates[this.currentCar].finish = finish;
         
-        // 🆕 Sauvegarde dans sessionStorage
         this.saveStatesToStorage();
         
         this.restoreFinishUI(finish);
@@ -935,6 +947,23 @@ export default class UIManager {
         if (this.experience?.world?.carsManager?.currentCar?.customizer) {
             this.experience.world.carsManager.currentCar.customizer.setFinish(finish);
             console.log('✨ Finish updated:', finish);
+            
+            // 🆕 AJOUTE CES 4 LIGNES
+            const lightIntensity = this.finishLightIntensity[finish];
+            if (lightIntensity !== undefined) {
+                this.updateLightIntensitySlider(lightIntensity);
+            }
+        }
+    }
+
+    updateLightIntensitySlider(intensity) {
+        const lightIntensity = document.getElementById('light-intensity');
+        const lightIntensityValue = document.getElementById('light-intensity-value');
+        
+        if (lightIntensity && lightIntensityValue) {
+            lightIntensity.value = intensity;
+            lightIntensityValue.textContent = intensity.toFixed(1);
+            console.log(`🎚️ Light slider updated to ${intensity}`);
         }
     }
 }

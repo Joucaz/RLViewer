@@ -410,12 +410,19 @@ export default class CarCustomizer {
         this.currentFinish = finishType
         const finish = paintFinishes[finishType]
         
+        // Applique les propriétés du matériau
         if(this.meshes.body && this.meshes.body.material) {
             const mat = this.meshes.body.material
             mat.roughness = finish.roughness
             mat.metalness = finish.metalness
             mat.envMapIntensity = finish.envMapIntensity
             mat.needsUpdate = true
+        }
+        
+        // 🆕 Ajuste l'intensité lumineuse si spécifiée
+        if (finish.lightIntensity !== undefined && this.experience?.world?.environment) {
+            this.experience.world.environment.setLightMultiplier(finish.lightIntensity)
+            console.log(`💡 Light intensity adjusted to ${finish.lightIntensity} for ${finish.name}`)
         }
         
         console.log(`✅ Applied finish: ${finish.name}`)

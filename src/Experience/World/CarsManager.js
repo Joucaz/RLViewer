@@ -125,7 +125,7 @@ export default class CarsManager {
             console.log(`  ✅ Paint color: ${state.paintColor}`)
         }
         
-        // Applique le finish
+        // 🆕 Applique le finish EN PREMIER (qui appliquera automatiquement la lumière)
         if (state.finish && this.currentCar?.customizer) {
             this.currentCar.customizer.setFinish(state.finish)
             console.log(`  ✅ Finish: ${state.finish}`)
