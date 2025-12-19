@@ -196,25 +196,79 @@ export default class CarCustomizer {
     }
 
     // Mettre à jour le fond
-    updateBackground() {
+    async updateBackground() {
         if (!this.currentBodyTexture) return
         
-        // Extrait 2 couleurs dominantes
-        const [color1, color2] = ColorAnalyzer.getDominantColors(
-            this.currentBodyTexture, 
-            2
+        try {
+            // 🆕 Récupère 5 couleurs au lieu de 2
+            const colors = await ColorAnalyzer.getDominantColorsWithMask(
+                this.currentBodyTexture, 
+                5,
+                this.carType
+            )
+            
+            console.log('🎨 Top 5 colors:', colors)
+            
+            // 🆕 Trouve la première couleur qui n'est pas trop neutre
+            const finalColor = this.findBestColor(colors)
+            
+            console.log('🎨 Final color chosen:', finalColor)
+            
+            this.applyGradientBackground(finalColor)
+            
+        } catch (error) {
+            console.error('❌ Error updating background:', error)
+            const colors = ColorAnalyzer.getDominantColors(this.currentBodyTexture, 5)
+            const finalColor = this.findBestColor(colors)
+            this.applyGradientBackground(finalColor)
+        }
+    }
+
+    /**
+     * Trouve la première couleur qui n'est pas trop proche du noir ou blanc
+     * @param {Array<String>} colors - Liste de couleurs hex
+     * @returns {String} - La meilleure couleur, ou fallback doré
+     */
+    findBestColor(colors) {
+        for (const color of colors) {
+            if (!this.isColorTooNeutral(color)) {
+                return color
+            }
+        }
+        
+        // Si toutes les couleurs sont trop neutres, fallback
+        console.warn('⚠️ All colors too neutral, using fallback')
+        return '#e3b405' // Doré Rocket League
+    }
+
+    /**
+     * Vérifie si une couleur est trop proche du noir ou du blanc
+     * @param {String} hex - Couleur en hex (#RRGGBB)
+     * @param {Number} threshold - Seuil de distance (défaut 50)
+     * @returns {Boolean}
+     */
+    isColorTooNeutral(hex, threshold = 100) {
+        const r = parseInt(hex.slice(1, 3), 16)
+        const g = parseInt(hex.slice(3, 5), 16)
+        const b = parseInt(hex.slice(5, 7), 16)
+        
+        // Distance au noir (0, 0, 0)
+        const distToBlack = Math.sqrt(r * r + g * g + b * b)
+        
+        // Distance au blanc (255, 255, 255)
+        const distToWhite = Math.sqrt(
+            Math.pow(255 - r, 2) + 
+            Math.pow(255 - g, 2) + 
+            Math.pow(255 - b, 2)
         )
-        // const color1 = ColorAnalyzer.getDominantColors(this.currentBodyTexture, 1)
         
-        console.log('🎨 Dominant colors:', color1, color2)
+        const isTooNeutral = distToBlack < threshold || distToWhite < threshold
         
-        // Applique au CSS
-        if(this.carType == 'dominus' && color1 == "#282828"){
-            this.applyGradientBackground(color2)
+        if (isTooNeutral) {
+            console.log(`⚠️ Skipping ${hex} (black dist: ${distToBlack.toFixed(0)}, white dist: ${distToWhite.toFixed(0)})`)
         }
-        else{
-            this.applyGradientBackground(color1)
-        }
+        
+        return isTooNeutral
     }
 
     hexToRgba(hex, alpha = 0.2) {
