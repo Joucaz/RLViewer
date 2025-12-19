@@ -203,7 +203,7 @@ export default class CarCustomizer {
             // 🆕 Récupère 5 couleurs au lieu de 2
             const colors = await ColorAnalyzer.getDominantColorsWithMask(
                 this.currentBodyTexture, 
-                5,
+                10,
                 this.carType
             )
             
@@ -247,7 +247,7 @@ export default class CarCustomizer {
      * @param {Number} threshold - Seuil de distance (défaut 50)
      * @returns {Boolean}
      */
-    isColorTooNeutral(hex, threshold = 100) {
+    isColorTooNeutral(hex, threshold = 150) {
         const r = parseInt(hex.slice(1, 3), 16)
         const g = parseInt(hex.slice(3, 5), 16)
         const b = parseInt(hex.slice(5, 7), 16)

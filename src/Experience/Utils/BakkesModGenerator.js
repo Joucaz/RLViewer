@@ -63,14 +63,14 @@ export const WHEELS = {
 // ===== MAPPING COULEURS HEX -> PAINT ID =====
 export const HEX_TO_PAINT = {
     '#171617': PAINT.BLACK,
-    '#b3a88b': PAINT.GREY,
+    '#67655f': PAINT.GREY,
     '#fffff0': PAINT.TITANIUMWHITE,
     '#47d9e0': PAINT.SKYBLUE,
     '#cdf032': PAINT.LIME,
-    '#fdfb3d': PAINT.SAFFRON,
-    '#ffba36': PAINT.ORANGE,
-    '#f999ce': PAINT.PINK,
-    '#a323ae': PAINT.PURPLE,
+    '#de2823': PAINT.CRIMSON,
+    '#ff7300': PAINT.ORANGE,
+    '#ff5cb6': PAINT.PINK,
+    '#6b1773': PAINT.PURPLE,
 };
 
 
@@ -82,13 +82,12 @@ export const PAINT_COLORS = {
     [PAINT.COBALT]: { hex: '#6791e8', r: 0, g: 0, b: 255 },
     [PAINT.BURNTSIENNA]: { hex: '#b35423', r: 139, g: 69, b: 19 },
     [PAINT.FORESTGREEN]: { hex: '#32d22b', r: 34, g: 139, b: 34 },
-    [PAINT.PURPLE]: { hex: '#a323ae', r: 138, g: 43, b: 226 },
-    [PAINT.PINK]: { hex: '#f999ce', r: 255, g: 73, b: 179 },
-    [PAINT.ORANGE]: { hex: '#ffba36', r: 255, g: 140, b: 0 },
-    [PAINT.GREY]: { hex: '#b3a88b', r: 128, g: 128, b: 128 },
+    [PAINT.PURPLE]: { hex: '#6b1773', r: 138, g: 43, b: 226 },
+    [PAINT.PINK]: { hex: '#ff5cb6', r: 255, g: 73, b: 179 },
+    [PAINT.ORANGE]: { hex: '#ff7300', r: 255, g: 140, b: 0 },
+    [PAINT.GREY]: { hex: '#67655f', r: 128, g: 128, b: 128 },
     [PAINT.TITANIUMWHITE]: { hex: '#fffff0', r: 255, g: 255, b: 255 },
     [PAINT.SAFFRON]: { hex: '#fdfb3d', r: 255, g: 208, b: 52 },
-    [PAINT.GOLD]: { hex: '#ffd700', r: 255, g: 215, b: 0 },
     [PAINT.ONYX]: { hex: '#211f18', r: 53, g: 56, b: 57 },
     [PAINT.PLATINUM]: { hex: '#e0d6b9', r: 229, g: 228, b: 226 },
 };
