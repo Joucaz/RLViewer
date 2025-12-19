@@ -3,6 +3,7 @@
 import * as THREE from 'three'
 import Experience from "./Experience/Experience";
 import { generateCodeFromState, BODY, WHEELS, DECAL } from './Experience/Utils/BakkesModGenerator.js';
+import { paintFinishes } from './Experience/configs/paintFinishes.js'
 
 export default class UIManager {
     constructor() {
@@ -23,11 +24,12 @@ export default class UIManager {
         };
 
         this.finishLightIntensity = {
-            matte: 0.7,
-            glossy: 1.1,
-            metallic: 1.2,
-            anodized: 1.0
+            matte: paintFinishes.matte.lightIntensity,
+            glossy: paintFinishes.glossy.lightIntensity,
+            metallic: paintFinishes.metallic.lightIntensity,
+            anodized: paintFinishes.anodized.lightIntensity
         };
+
 
         this.currentCar = 'octane';
         
