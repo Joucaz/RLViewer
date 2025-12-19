@@ -68,12 +68,12 @@ export default [
     {
         name: 'fennecPreset3',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecFuria.png'
+        path: 'textures/cars/fennec/presets/FennecGiants.png'
     },
     {
         name: 'fennecPreset4',
         type: 'texture',
-        path: 'textures/cars/fennec/presets/FennecGiants.png'
+        path: 'textures/cars/fennec/presets/FennecFuria.png'
     },
     {
         name: 'octaneChassisColor',
@@ -98,17 +98,17 @@ export default [
     {
         name: 'octanePreset2',
         type: 'texture',
-        path: 'textures/cars/octane/presets/OctaneNikeYellow.png'
+        path: 'textures/cars/octane/presets/OctaneElevate.png'
     },
     {
         name: 'octanePreset3',
         type: 'texture',
-        path: 'textures/cars/octane/presets/OctaneElevate.png'
+        path: 'textures/cars/octane/presets/OctaneBDS.png'
     },
     {
         name: 'octanePreset4',
         type: 'texture',
-        path: 'textures/cars/octane/presets/OctaneBDS.png'
+        path: 'textures/cars/octane/presets/OctaneNikeYellow.png'
     },
     {
         name: 'dominusChassisColor',
@@ -128,12 +128,12 @@ export default [
     {
         name: 'dominusPreset1',
         type: 'texture',
-        path: 'textures/cars/dominus/presets/DominusV1.png'
+        path: 'textures/cars/dominus/presets/DominusG2.png'
     },
     {
         name: 'dominusPreset2',
         type: 'texture',
-        path: 'textures/cars/dominus/presets/DominusG2.png'
+        path: 'textures/cars/dominus/presets/DominusV1.png'
     },
     {
         name: 'dominusPreset3',

@@ -70,7 +70,7 @@ export const HEX_TO_PAINT = {
     '#de2823': PAINT.CRIMSON,
     '#ff7300': PAINT.ORANGE,
     '#ff5cb6': PAINT.PINK,
-    '#6b1773': PAINT.PURPLE,
+    '#3b083f': PAINT.PURPLE,
 };
 
 
@@ -82,7 +82,7 @@ export const PAINT_COLORS = {
     [PAINT.COBALT]: { hex: '#6791e8', r: 0, g: 0, b: 255 },
     [PAINT.BURNTSIENNA]: { hex: '#b35423', r: 139, g: 69, b: 19 },
     [PAINT.FORESTGREEN]: { hex: '#32d22b', r: 34, g: 139, b: 34 },
-    [PAINT.PURPLE]: { hex: '#6b1773', r: 138, g: 43, b: 226 },
+    [PAINT.PURPLE]: { hex: '#3b083f', r: 138, g: 43, b: 226 },
     [PAINT.PINK]: { hex: '#ff5cb6', r: 255, g: 73, b: 179 },
     [PAINT.ORANGE]: { hex: '#ff7300', r: 255, g: 140, b: 0 },
     [PAINT.GREY]: { hex: '#67655f', r: 128, g: 128, b: 128 },

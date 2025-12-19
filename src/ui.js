@@ -26,24 +26,73 @@ export default class UIManager {
         
         this.presetTexturesConfig = {
             fennec: [
-                { name: 'fennecPreset1', path: 'textures/cars/fennec/presets/FennecM8.png' },
-                { name: 'fennecPreset2', path: 'textures/cars/fennec/presets/FennecBDS.png' },
-                { name: 'fennecPreset3', path: 'textures/cars/fennec/presets/FennecFuria.png' },
-                { name: 'fennecPreset4', path: 'textures/cars/fennec/presets/FennecComplexity.png' }
+                {
+                    name: 'fennecPreset1',
+                    path: 'textures/cars/fennec/presets/FennecM8.png',
+                    thumbnail: 'textures/cars/fennec/thumbnails/FennecM8_thumb.png'
+                },
+                {
+                    name: 'fennecPreset2',
+                    path: 'textures/cars/fennec/presets/FennecKarmine.png',
+                    thumbnail: 'textures/cars/fennec/thumbnails/FennecKarmine_thumb.png'
+                },
+                {
+                    name: 'fennecPreset3',
+                    path: 'textures/cars/fennec/presets/FennecGiants.png',
+                    thumbnail: 'textures/cars/fennec/thumbnails/FennecGiants_thumb.png'
+                },
+                {
+                    name: 'fennecPreset4',
+                    path: 'textures/cars/fennec/presets/FennecFuria.png',
+                    thumbnail: 'textures/cars/fennec/thumbnails/FennecFuria_thumb.png'
+                }
             ],
             octane: [
-                { name: 'octanePreset1', path: 'textures/cars/octane/presets/preset1.jpg' },
-                { name: 'octanePreset2', path: 'textures/cars/octane/presets/preset2.jpg' },
-                { name: 'octanePreset3', path: 'textures/cars/octane/presets/preset3.jpg' },
-                { name: 'octanePreset4', path: 'textures/cars/octane/presets/preset4.jpg' }
+                {
+                    name: 'octanePreset1',
+                    path: 'textures/cars/octane/presets/OctaneG2.png',
+                    thumbnail: 'textures/cars/octane/thumbnails/OctaneG2_thumb.png'
+                },
+                {
+                    name: 'octanePreset2',
+                    path: 'textures/cars/octane/presets/OctaneElevate.png',
+                    thumbnail: 'textures/cars/octane/thumbnails/OctaneElevate_thumb.png'
+                },
+                {
+                    name: 'octanePreset3',
+                    path: 'textures/cars/octane/presets/OctaneBDS.png',
+                    thumbnail: 'textures/cars/octane/thumbnails/OctaneBDS_thumb.png'
+                },
+                {
+                    name: 'octanePreset4',
+                    path: 'textures/cars/octane/presets/OctaneNikeYellow.png',
+                    thumbnail: 'textures/cars/octane/thumbnails/OctaneNikeYellow_thumb.png'
+                }
             ],
             dominus: [
-                { name: 'dominusPreset1', path: 'textures/cars/dominus/presets/preset1.jpg' },
-                { name: 'dominusPreset2', path: 'textures/cars/dominus/presets/preset2.jpg' },
-                { name: 'dominusPreset3', path: 'textures/cars/dominus/presets/preset3.jpg' },
-                { name: 'dominusPreset4', path: 'textures/cars/dominus/presets/preset4.jpg' }
+                {
+                    name: 'dominusPreset1',
+                    path: 'textures/cars/dominus/presets/DominusG2.png',
+                    thumbnail: 'textures/cars/dominus/thumbnails/DominusG2_thumb.png'
+                },
+                {
+                    name: 'dominusPreset2',
+                    path: 'textures/cars/dominus/presets/DominusV1.png',
+                    thumbnail: 'textures/cars/dominus/thumbnails/DominusV1_thumb.png'
+                },
+                {
+                    name: 'dominusPreset3',
+                    path: 'textures/cars/dominus/presets/DominusSolary.png',
+                    thumbnail: 'textures/cars/dominus/thumbnails/DominusSolary_thumb.png'
+                },
+                {
+                    name: 'dominusPreset4',
+                    path: 'textures/cars/dominus/presets/DominusBDS.png',
+                    thumbnail: 'textures/cars/dominus/thumbnails/DominusBDS_thumb.png'
+                }
             ]
         };
+
 
         this.carStates = {
             fennec: {
@@ -313,35 +362,31 @@ export default class UIManager {
         const gallery = document.getElementById('preset-textures-gallery');
         if (!gallery) return;
         
-        // Vide la galerie
         gallery.innerHTML = '';
         
-        // Récupère les textures pour la voiture actuelle
         const presets = this.presetTexturesConfig[this.currentCar];
         if (!presets) {
             console.error(`No preset textures for ${this.currentCar}`);
             return;
         }
         
-        // Crée les éléments
         presets.forEach((preset, index) => {
             const option = document.createElement('div');
             option.className = 'texture-option';
             option.dataset.presetTexture = preset.name;
             
-            // Active la texture sauvegardée
             if (preset.name === this.carStates[this.currentCar].selectedPresetTexture) {
                 option.classList.add('active');
             }
             
             const img = document.createElement('img');
-            img.src = preset.path;
+            // 🆕 CHANGEMENT ICI : utilise thumbnail au lieu de path
+            img.src = preset.thumbnail || preset.path; // fallback sur path si pas de thumbnail
             img.alt = `Preset ${index + 1}`;
             
             option.appendChild(img);
             gallery.appendChild(option);
             
-            // Event listener
             option.addEventListener('click', () => {
                 this.updatePresetTexture(preset.name);
             });
