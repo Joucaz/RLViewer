@@ -46,6 +46,9 @@ export default class Resources extends EventEmitter
                 setTimeout(() => {
                     loaderElement.style.opacity = '0';
                 }, 500);
+                setTimeout(() => {
+                    loaderElement.remove()
+                }, 1000);
             },
 
             // Pendant le chargement
