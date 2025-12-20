@@ -19,7 +19,7 @@ export default class Resources extends EventEmitter
         this.toLoad = this.sources.length
         this.loaded = 0
 
-        // this.setLoadingManager()
+        this.setLoadingManager()
         this.setLoaders()
         this.startLoading()
     }
@@ -32,20 +32,19 @@ export default class Resources extends EventEmitter
         const divButtonSound = document.querySelector('.button-sound');
         const enterButton = document.querySelector('.button-enter');
 
-        enterButton.addEventListener('click', () => {
-            loaderElement.style.opacity = '0';
+        // enterButton.addEventListener('click', () => {
+        //     loaderElement.style.opacity = '0';
 
-            setTimeout(() => {
-                loaderElement.remove()
-            }, 2000);
-        });
+        //     setTimeout(() => {
+        //         loaderElement.remove()
+        //     }, 2000);
+        // });
 
         this.loadingManager = new THREE.LoadingManager(
             () => {
 
                 setTimeout(() => {
-                    loaderDisappear.style.opacity = '0';
-                    divButtonSound.style.opacity = '0.8';
+                    loaderElement.style.opacity = '0';
                 }, 500);
             },
 
