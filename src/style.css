@@ -214,71 +214,34 @@ font-size: 0.8em;
   transition: opacity 0.2s;
 }
 
-
 /* ===== ANIMATION DE LA VOITURE ===== */
 .car-animation {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    margin-bottom: 100px;
+    position: relative; /* 🆕 Change de absolute à relative */
+    width: 250px;
+    height: 100px;
+    overflow: hidden;
 }
 
-.car-orbit {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    /* animation: orbit 3s linear infinite; */
-}
-
-/* Petit cercle de guidage */
-/* .car-orbit::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    border: 2px solid rgba(227, 180, 5, 0.4);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 15px rgba(227, 180, 5, 0.3);
-} */
 
 .car-loader-img {
     position: absolute;
-    top: -25%;
-    left: 50%;
-    width: 75px; /* Petite voiture */
+    bottom: 0;
+    left: 0;
+    width: 80px;
     height: auto;
-    transform: translateX(-50%);
-    filter: drop-shadow(0 0 15px rgba(227, 180, 5, 0.6));
-    animation: carPulse 1.5s ease-in-out infinite;
+    /* filter: drop-shadow(0 0 15px rgba(227, 180, 5, 0.6)); */
+    animation: carMove 2s linear infinite;
 }
 
-/* Animation de rotation orbitale */
-@keyframes orbit {
+@keyframes carMove {
     0% {
-        transform: rotate(0deg);
+        left: -80px;
     }
     100% {
-        transform: rotate(360deg);
+        left: 100%;
     }
 }
 
-/* Animation de pulsation de la voiture */
-@keyframes carPulse {
-    0%, 100% {
-        opacity: 0.7;
-        transform: translateX(-50%) scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: translateX(-50%) scale(1.15);
-    }
-}
 
 /* ==================== UI ==================== */
 
