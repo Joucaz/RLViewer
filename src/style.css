@@ -256,6 +256,50 @@ font-size: 0.8em;
     align-items: center;
 }
 
+
+/* Footer "by Joud Cazeaux" */
+.ui-footer {
+    position: fixed;
+    right: 50px;
+    bottom: 10vh;
+    z-index: 100;
+    
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    
+    color: rgba(255, 255, 255, 0.6);
+    
+    transition: opacity 0.3s ease;
+}
+.ui-footer a {
+    text-decoration: none;
+    color: white; /* ou rgba(255,255,255,0.6) */
+}
+
+.ui-footer:hover {
+    opacity: 1;
+}
+
+.ui-footer-by {
+    font-size: 0.9em;
+}
+
+.ui-footer-name {
+    font-size: 1.1em;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 10px rgba(227, 180, 5, 0.3);
+}
+
+.ui-footer-image{
+    height: 20px;
+}
+
+
 /* Barre de catégories */
 .category-bar {
     height: 80vh;

@@ -5,6 +5,18 @@
         display: none !important;
     }
 
+    /* Footer "by Joud Cazeaux" */
+    .ui-footer {
+        top: 20px;
+        bottom: auto;
+        left: 50%;
+        right: auto;
+
+        transform: translateX(-50%);
+
+        flex-direction: row;
+        justify-content: center;
+    }
     /* ===== BOUTON CUSTOMIZE STICKY ===== */
     .mobile-customize-btn {
         position: fixed;

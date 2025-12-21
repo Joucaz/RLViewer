@@ -21,7 +21,7 @@ BUG
 
 - faire changement de couleur urus etc
 
-- mobile version
-- title same
-- bakkesmod code different
-- light intensity = 1 de base et divider all
+
+- file smaller images
+- referencement
+- by JC
