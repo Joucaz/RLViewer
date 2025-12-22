@@ -824,13 +824,28 @@ export default class UIManager {
     }
 
     setupSettings() {
+        // 🎵 MUSIQUE
+        let backgroundMusic = null;
+        
         const musicToggle = document.getElementById('music-toggle');
         if (musicToggle) {
+            // Charge l'audio
+            backgroundMusic = new Audio('sounds/Rocket League Theme.mp3');
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.3;
+            
             musicToggle.addEventListener('change', (e) => {
-                console.log('🎵 Music:', e.target.checked ? 'ON' : 'OFF');
+                if (e.target.checked) {
+                    backgroundMusic.play().catch(err => {
+                        console.warn('⚠️ Cannot play audio:', err);
+                    });
+                    console.log('🎵 Music: ON');
+                } else {
+                    backgroundMusic.pause();
+                    console.log('🎵 Music: OFF');
+                }
             });
         }
-
         const rotationToggle = document.getElementById('rotation-toggle');
         if (rotationToggle) {
             rotationToggle.addEventListener('change', (e) => {

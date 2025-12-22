@@ -86,7 +86,7 @@ export default class UIMobile {
             <!-- Tabs -->
             <div class="drawer-tabs">
                 <div class="drawer-tab active" data-mobile-tab="car">Car</div>
-                <div class="drawer-tab" data-mobile-tab="texture">Texture</div>
+                <div class="drawer-tab" data-mobile-tab="texture">Decal / Texture</div>
                 <div class="drawer-tab" data-mobile-tab="finish">Finish</div>
                 <div class="drawer-tab" data-mobile-tab="paint">Paint</div>
                 <div class="drawer-tab" data-mobile-tab="wheels">Wheels</div>
@@ -281,6 +281,11 @@ export default class UIMobile {
     getSettingsPanelHTML() {
         return `
             <div class="mobile-panel" data-mobile-panel="settings">
+                <div class="mobile-setting-row">
+                    <span class="mobile-setting-label">Music</span>
+                    <div class="mobile-toggle" id="mobile-music-toggle"></div>
+                </div>
+
                 <div class="mobile-setting-row">
                     <span class="mobile-setting-label">Auto Rotate</span>
                     <div class="mobile-toggle active" id="mobile-rotation-toggle"></div>
@@ -631,6 +636,33 @@ export default class UIMobile {
     }
     
     setupSettings() {
+        // 🎵 MUSIQUE MOBILE
+        let backgroundMusic = null;
+        
+        const musicToggle = document.getElementById('mobile-music-toggle');
+        if (musicToggle) {
+            // Charge l'audio
+            backgroundMusic = new Audio('sounds/Rocket League Theme.mp3');
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.3; // 30% du volume
+            
+            musicToggle.addEventListener('click', () => {
+                musicToggle.classList.toggle('active');
+                const isActive = musicToggle.classList.contains('active');
+                
+                if (isActive) {
+                    // Joue la musique
+                    backgroundMusic.play().catch(err => {
+                        console.warn('⚠️ Cannot play audio:', err);
+                    });
+                    console.log('🎵 Music: ON (mobile)');
+                } else {
+                    // Pause la musique
+                    backgroundMusic.pause();
+                    console.log('🎵 Music: OFF (mobile)');
+                }
+            });
+        }
         // Rotation toggle
         const rotationToggle = document.getElementById('mobile-rotation-toggle')
         if (rotationToggle) {
