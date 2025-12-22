@@ -32,7 +32,7 @@ export default class Experience
 
         // Setup
         this.debug = new Debug()
-        this.stats = new Stats()
+        // this.stats = new Stats()
         this.sizes = new Sizes()
         this.time = new Time()
         this.scene = new THREE.Scene()
@@ -75,7 +75,7 @@ export default class Experience
 
     update()
     {
-        this.stats.update()
+        // this.stats.update()
         this.camera.update()
         this.world.update()
         this.renderer.update()

@@ -22,6 +22,46 @@ BUG
 - faire changement de couleur urus etc
 
 
-- file smaller images
-- referencement
-- by JC
+Annonce twitter
+
+Annonce discord :
+cutomui
+rl skins
+kaydop
+threejs journey
+
+
+I’ve launched a 3D interactive ecar visualizer that lets you fully customize a car and export it to BakkesMod.
+Perfect for presets, team designs, thumbnails, or just testing looks before playing.
+
+🚗 RL Viewer is now LIVE! 
+
+View & customize Rocket League cars in an full 3D interactive experience:
+⚙️ Choose your car and your wheels
+🎨 Custom textures & decals
+✨ Real-time paint & finish preview
+📋 Instant BakkesMod export
+
+Try it now → https://rlviewer.joudcazeaux.fr
+
+Feedback welcome! 🔥
+
+#RocketLeague #BakkesMod #GameDev
+
+
+🎉 **RL Viewer is now live!** 🎉
+
+I've been working on an interactive 3D car customizer for Rocket League and it's finally ready to use!
+
+**Features:**
+🚗 View Fennec, Octane & Dominus in real-time 3D
+⚙️ Choose your car and your wheels
+🎨 Customize paints, finishes, wheels & textures
+✨ Upload your own custom decals
+📋 Export BakkesMod codes instantly
+
+👉 **Try it here:** [ton URL]
+
+All feedback is highly appreciated! Let me know what you think 🙏
+
+Drop your screenshots below! 📸
